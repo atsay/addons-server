@@ -166,8 +166,8 @@ class ViewQueue(RawSQLModel):
         return self._explode_concat(self._application_ids)
 
     @property
-    def is_traditional_restartless(self):
-        return self.is_restartless and not self.is_jetpack
+    def requires_restart(self):
+        return not self.is_restartless
 
     @property
     def sources_provided(self):
@@ -178,8 +178,8 @@ class ViewQueue(RawSQLModel):
         props = (
             ('admin_review', 'admin-review', _lazy('Admin Review')),
             ('is_jetpack', 'jetpack', _lazy('Jetpack Add-on')),
-            ('is_traditional_restartless', 'restartless',
-             _lazy('Restartless Add-on')),
+            ('requires_restart', 'requires_restart',
+             _lazy('Requires Restart')),
             ('has_info_request', 'info', _lazy('More Information Requested')),
             ('has_editor_comment', 'editor', _lazy('Contains Editor Comment')),
             ('sources_provided', 'sources-provided',
@@ -224,23 +224,6 @@ class ViewPreliminaryQueue(ViewQueue):
                            'addons.status IN (%s, %s)' % (
                                amo.STATUS_LITE,
                                amo.STATUS_UNREVIEWED)])
-        return q
-
-
-class ViewFastTrackQueue(ViewQueue):
-
-    def base_query(self):
-        q = super(ViewFastTrackQueue, self).base_query()
-        # Fast track includes jetpack-based addons that do not require chrome.
-        q['where'].extend(['files.no_restart = 1',
-                           '(files.jetpack_version IS NOT NULL OR '
-                           'files.is_webextension = 1)',
-                           'files.requires_chrome = 0',
-                           'files.status = %s' % amo.STATUS_UNREVIEWED,
-                           'addons.status IN (%s, %s, %s, %s)' % (
-                               amo.STATUS_LITE, amo.STATUS_UNREVIEWED,
-                               amo.STATUS_NOMINATED,
-                               amo.STATUS_LITE_AND_NOMINATED)])
         return q
 
 

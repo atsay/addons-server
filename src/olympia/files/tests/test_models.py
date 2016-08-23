@@ -922,14 +922,12 @@ class TestFileFromUpload(UploadTest):
         f = File.from_upload(upload, self.version, self.platform)
         file_ = File.objects.get(id=f.id)
         assert file_.jetpack_version == '1.0b4'
-        assert ['jetpack'] == [t.tag_text for t in self.addon.tags.all()]
 
     def test_jetpack_with_invalid_json(self):
         upload = self.upload('jetpack_invalid')
         f = File.from_upload(upload, self.version, self.platform)
         file_ = File.objects.get(id=f.id)
         assert file_.jetpack_version is None
-        assert not self.addon.tags.exists()
 
     def test_filename(self):
         upload = self.upload('jetpack')
@@ -967,6 +965,12 @@ class TestFileFromUpload(UploadTest):
 
     def test_no_restart_dictionary(self):
         upload = self.upload('dictionary-explicit-type-test')
+        d = parse_addon(upload.path)
+        f = File.from_upload(upload, self.version, self.platform, parse_data=d)
+        assert f.no_restart
+
+    def test_no_restart_search(self):
+        upload = self.upload('search.xml')
         d = parse_addon(upload.path)
         f = File.from_upload(upload, self.version, self.platform, parse_data=d)
         assert f.no_restart
@@ -1057,7 +1061,6 @@ class TestFileFromUpload(UploadTest):
         upload = self.upload('extension.xpi')
         f = File.from_upload(upload, self.version, self.platform)
         assert f.filename.endswith('.xpi')
-        assert not self.addon.tags.exists()
 
     def test_langpack_extension(self):
         upload = self.upload('langpack.xpi')
@@ -1179,11 +1182,12 @@ class TestParseSearch(TestCase, amo.tests.AMOPaths):
 
     def test_basics(self):
         # This test breaks if the day changes. Have fun with that!
-        assert self.parse(), {
+        assert self.parse() == {
             'guid': None,
-            'name': 'search tool',
+            'name': u'search tool',
+            'no_restart': True,
             'version': datetime.now().strftime('%Y%m%d'),
-            'summary': 'Search Engine for Firefox',
+            'summary': u'Search Engine for Firefox',
             'type': amo.ADDON_SEARCH}
 
     @mock.patch('olympia.files.utils.extract_search')

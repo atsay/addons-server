@@ -23,9 +23,11 @@ import waffle
 from elasticsearch_dsl import Search
 from mobility.decorators import mobilized, mobile_template
 from rest_framework.decorators import detail_route
-from rest_framework.generics import ListAPIView
+from rest_framework.exceptions import ParseError
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.viewsets import GenericViewSet
 from session_csrf import anonymous_csrf_exempt
 
@@ -47,6 +49,7 @@ from olympia.api.permissions import (
 from olympia.reviews.forms import ReviewForm
 from olympia.reviews.models import Review, GroupedRating
 from olympia.search.filters import (
+    AddonAppFilterParam, AddonCategoryFilterParam, AddonTypeFilterParam,
     ReviewedContentFilter, SearchParameterFilter, SearchQueryFilter,
     SortingFilter)
 from olympia.stats.models import Contribution
@@ -58,8 +61,9 @@ from .forms import ContributionForm
 from .indexers import AddonIndexer
 from .models import Addon, Persona, FrozenAddon
 from .serializers import (
-    AddonFeatureCompatibilitySerializer, AddonSerializer, ESAddonSerializer,
-    VersionSerializer)
+    AddonEulaPolicySerializer, AddonFeatureCompatibilitySerializer,
+    AddonSerializer, ESAddonSerializer, VersionSerializer)
+from .utils import get_creatured_ids, get_featured_ids
 
 
 log = commonware.log.getLogger('z.addons')
@@ -647,6 +651,13 @@ class AddonViewSet(RetrieveModelMixin, GenericViewSet):
             context=self.get_serializer_context())
         return Response(serializer.data)
 
+    @detail_route()
+    def eula_policy(self, request, pk=None):
+        obj = self.get_object()
+        serializer = AddonEulaPolicySerializer(
+            obj, context=self.get_serializer_context())
+        return Response(serializer.data)
+
 
 class AddonVersionViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
     # Permissions are checked against the parent add-on - see
@@ -686,7 +697,7 @@ class AddonVersionViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
         #
         # When accessing a single version or if requesting it explicitly when
         # listing, admins can access all versions, including deleted ones.
-        can_access_all_versions_included_deleted = (
+        should_access_all_versions_included_deleted = (
             (requested == 'all_with_deleted' or self.action != 'list') and
             self.request.user.is_authenticated() and
             self.request.user.is_staff)
@@ -694,16 +705,23 @@ class AddonVersionViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
         # When accessing a single version or if requesting it explicitly when
         # listing, reviewers and add-on authors can access all non-deleted
         # versions.
-        can_access_all_versions = (
+        should_access_all_versions = (
             (requested == 'all' or self.action != 'list') and
             (AllowReviewer().has_permission(self.request, self) or
                 AllowAddonAuthor().has_object_permission(
                     self.request, self, self.get_addon_object())))
 
-        if can_access_all_versions_included_deleted:
+        # Everyone can see (non deleted) beta version when they request it
+        # explicitly.
+        should_access_only_beta_versions = (requested == 'beta_only')
+
+        if should_access_all_versions_included_deleted:
             self.queryset = Version.unfiltered.all()
-        elif can_access_all_versions:
+        elif should_access_all_versions:
             self.queryset = Version.objects.all()
+        elif should_access_only_beta_versions:
+            self.queryset = Version.objects.filter(
+                files__status=amo.STATUS_BETA).distinct()
 
         # Now that the base queryset has been altered, call super() to use it.
         qs = super(AddonVersionViewSet, self).get_queryset()
@@ -720,7 +738,6 @@ class AddonSearchView(ListAPIView):
     pagination_class = ESPageNumberPagination
     permission_classes = []
     serializer_class = ESAddonSerializer
-    page_size = 25
 
     def get_queryset(self):
         return Search(using=amo.search.get_es(),
@@ -731,3 +748,68 @@ class AddonSearchView(ListAPIView):
     def as_view(cls, **kwargs):
         view = super(AddonSearchView, cls).as_view(**kwargs)
         return non_atomic_requests(view)
+
+
+class AddonFeaturedView(GenericAPIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = AddonSerializer
+    # We accept the 'page_size' parameter but we do not allow pagination for
+    # this endpoint since the order is random.
+    pagination_class = None
+    queryset = Addon.objects.valid()
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+
+        # Simulate pagination-like results, without actual pagination.
+        return Response({'results': serializer.data})
+
+    @classmethod
+    def as_view(cls, **kwargs):
+        view = super(AddonFeaturedView, cls).as_view(**kwargs)
+        return non_atomic_requests(view)
+
+    def filter_queryset(self, queryset):
+        # We can pass the optional lang parameter to either get_creatured_ids()
+        # or get_featured_ids() below to get locale-specific results in
+        # addition to the generic ones.
+        lang = self.request.GET.get('lang')
+        if 'category' in self.request.GET:
+            # If a category is passed then the app and type parameters are
+            # mandatory because we need to find a category in the constants to
+            # pass to get_creatured_ids(), and category slugs are not unique.
+            # AddonCategoryFilterParam parses the request parameters for us to
+            # determine the category.
+            try:
+                category = AddonCategoryFilterParam(self.request).get_value()
+            except ValueError:
+                raise ParseError(
+                    'Invalid app, category and/or type parameter(s).')
+            ids = get_creatured_ids(category, lang)
+        else:
+            # If no category is passed, only the app parameter is mandatory,
+            # because get_featured_ids() needs it to find the right collection
+            # to pick addons from. It can optionally filter by type, so we
+            # parse request for that as well.
+            try:
+                app = AddonAppFilterParam(
+                    self.request).get_object_from_reverse_dict()
+                type_ = None
+                if 'type' in self.request.GET:
+                    type_ = AddonTypeFilterParam(self.request).get_value()
+            except ValueError:
+                raise ParseError(
+                    'Invalid app, category and/or type parameter(s).')
+            ids = get_featured_ids(app, lang=lang, type=type_)
+        # ids is going to be a random list of ids, we just slice it to get
+        # the number of add-ons that was requested. We do it before calling
+        # manual_order(), since it'll use the ids as part of a id__in filter.
+        try:
+            page_size = int(
+                self.request.GET.get('page_size', api_settings.PAGE_SIZE))
+        except ValueError:
+            raise ParseError('Invalid page_size parameter')
+        ids = ids[:page_size]
+        return manual_order(queryset, ids, 'addons.id')

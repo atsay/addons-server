@@ -2,6 +2,7 @@ import re
 
 import mock
 from pyquery import PyQuery as pq
+from waffle.testutils import override_flag
 
 from django.core.files import temp
 
@@ -176,7 +177,7 @@ class TestVersion(TestCase):
         res = self.client.post(self.delete_url, self.delete_data)
         assert res.status_code == 302
         assert self.addon.versions.count() == 1
-        assert Addon.objects.get(id=3615).status == amo.STATUS_UNREVIEWED
+        assert Addon.objects.get(id=3615).status == amo.STATUS_NULL
 
     @mock.patch('olympia.files.models.File.hide_disabled_file')
     def test_user_can_disable_addon(self, hide_mock):
@@ -422,6 +423,13 @@ class TestVersion(TestCase):
         doc = pq(self.client.get(self.url).content)
         buttons = doc('.version-status-actions form button').text()
         assert buttons == 'Request Preliminary Review Request Full Review'
+
+    @override_flag('no-prelim-review', active=True)
+    def test_incomplete_request_review_no_prelim(self):
+        self.addon.update(status=amo.STATUS_NULL)
+        doc = pq(self.client.get(self.url).content)
+        buttons = doc('.version-status-actions form button').text()
+        assert buttons == 'Request Full Review'
 
     def test_rejected_request_review(self):
         self.addon.update(status=amo.STATUS_NULL)

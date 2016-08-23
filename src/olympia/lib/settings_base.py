@@ -1195,7 +1195,6 @@ CELERY_ROUTES = {
     'olympia.zadmin.tasks.fetch_langpacks': {'queue': 'zadmin'},
     'olympia.zadmin.tasks.notify_compatibility': {'queue': 'zadmin'},
     'olympia.zadmin.tasks.notify_compatibility_chunk': {'queue': 'zadmin'},
-    'olympia.zadmin.tasks.tally_validation_results': {'queue': 'zadmin'},
     'olympia.zadmin.tasks.update_maxversions': {'queue': 'zadmin'},
 }
 
@@ -1407,10 +1406,6 @@ XSENDFILE = True
 XSENDFILE_HEADER = 'X-SENDFILE'
 
 MOBILE_COOKIE = 'mamo'
-
-# If the users's Firefox has a version number greater than this we consider it
-# a beta.
-MIN_BETA_VERSION = '3.7'
 
 DEFAULT_SUGGESTED_CONTRIBUTION = 5
 
@@ -1645,3 +1640,8 @@ REST_FRAMEWORK = {
 # This is the DSN to the local Sentry service. It might be overridden in
 # site-specific settings files as well.
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
+
+# Automatically do 'from olympia import amo' when running shell_plus.
+SHELL_PLUS_POST_IMPORTS = (
+    ('olympia', 'amo'),
+)

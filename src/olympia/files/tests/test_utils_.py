@@ -222,7 +222,7 @@ class TestManifestJSONExtractor(TestCase):
         assert self.parse({})['type'] == amo.ADDON_EXTENSION
 
     def test_no_restart(self):
-        """manifest.json addons are always no-restart."""
+        """manifest.json addons are always no_restart."""
         assert self.parse({})['no_restart'] is True
 
     def test_name(self):
@@ -528,7 +528,7 @@ def test_resolve_i18n_message_locale_found():
 
 def test_resolve_i18n_message_uses_default_locale():
     messages = {
-        'en': {
+        'en-US': {
             'foo': {'message': 'bar'}
         }
     }
@@ -562,3 +562,14 @@ def test_resolve_i18n_message_field_no_string():
     """Make sure we don't fail on messages that are no strings"""
     result = utils.resolve_i18n_message([], {}, 'de', 'en')
     assert result == []
+
+
+def test_resolve_i18n_message_corrects_locales():
+    messages = {
+        'en-US': {
+            'foo': {'message': 'bar'}
+        }
+    }
+
+    result = utils.resolve_i18n_message('__MSG_foo__', messages, 'en')
+    assert result == 'bar'

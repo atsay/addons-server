@@ -23,9 +23,11 @@ class TestDiscoveryViewList(TestCase):
             addon.get_icon_url(64))
         assert (result['addon']['current_version']['files'][0]['id'] ==
                 addon.current_version.all_files[0].pk)
-        assert u'<a href="{0}">{1}</a>'.format(
+        assert u'<a href="{0}">{1} by {2}</a>'.format(
             absolutify(addon.get_url_path()),
-            unicode(addon.name)) in result['heading']
+            unicode(addon.name),
+            u', '.join(author.name for author in addon.listed_authors),
+        ) in result['heading']
         assert '<span>' in result['heading']
         assert '</span>' in result['heading']
         assert result['description']
@@ -35,11 +37,11 @@ class TestDiscoveryViewList(TestCase):
         assert result['addon']['id'] == item.addon_id == addon.pk
         assert result['addon']['name'] == unicode(addon.name)
         assert result['addon']['slug'] == addon.slug
-        assert u'<a href="{0}">{1}</a>'.format(
+        assert u'{1} <span>by <a href="{0}">{2}</a></span>'.format(
             absolutify(addon.get_url_path()),
-            unicode(addon.name)) == result['heading']
-        assert '<span>' not in result['heading']
-        assert '</span>' not in result['heading']
+            unicode(addon.name),
+            u', '.join(author.name for author in addon.listed_authors)
+        ) == result['heading']
         assert not result['description']
         assert result['addon']['theme_data'] == addon.persona.theme_data
 
@@ -54,6 +56,8 @@ class TestDiscoveryViewList(TestCase):
                 id=item.addon_id, type=type_)
             if type_ == amo.ADDON_PERSONA:
                 self.addons[item.addon_id].addonuser_set.create(user=author)
+                self.addons[item.addon_id].addonuser_set.create(
+                    user=user_factory())
 
         response = self.client.get(self.url, {'lang': 'en-US'})
         assert response.data
@@ -68,6 +72,30 @@ class TestDiscoveryViewList(TestCase):
                 self._check_disco_theme(result, discopane_items[i])
             else:
                 self._check_disco_addon(result, discopane_items[i])
+
+    def test_list_unicode_locale(self):
+        """Test that disco pane API still works in a locale with non-ascii
+        chars, like russian."""
+        self.addons = {}
+        for item in discopane_items:
+            type_ = amo.ADDON_EXTENSION
+            if not item.heading and not item.description:
+                type_ = amo.ADDON_PERSONA
+                author = user_factory()
+            self.addons[item.addon_id] = addon_factory(
+                id=item.addon_id, type=type_)
+            if type_ == amo.ADDON_PERSONA:
+                self.addons[item.addon_id].addonuser_set.create(user=author)
+                self.addons[item.addon_id].addonuser_set.create(
+                    user=user_factory())
+
+        response = self.client.get(self.url, {'lang': 'ru'})
+        assert response.data
+
+        assert response.data['count'] == len(discopane_items)
+        assert response.data['next'] is None
+        assert response.data['previous'] is None
+        assert response.data['results']
 
     def test_missing_addon(self):
         addon_factory(id=discopane_items[0].addon_id, type=amo.ADDON_PERSONA)

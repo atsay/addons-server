@@ -536,7 +536,6 @@ class TestHome(EditorTest):
 
     def test_unlisted_queues_only_for_senior_reviewers(self):
         listed_queues_links = [
-            reverse('editors.queue_fast_track'),
             reverse('editors.queue_nominated'),
             reverse('editors.queue_pending'),
             reverse('editors.queue_prelim'),
@@ -815,7 +814,7 @@ class TestQueueBasics(QueueTest):
         assert r.status_code == 200
         doc = pq(r.content)
         assert doc('#navbar li.top ul').eq(0).text() == (
-            'Fast Track (0) Full Reviews (2) Pending Updates (2) '
+            'Full Reviews (2) Pending Updates (2) '
             'Preliminary Reviews (2) Moderated Reviews (0)')
 
     def test_legacy_queue_sort(self):
@@ -890,13 +889,25 @@ class TestQueueBasics(QueueTest):
         assert rows.attr('data-addon') == str(ad['addon'].id)
         assert rows.find('td').eq(1).text() == 'Jetpack 0.1'
         assert rows.find('.ed-sprite-jetpack').length == 1
-        assert rows.find('.ed-sprite-restartless').length == 0
 
-    def test_flags_restartless(self):
-        ad = create_addon_file('Restartless', '0.1', amo.STATUS_NOMINATED,
-                               amo.STATUS_UNREVIEWED)
-        ad_file = ad['version'].files.all()[0]
-        ad_file.update(no_restart=True)
+    def test_flags_requires_restart(self):
+        ad = create_addon_file('Some Add-on', '0.1', amo.STATUS_NOMINATED,
+                               amo.STATUS_UNREVIEWED,
+                               file_kw={'no_restart': False})
+
+        r = self.client.get(reverse('editors.queue_nominated'))
+
+        rows = pq(r.content)('#addon-queue tr.addon-row')
+        assert rows.length == 1
+        assert rows.attr('data-addon') == str(ad['addon'].id)
+        assert rows.find('td').eq(1).text() == 'Some Add-on 0.1'
+        assert rows.find('.ed-sprite-jetpack').length == 0
+        assert rows.find('.ed-sprite-requires_restart').length == 1
+
+    def test_flags_no_restart(self):
+        # create_addon_file() creates restartless files by default.
+        ad = create_addon_file('Restartless', '0.1',
+                               amo.STATUS_NOMINATED, amo.STATUS_UNREVIEWED)
 
         r = self.client.get(reverse('editors.queue_nominated'))
 
@@ -905,24 +916,7 @@ class TestQueueBasics(QueueTest):
         assert rows.attr('data-addon') == str(ad['addon'].id)
         assert rows.find('td').eq(1).text() == 'Restartless 0.1'
         assert rows.find('.ed-sprite-jetpack').length == 0
-        assert rows.find('.ed-sprite-restartless').length == 1
-
-    def test_flags_restartless_and_jetpack(self):
-        ad = create_addon_file('Restartless Jetpack', '0.1',
-                               amo.STATUS_NOMINATED, amo.STATUS_UNREVIEWED)
-        ad_file = ad['version'].files.all()[0]
-        ad_file.update(jetpack_version=1.2, no_restart=True)
-
-        r = self.client.get(reverse('editors.queue_nominated'))
-
-        rows = pq(r.content)('#addon-queue tr.addon-row')
-        assert rows.length == 1
-        assert rows.attr('data-addon') == str(ad['addon'].id)
-        assert rows.find('td').eq(1).text() == 'Restartless Jetpack 0.1'
-
-        # Show only jetpack if it's both.
-        assert rows.find('.ed-sprite-jetpack').length == 1
-        assert rows.find('.ed-sprite-restartless').length == 0
+        assert rows.find('.ed-sprite-requires_restart').length == 0
 
     def test_theme_redirect(self):
         users = []
@@ -1032,7 +1026,7 @@ class TestPendingQueue(QueueTest):
         self._test_breadcrumbs([('Pending Updates', None)])
 
     def test_queue_count(self):
-        self._test_queue_count(2, 'Pending Updates', 2)
+        self._test_queue_count(1, 'Pending Updates', 2)
 
     def test_get_queue(self):
         self._test_get_queue()
@@ -1088,7 +1082,7 @@ class TestNominatedQueue(QueueTest):
             verify=False)
 
     def test_queue_count(self):
-        self._test_queue_count(1, 'Full Reviews', 2)
+        self._test_queue_count(0, 'Full Reviews', 2)
 
     def test_get_queue(self):
         self._test_get_queue()
@@ -1110,7 +1104,7 @@ class TestPreliminaryQueue(QueueTest):
         self._test_breadcrumbs([('Preliminary Reviews', None)])
 
     def test_queue_count(self):
-        self._test_queue_count(3, 'Preliminary Reviews', 2)
+        self._test_queue_count(2, 'Preliminary Reviews', 2)
 
     def test_get_queue(self):
         self._test_get_queue()
@@ -1248,7 +1242,7 @@ class TestModeratedQueue(QueueTest):
             note_key=amo.REVIEWED_ADDON_REVIEW).count() == 1
 
     def test_queue_count(self):
-        self._test_queue_count(4, 'Moderated Review', 1)
+        self._test_queue_count(3, 'Moderated Review', 1)
 
     def test_breadcrumbs(self):
         self._test_breadcrumbs([('Moderated Reviews', None)])
@@ -1433,7 +1427,7 @@ class TestPerformance(QueueTest):
         doc = pq(r.content)
         data = json.loads(doc('#monthly').attr('data-chart'))
         label = datetime.now().strftime('%Y-%m')
-        assert data[label]['usercount'] == 18
+        assert data[label]['usercount'] == 19
 
     def _test_performance_other_user_as_admin(self):
         userid = amo.get_user().pk
@@ -1968,11 +1962,13 @@ class TestReview(ReviewBase):
         assert self.client.head(self.url).status_code == 200
 
     def test_not_flags(self):
+        self.addon.current_version.files.update(no_restart=True)
         response = self.client.get(self.url)
         assert response.status_code == 200
         assert len(response.context['flags']) == 0
 
-    def test_flags(self):
+    def test_flag_admin_review(self):
+        self.addon.current_version.files.update(no_restart=True)
         self.addon.update(admin_review=True)
         response = self.client.get(self.url)
         assert len(response.context['flags']) == 1
@@ -2441,14 +2437,14 @@ class TestReview(ReviewBase):
         assert deps.find('a').attr('href') == self.addon.get_url_path()
 
     def test_eula_displayed(self):
-        assert not bool(self.addon.has_eula)
+        assert not bool(self.addon.eula)
         r = self.client.get(self.url)
         assert r.status_code == 200
         self.assertNotContains(r, 'View End-User License Agreement')
 
         self.addon.eula = 'Test!'
         self.addon.save()
-        assert bool(self.addon.has_eula)
+        assert bool(self.addon.eula)
         r = self.client.get(self.url)
         assert r.status_code == 200
         self.assertContains(r, 'View End-User License Agreement')
@@ -3170,7 +3166,7 @@ class TestLimitedReviewerQueue(QueueTest, LimitedReviewerBase):
         self._test_results()
 
     def test_queue_count(self):
-        self._test_queue_count(1, 'Full Review', 1)
+        self._test_queue_count(0, 'Full Review', 1)
 
     def test_get_queue(self):
         self._test_get_queue()

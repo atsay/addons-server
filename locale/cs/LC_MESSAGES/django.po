@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: REMORA 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-28 10:05+0000\n"
-"PO-Revision-Date: 2016-07-06 09:39+0000\n"
+"POT-Creation-Date: 2016-08-23 15:32+0000\n"
+"PO-Revision-Date: 2016-08-20 22:15+0000\n"
 "Last-Translator: Tomáš Zelina <zelitomas@gmail.com>\n"
 "Language-Team: Mozilla.cz <info@mozilla.cz>\n"
 "Language: cs\n"
@@ -237,6 +237,10 @@ msgstr "Tento doplněk nebyl Mozillou zkontrolován. <a href=\"%(url)s\">Dozvěd
 msgid "This add-on has been preliminarily reviewed by Mozilla. <a href=\"%(url)s\">Learn more</a>"
 msgstr "Tento doplněk byl Mozillou předběžně zkontrolován. <a href=\"%(url)s\">Dozvědět se více</a>"
 
+#: src/olympia/addons/templates/addons/button.html
+msgid "This add-on has been marked as experimental by its developers."
+msgstr "Tento doplněk byl vývojářem označen jako experimentální."
+
 #: src/olympia/addons/templates/addons/contribution.html src/olympia/addons/templates/addons/impala/developers.html
 msgid "The developer of this add-on asks that you help support its continued development by making a small contribution."
 msgstr "Vývojář tohoto doplňku vás žádá o podporu dalšího vývoje formou malého příspěvku."
@@ -365,9 +369,10 @@ msgstr "Ne, děkuji"
 msgid "Contribution made, thank you."
 msgstr "Příspěvek byl odeslán, děkujeme."
 
-#: src/olympia/addons/templates/addons/details_box.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
-msgid "No restart required"
-msgstr "Není vyžadován restart"
+#: src/olympia/addons/templates/addons/details_box.html src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/impala/listing/items.html
+#: src/olympia/editors/models.py src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
+msgid "Requires Restart"
+msgstr "Vyžaduje restart"
 
 #. This is a caption for a table. {0} is an add-on name.
 #: src/olympia/addons/templates/addons/details_box.html src/olympia/addons/templates/addons/includes/persona.html
@@ -620,7 +625,8 @@ msgid "Return to the addon."
 msgstr "Zpět na doplněk."
 
 #: src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/mobile/details.html src/olympia/addons/templates/addons/mobile/persona_detail.html
-#: src/olympia/addons/templates/addons/persona_detail.html src/olympia/editors/templates/editors/review.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/base.html
+#: src/olympia/addons/templates/addons/persona_detail.html src/olympia/addons/templates/addons/persona_preview.html src/olympia/discovery/serializers.py
+#: src/olympia/editors/templates/editors/review.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/base.html
 msgid "by"
 msgstr "od"
 
@@ -717,6 +723,10 @@ msgstr "Nehodnoceno"
 #: src/olympia/addons/templates/addons/persona_preview.html
 msgid "<b>{0}</b> users"
 msgstr "<b>{0}</b> uživatelů"
+
+#: src/olympia/addons/templates/addons/persona_preview.html
+msgid "{0} Daily Users"
+msgstr "{0} denních uživatelů"
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "To install this add-on and thousands more, <b>get Firefox</b>, a free and open web browser from Mozilla."
@@ -931,6 +941,10 @@ msgid "by %(users)s"
 msgstr "od %(users)s"
 
 #: src/olympia/addons/templates/addons/impala/button.html
+msgid "This add-on has been marked as experimental by its developers"
+msgstr "Tento doplněk byl vývojářem označen jako experimentální"
+
+#: src/olympia/addons/templates/addons/impala/button.html
 msgid "Download Anyway"
 msgstr "I přesto stáhnout"
 
@@ -1006,10 +1020,6 @@ msgstr "Správa"
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Icon of {0}"
 msgstr "Ikona doplňku {0}"
-
-#: src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/impala/listing/items.html
-msgid "No Restart"
-msgstr "Nevyžaduje restart"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 #, python-format
@@ -1404,8 +1414,7 @@ msgstr "Správa mých příspěvků"
 msgid "Submit a New Add-on"
 msgstr "Přidání nového doplňku"
 
-#: src/olympia/amo/context_processors.py src/olympia/browse/templates/browse/personas/base.html src/olympia/devhub/templates/devhub/addons/dashboard.html
-#: src/olympia/devhub/templates/devhub/index.html
+#: src/olympia/amo/context_processors.py src/olympia/browse/templates/browse/personas/base.html src/olympia/devhub/templates/devhub/addons/dashboard.html src/olympia/devhub/templates/devhub/index.html
 msgid "Submit a New Theme"
 msgstr "Přidání nového motivu"
 
@@ -1863,6 +1872,10 @@ msgstr "{file} byl podepsán."
 msgid "Addon id {0} with GUID {1} has been deleted"
 msgstr "Doplněk id {0} s GUID {1} byl smazán"
 
+#: src/olympia/amo/log.py
+msgid "{addon} migrated from preliminary."
+msgstr "{addon} byl přesunut z předběžných."
+
 #: src/olympia/amo/templates/amo/403.html
 msgid "Not allowed"
 msgstr "Není povoleno"
@@ -1996,13 +2009,8 @@ msgid "Add-ons for Mobile"
 msgstr "Doplňky pro mobily"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/browse/feeds.py src/olympia/browse/templates/browse/search_tools.html src/olympia/constants/base.py src/olympia/constants/categories.py
-#, fuzzy
 msgid "Search Tools"
-msgstr ""
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Nástroje pro vyhledávání\n"
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Vyhledávání"
+msgstr "Nástroje pro vyhledávání"
 
 #. This is a page range (e.g., Page 1 of 50).
 #: src/olympia/amo/templates/amo/impala/paginator.html src/olympia/amo/templates/amo/mobile/impala_paginator.html
@@ -2488,8 +2496,7 @@ msgstr "Upravit sbírku"
 msgid "Delete {0}"
 msgstr "Smazat {0}"
 
-#: src/olympia/bandwagon/templates/bandwagon/delete.html src/olympia/devhub/templates/devhub/addons/listing/item_actions.html
-#: src/olympia/devhub/templates/devhub/addons/listing/item_actions_theme.html
+#: src/olympia/bandwagon/templates/bandwagon/delete.html src/olympia/devhub/templates/devhub/addons/listing/item_actions.html src/olympia/devhub/templates/devhub/addons/listing/item_actions_theme.html
 msgid "Delete"
 msgstr "Smazat"
 
@@ -2820,8 +2827,8 @@ msgstr "Vytvořeno"
 msgid "{0}: Featured Add-ons"
 msgstr "{0}: Doporučené doplňky"
 
-#: src/olympia/browse/templates/browse/creatured.html src/olympia/browse/templates/browse/featured.html src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#: src/olympia/devhub/templates/devhub/docs/policies.html src/olympia/legacy_discovery/modules.py src/olympia/legacy_discovery/templates/legacy_discovery/pane.html
+#: src/olympia/browse/templates/browse/creatured.html src/olympia/browse/templates/browse/featured.html src/olympia/legacy_discovery/modules.py
+#: src/olympia/legacy_discovery/templates/legacy_discovery/pane.html
 msgid "Featured Add-ons"
 msgstr "Doporučené doplňky"
 
@@ -3169,6 +3176,14 @@ msgstr "Sestavení aplikace"
 msgid "Platform"
 msgstr "Platforma"
 
+#: src/olympia/compat/templates/compat/reporter_detail.html
+msgid "e10s Enabled"
+msgstr "e10s povoleno"
+
+#: src/olympia/compat/templates/compat/reporter_detail.html
+msgid "e10s Compatible"
+msgstr "Kompatibilní s e10s"
+
 #: src/olympia/compat/templates/compat/reporter_detail.html src/olympia/editors/templates/editors/themes/themes.html
 msgid "Submitted"
 msgstr "Odesláno"
@@ -3339,13 +3354,8 @@ msgstr "Žádat dříve, než mohou uživatelé stáhnout doplněk"
 
 #. Review points sources other than add-ons and themes.
 #: src/olympia/constants/base.py src/olympia/constants/categories.py src/olympia/devhub/forms.py src/olympia/editors/templates/editors/performance.html
-#, fuzzy
 msgid "Other"
-msgstr ""
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Jiné\n"
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Ostatní"
+msgstr "Ostatní"
 
 #: src/olympia/constants/base.py
 msgid "Exception"
@@ -3572,13 +3582,8 @@ msgid "Large"
 msgstr "Velký"
 
 #: src/olympia/constants/categories.py src/olympia/users/templates/users/edit.html
-#, fuzzy
 msgid "Miscellaneous"
-msgstr ""
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Ostatní\n"
-"#-#-#-#-#  django.po (REMORA 0.1)  #-#-#-#-#\n"
-"Různé"
+msgstr "Různé"
 
 #: src/olympia/constants/categories.py
 msgid "Modern"
@@ -4049,11 +4054,11 @@ msgstr "Tento doplněk bude přibalen k instalátoru aplikace."
 msgid "Add-ons that are bundled with application installers will be code reviewed by Mozilla before they are signed and are held to a higher quality standard."
 msgstr "Předtím, než mohou být podepsány doplňky přibalené k instalátoru aplikace, musí být jejich kód zkontrolován Mozillou. Takovéto doplňky musí udržovat vyšší kvalitativní standard."
 
-#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html
+#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html
 msgid "Full Review"
 msgstr "Plná kontrola"
 
-#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html
+#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html
 msgid "Preliminary Review"
 msgstr "Předběžná kontrola"
 
@@ -4184,7 +4189,7 @@ msgstr "Stav doplňku"
 msgid "User Collections"
 msgstr "Sbírky uživatele"
 
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html src/olympia/devhub/views.py src/olympia/pages/templates/pages/dev_faq.html
+#: src/olympia/devhub/views.py src/olympia/pages/templates/pages/dev_faq.html
 msgid "User Reviews"
 msgstr "Recenze uživatelů"
 
@@ -4468,9 +4473,7 @@ msgstr "Vývoj rozšíření"
 msgid "Lightweight Themes"
 msgstr "Lehké motivy vzhledu"
 
-#: src/olympia/devhub/templates/devhub/docs/policies-agreement.html src/olympia/devhub/templates/devhub/docs/policies-contact.html src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
-#: src/olympia/devhub/templates/devhub/docs/policies.html src/olympia/devhub/templates/devhub/nav.html
+#: src/olympia/devhub/templates/devhub/nav.html
 msgid "Add-on Policies"
 msgstr "Zásady tvorby a správy doplňků"
 
@@ -4720,6 +4723,22 @@ msgstr "Souhrn"
 msgid ""
 "A short explanation of your add-on's basic functionality that is displayed in search and browse listings, as well as at the top of your add-on's details page. It is only relevant for listed add-ons."
 msgstr "Krátký popis základních funkcí doplňku, který je zobrazen v seznamech, výsledcích vyhledávání a na začátku stránky s detaily doplňku. Relevantní pouze pro zveřejněné doplňky."
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "Experimental?"
+msgstr "Experimentální?"
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "If your add-on on is experimental or otherwise not ready for general use.  The add-on will be listed but will have reduced visibility. "
+msgstr "Zda je váš doplněk experimentální nebo jiným způsobem nevhodný pro běžné používání.  Doplněk bude zveřejněn, ale bude mít omezenou viditelnost. "
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "This add-on is experimental."
+msgstr "Tento doplněk je experimentální."
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "This add-on is ready for general use."
+msgstr "Tento doplněk je připraven pro obecné použití."
 
 #: src/olympia/devhub/templates/devhub/addons/edit/basic.html
 msgid "Categories are the primary way users browse through add-ons. Choose any that fit your add-on's functionality for the most exposure. It is only relevant for listed add-ons."
@@ -5187,6 +5206,15 @@ msgid "This summary will be shown in listings and searches."
 msgstr "Tento souhrn bude viditelný na stránce s aplikací a ve vyhledávání."
 
 #: src/olympia/devhub/templates/devhub/addons/submit/describe.html
+msgid "This add-on is experimental"
+msgstr "Tento doplněk je experimentální"
+
+#: src/olympia/devhub/templates/devhub/addons/submit/describe.html
+msgid "Check this option if your add-on is experimental or otherwise not ready for general use.  The add-on will be listed but will have reduced visibility.  You can change this setting later."
+msgstr ""
+"Označte, pokud je váš doplněk experimentální nebo jiným způsobem nevhodný pro běžné používání.  Doplněk bude zveřejněn, ale bude mít omezenou viditelnost.  Toto nastavení můžete později změnit."
+
+#: src/olympia/devhub/templates/devhub/addons/submit/describe.html
 msgid "Provide a more detailed description:"
 msgstr "Poskytněte detailní popis aplikace:"
 
@@ -5392,10 +5420,14 @@ msgid "Select a license"
 msgstr "Volba licence"
 
 #: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
+msgid "n/a"
+msgstr "n/a"
+
+#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
 msgid "Select a review process"
 msgstr "Volba procesu kontroly"
 
-#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
+#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
 msgid "Submission Process"
 msgstr "Proces přidání"
 
@@ -5472,937 +5504,6 @@ msgstr "Revokovat a regenerovat pověření"
 #: src/olympia/devhub/templates/devhub/api/key.html
 msgid "Generate new credentials"
 msgstr "Generovat nová pověření"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-agreement.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Developer Agreement"
-msgstr "Ujednání s vývojářem"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Contacting Us"
-msgstr "Kontaktujte nás"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Thanks for your interest in contacting the Mozilla Add-ons team. Please read this page carefully to ensure your request goes to the right place."
-msgstr "Děkujeme za váš zájem kontaktovat tým serveru Doplňky Mozilly. Přečtěte si prosím pečlivě tuto stránku a ujistěte se, že svůj dotaz směřujete správným směrem."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Support"
-msgstr "Podpora doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid ""
-"If you have a support question about a particular add-on, such as \"how do I use this add-on?\" or \"why doesn't this work properly?\", please contact that add-on's author through the support "
-"channels listed on the add-on's listing page."
-msgstr ""
-"Pokud máte dotaz ke konkrétnímu doplňku jako \"jak se doplněk používá?\" či \"proč nefunguje korektně?\", kontaktujte prosím přímo autora doplňku. Kontaktní informace naleznete přímo na stránce "
-"doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Editorial Concerns"
-msgstr "Otázky týkající se schvalování doplňků"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "amo-editors at mozilla dot org"
-msgstr "amo-editors zavináč mozilla tečka org"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-#, python-format
-msgid ""
-"If you have a question about an Editor's review of an add-on or want to report a policy violation, please email %(mail_editors)s. <strong>Almost all add-on reports fall under this category.</"
-"strong> Please be sure to include a link to the add-on in question and a detailed description of your question or comment."
-msgstr ""
-"Pokud máte dotaz ohledně kontroly doplňku redaktorem nebo chcete nahlásit zneužití zásad pro hostování doplňku, použijte prosím e-mail %(mail_editors)s. <strong>Téměř všechna hlášení ohledně "
-"doplňků spadají do této kategorie.</strong> Ujistěte se prosím, že ke své otázce přiložíte odkaz na doplněk, kterého se otázka týká, a nezapomenete na detailní popis otázky či komentáře."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Security Vulnerabilities"
-msgstr "Hlášení bezpečnostních chyb v doplňcích"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "amo-admins at mozilla dot org"
-msgstr "amo-admins zavináč mozilla tečka org"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-#, python-format
-msgid ""
-"If you have discovered a security vulnerability in an add-on, even if it is not hosted here, Mozilla is very interested in your discovery and will work with the add-on developer to correct the "
-"issue as soon as possible. Add-on security issues can be reported <a href=\"http://www.mozilla.org/projects/security/security-bugs-policy.html\">confidentially</a> in <a href=\"%(link_bugzilla)s"
-"\">Bugzilla</a> or by emailing %(mail_admins)s."
-msgstr ""
-"Pokud si myslíte, že jste nalezli bezpečnostní chybu v doplňku, a to i tehdy, když zde není hostován, bude Mozilla za tuto informaci vděčna a spolu s autorem doplňku zapracuje co nejrychleji na "
-"nápravě . Bezpečnostní chyby v doplňcích mohou být hlášeny <a href=\"http://www.mozilla.org/projects/security/security-bugs-policy.html\">důvěrně</a> v <a href=\"%(link_bugzilla)s\">Bugzille</a> "
-"nebo e-mailem na %(mail_admins)s."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Website Functionality & Development"
-msgstr "Funkcionalita webu a vývoj"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid ""
-"If you've found a problem with the site, we'd love to fix it. Please <a href=\"https://github.com/mozilla/addons/issues/new\">file a bug report</a> in GitHub, including the location of the problem "
-"and how you encountered it."
-msgstr ""
-"Pokud jste na stránce objevili nějakou chybu, rádi ji opravíme. <a href=\"https://github.com/mozilla/addons/issues/new\">Nahlaste ji prosím</a> na GitHubu, včetně přesné adresy a popisu, jak jste "
-"ji našli."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Maintaining Your Add-ons"
-msgstr "Správa doplňků"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Submitting New Versions of Your Add-on"
-msgstr "Přidání nových verzí doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Developers are encouraged to submit updates to their add-ons to fix bugs, add features, and otherwise improve their product. New versions of an add-on must have a <a href=\"https://developer."
-"mozilla.org/en/Toolkit_version_format\">higher version number</a> and can be submitted through the Developer Tools provided. There is no limit to the number of versions that can be submitted, but "
-"please remember that versions must be reviewed by an editor."
-msgstr ""
-"Je dobré, pokud vývojáří zasílají aktualizace svých doplňků, které opravují chyby, přidávají nové vlastnosti a celkově vylepšují produkt. Nové verze doplňku musí mít <a href=\"https://developer."
-"mozilla.org/en/Toolkit_version_format\">vyšší číslo verze</a> a mohou být odeslány skrze Centrum pro vývojáře. Neexistuje limit na počet verzí, které mohou být přidány, ale nezapomeňte prosím, že "
-"každá verze musí být zkontrolována redaktorem."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "New versions will be added to a pending review queue, and any additional versions submitted before the review is completed will move that version to the end of the queue."
-msgstr "Nové verze budou zařazeny do fronty na kontrolu a jakékoliv další odeslané verze, které budou přidány před schválením té předchozí, posunou verzi na konec fronty."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "How do I submit a Beta add-on?"
-msgstr "Jak přidat betaverzi doplňku?"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Beta channels are only available to fully-reviewed add-ons."
-msgstr "Kanály betaverzí jsou dostupné pouze pro plně schválené doplňky."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"To create a beta channel, upload a file with a unique version string that contains any of the following strings: <code>a,b,alpha,beta,pre,rc</code>, with an optional number at the end. This text "
-"must come at the end of the version string. If you understand regex format, here's what we look for in the version number: <code>\"(a|alpha|b|beta|pre|rc)\\d*$\"</code>."
-msgstr ""
-"Pro vytvoření kanálu betaverzí nahrajte soubor s unikátní verzí, která obsahuje jeden z následujících řetězců: <code>a,b,alpha,beta,pre,rc</code> s případným volitelným číslem na konci. Text musí "
-"nakonec odpovídat řetězci verze. Pokud rozumíte regulárním výrazům, pak následující pravidlo odpovídá číslu verze: <code>\"(a|alpha|b|beta|pre|rc)\\d*$\"</code>."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Once a file meeting this criteria is uploaded to AMO, it will automatically be marked as a beta version. Users of add-ons with these unique version numbers will automatically be served the newest "
-"beta updates."
-msgstr ""
-"Jakmile jsou splněna kritéria pro pojmenování soubor a ten je nahrán na AMO, je automaticky označen jako betaverze. Uživatelům doplňků s takto unikátními verzemi budou automaticky betaverze "
-"nainstalovány."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"While we call these \"Beta versions\", you can use this channel for nightlies, or alphas, or prerelease versions as you wish. Please note that there is only one channel for this purpose and all of "
-"your users on this channel will receive the latest add-ons submitted. For instance, if you upload <code>1.0beta1</code> to the release channel and then upload <code>1.1alpha1</code>, all users of "
-"<code>1.0beta1</code> will be offered an upgrade to <code>1.1alpha1</code>. Updates are pushed by submission date and not version number, so users will always get the most recent channel update "
-"regardless of any kind of alphabetical sorting."
-msgstr ""
-"Ačkoliv mluvíme o \"betaverzích\", můžete používat tento kanál pro noční vývojové verze, alfaverze nebo předverze. Mějte prosím na paměti, že pro tyto účely existuje pouze jeden kanál a všichni "
-"vaši uživatelé, kteří tento kanál používají, budou dostávat poslední verze doplňku, které zpřístupníte. Pokud například nahrajete verzi <code>1.0beta1</code>, a poté nahrajete verzi "
-"<code>1.1alpha1</code>, bude všem uživatelům verze <code>1.0beta1</code> nabídnuta aktualizace na verzi <code>1.1alpha1</code>. Aktualizace jsou řazeny dle data přidání a nikoliv dle čísla verze a "
-"uživatelé tak dostanou vždy nejnovější aktualizaci bez ohledu na řazení verzí."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Required Updates"
-msgstr "Vyžadované aktualizace"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Certain situations may arise in which Mozilla requests that an add-on developer update their add-on within a given time period to address a major security issue or policy violation. We work with "
-"developers to reasonably accommodate their own schedules, but if the issue is of a serious enough nature, add-ons that cannot issue an update with the requested fix may be demoted from fully-"
-"reviewed status, disabled, or permanently removed from the site."
-msgstr ""
-"Mohou nastat situace, kdy Mozilla požádá vývojáře doplňku, aby aktualizoval svůj doplněk do konkrétního data. Důvodem může být vážná bezpečnostní chyba či porušení zásad pro doplňky. V takových "
-"situacích spolupracujeme s vývojáři doplňků a snažíme se naše představy sladit s jejich časovými možnostmi. Pokud je však problém závažný a u doplňku není problém odstraněn, může mu být odebrán "
-"status plného zkontrolování, může být zakázán nebo trvale z webu odstraněn."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Transfer of Ownership"
-msgstr "Přesun vlastnictví"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Add-ons can have multiple users with permission to update and manage the listing. Existing authors of an add-on can transfer ownership and add additional developers to an add-on's listing through "
-"the Developer Tools provided. No interaction with Mozilla representatives is necessary for a transfer of ownership."
-msgstr ""
-"Doplňky mohou být přiřazeny více uživatelům s různým stupněm oprávněný od aktualizací po správu stránky doplňku. Existující autoři doplňku mohou předávat vlastnictví a přidávat k doplňku další "
-"vývojáře. To vše skrze Nástroje pro vývojáře. Kvůli změně vlastnictví není žádná nutnost se dotazovat Mozilly."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#, python-format
-msgid "Mozilla can assist with granting additional permissions of an add-on's listing if <a href=\"%(link_contact)s\">contacted</a> by the add-on's current owner."
-msgstr "Mozilla vám může pomoci s přidělením dalších práv ke stránce doplňku, pokud je <a href=\"%(link_contact)s\">kontaktována</a> aktuálním vlastníkem doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Mozilla encourages its users to offer feedback on their experiences when using an add-on. This allows other users to determine if the add-on is stable and useful. It also provides valuable feedback "
-"to developers, allowing them to continuously improve their add-on to meet user needs."
-msgstr ""
-"Mozilla podporuje uživatele v zasílání reakcí a svých zkušeností s konkrétními doplňky. Díky tomu mohou ostatní uživatelé rozpoznat, zda je doplněk stabilní a užitečný. Vývojáři díky ohlasům "
-"získávají užitečné reakce, které jim umožňují kontinuální vylepšovat své doplňky tak, aby lépe vyhovovaly uživatelům."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#, python-format
-msgid ""
-"Reviews must follow the <a href=\"%(link_guidelines)s\">review guidelines</a>. Reviews that do not meet these guidelines may be flagged for moderation, but negative reviews will not be removed "
-"unless they provide false information."
-msgstr ""
-"Recenze musí splňovat <a href=\"%(link_guidelines)s\">pravidla pro recenze</a>. Recenze, které nesplňují pravidla mohou být označeny k moderování, nicméně negativní recenze nejsou odstraňovány, "
-"pokud neobsahují chybné informace."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Many developers provide a support mechanism, such as a forum, discussion group, or email address. It is recommended that support questions be posted via those mediums instead of in an add-on's "
-"review section."
-msgstr "Řada vývojářů poskytuje podporu formou fóra, diskusní skupiny či na e-mailové adrese. Je doporučeno, aby byly otázky podpory kladeny na těchto místech a nikoliv v recenzích doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Code Disputes"
-msgstr "Otázky ke kódu"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Many add-ons allow their source code to be openly viewed. This does not mean that the source code is open source or available for use in another add-on. The original author of an add-on retains "
-"copyright of their work unless otherwise noted in the add-on's license."
-msgstr ""
-"Řada doplňků umožňuje, aby byl jejich kód veřejně zobrazitelný. To však neznamená, že je zdrojový kód open source nebo že je dostupný pro použití v jiném doplňku. Původní autor si může ponechat "
-"práva na svou vlastní práci, pokud není v licenci doplňku řečeno jinak."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"In the event that we're notified of a copyright or license infringement, we will take steps to review the situation and determine if an actual infringement has occurred. If we determine that there "
-"is an infringement, we will remove the offending add-on and contact the author. New add-on submissions (including updates) containing infringing code will be denied approval for public status."
-msgstr ""
-"V případě, kdy nás někdo upozorní na porušení copyrightu či licence, zhodnotíme situaci a zjistíme, zda skutečně k porušení došlo. Pokud k porušení skutečně došlo, odstraníme problematický doplněk "
-"a kontaktujeme autora. Nově přidávané doplňky (včetně aktualizací), u kterých zjistím porušení, budou automaticky zamítnuty."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "If you are unsure of the current copyright status of an add-on's source code, you must contact the original author and receive explicit permission before using the source code."
-msgstr "Pokud si nejste jisti o stavu práv u kódu u vašeho doplňku, kontaktujte jeho původního autora a vyžádejte si explicitní svolení, že jej smíte použít."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Last updated: January 13, 2011"
-msgstr "Naposledy aktualizováno: 13. ledna 2011"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid ""
-"Featured add-ons are top-quality extensions and themes highlighted on <a href=\"%(link_gallery)s\">AMO</a>, Firefox's Add-ons Manager, and across other Mozilla websites. These add-ons showcase the "
-"power of Firefox customization and are useful to a wide audience."
-msgstr ""
-"Doporučené doplňky jsou kvalitní rozšíření a motivy propagované na <a href=\"%(link_gallery)s\">AMO</a>, ve Správci doplňků Firefoxu a napříč webovými stránkami Mozilly. Tyto doplňky demonstrují "
-"sílu přizpůsobitelnosti Firefoxu a jsou užitečné pro širokou skupinu uživatelů."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Featured add-ons are chosen by the Featured Add-ons Advisory Board, a small group of add-on developers and fans from the Mozilla community who have volunteered to review and vote on nominations."
-msgstr ""
-"Doporučené doplňky jsou vybírány Featured Add-ons Advisory Board, což je malá skupina vývojářů doplňků a fanoušků z komunity Mozilla, kteří se zapojují do kontroly doplňků a hlasují při nominacích."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "<a href=\"%(link_featured)s\">Featured extensions</a> are chosen every month, and <a href=\"%(link_themes)s\">featured complete themes</a> are chosen every quarter."
-msgstr "<a href=\"%(link_featured)s\">Propagovaná rozšíření</a> jsou vybírána každý měsíc, <a href=\"%(link_themes)s\">propagované plné motivy</a> jsou vybírány každé čtvrtletí."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Criteria for Featured Add-ons"
-msgstr "Kritéria pro doporučené doplňky"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Before nominating an add-on to be featured, please ensure it meets the following criteria:"
-msgstr "Dříve než doporučíte doplněk, aby byl doporučován, ujistěte se, že splňuje následující kritéria:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have a complete and informative listing on AMO. This means:"
-msgstr "Doplněk musí mít kompletní a informačně užitečný popis na AMO. To znamená:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a 64-pixel custom icon"
-msgstr "ikonu o rozměrech 64 pixelů"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a clear and concise name (no lengthy keywords)"
-msgstr "jasný a výstižný název (žádný dlouhý výčet klíčových slov)"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a clear and concise summary of the add-on's functionality"
-msgstr "jasný a výstižný souhrn funkcí doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "detailed description and privacy policy, if applicable"
-msgstr "detailní popis a informace o zásadách soukromí, pokud jsou potřeba"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "updated screenshots of the add-on's functionality"
-msgstr "aktualizované obrázky funkcionality doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "must be fully approved by AMO editors (no preliminarily reviewed entries)"
-msgstr "musí být plně schválen redaktorem AMO (předběžné kontroly nejsou dostatečné)"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have excellent user reviews and any problems or support requests must be promptly addressed by the developer."
-msgstr "Doplněk musí mít skvělé recenze od uživatelů a jakékoliv problémy či dotazy na podporu musí být vývojářem rychle řešeny."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have a minimum of 2,000 users."
-msgstr "Doplněk musí mít minimálně 2000 uživatelů."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must be compatible with the latest release of Firefox and must be compatible with beta versions 4 weeks before their final release."
-msgstr "Doplněk musí být kompatibilní s poslední verzí Firefoxu a musí být kompatibilní s betaverzí následující verze 4 týdny před jejím finálním vydáním."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"<strong>Most importantly</strong>, the add-on must have wide consumer appeal to Firefox's users and be outstanding in nearly every way: user experience, performance, security, and usefulness or "
-"entertainment value. Featured complete themes must also be visually appealing."
-msgstr ""
-"<strong>Důležité</strong>: doplněk musí mít širokou základnu uživatelů Firefoxu a musí být perfektně zpracován ve všech ohledech: z pohledu uživatelské přívětivosti, výkonu, bezpečnosti a "
-"užitečnosti či zábavy. Motivy vzhledu též musí dobře vizuálně vypadat."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Nominating an Add-on"
-msgstr "Nominace doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "amo-featured at mozilla dot org"
-msgstr "amo-featured zavináč mozilla tečka org"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "If you wish to nominate an add-on to be featured and it meets the criteria above, send an email to %(mail_featured)s with:"
-msgstr "Pokud chcete váš doplněk nominovat a splňuje kritéria uvedená výše, pošlete e-mail na adresu %(mail_featured)s s následujícím:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "the add-on name, URL, and whether you are its developer"
-msgstr "jméno doplňku, jeho URL a informaci, zda jste jeho vývojářem"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a short explanation of why the add-on has wide appeal and should be featured"
-msgstr "krátké vysvětlení, proč je doplněk určen širokému spektru uživatelů a měl by být propagován"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "optionally, links to any external reviews or articles mentioning the add-on"
-msgstr "volitelně: odkaz na jakékoliv externí recenze nebo články, které se o doplňku zmiňují"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Add-on nominations are reviewed by the Advisory Board once a month (once every 3 months for complete theme nominations). Common reasons for rejection include lacking wide appeal to consumers, a "
-"suboptimal user experience, quality or security issues, incompatibility, and similarity to another featured add-on. Rejected add-ons cannot be re-nominated within 3 months."
-msgstr ""
-"Nominované doplňky jsou kontrolovány skupinou Advisory Board jednou měsíčně (každé 3 měsíce pro motivy). Běžné důvody pro zamítnutí zahrnují úzké zaměření doplňku, neoptimální provedení, špatnou "
-"kvalitu či bezpečnostní problémy, nekompatibilitu nebo podobnost s jiným již doporučeným doplňkem. Zamítnuté doplňky nemohou být další 3 měsíce znovu nominovány."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Rotating Featured Add-ons"
-msgstr "Rotace doporučených doplňků"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Mozilla and the Featured Add-ons Advisory Board regularly evaluate and rotate out featured add-ons. Some of the most common reasons for add-ons being removed from the featured list are:"
-msgstr "Mozilla a Featured Add-ons Advisory Board pravidelně vyhodnocuje a rotuje doporučené doplňky. Některé z nejčastějších důvodů, z jakých jsou doplňky ze seznamu doporučených odstraňovány, jsou:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Lack of growth &mdash; Add-ons that are featured typically experience a substantial gain in both downloads and active users. If an add-on is not demonstrating growth in any substantial way, that's "
-"a good indicator the add-on may not be very useful to our users."
-msgstr ""
-"Malý růst &mdash; Doplňky, které jsou doporučovány, obvykle získají větší množství stažení a řadu nových uživatelů. Pokud doplněk v žádném měřítku neroste, je to dobrý indikátor, že doplněk není "
-"užitečný pro velkou skupinu našich uživatelů."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Negative reviews &mdash; Featured add-ons should have a great experience and very few bugs, so add-ons with many negative reviews may be reconsidered."
-msgstr "Negativní recenze &mdash; Doporučené doplňky by se měly uživatelům líbit a mít málo chyb. Doplňky, které mají řadu negativních recenzí, by neměly být doporučené."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Incompatibility with upcoming Firefox versions &mdash; Featured add-ons are expected to be compatible with stable and beta versions of Firefox. Add-ons not yet compatible with a Beta version of "
-"Firefox four weeks before its expected release will lose their featured status."
-msgstr ""
-"Nekompatibilita s nadcházejícími verzemi Firefoxu &mdash; Doporučené doplňky by měly být kompatibilní se stabilními verzemi i betaverzemi Firefoxu. Doplňky, které nejsou kompatibilní s betaverzí "
-"Firefoxu 4 týdny před předpokládaným vydáním, ztrácí svůj status doporučeného doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Joining the Featured Add-ons Advisory Board"
-msgstr "Připojení se k Featured Add-ons Advisory Board"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Every six months a new Advisory Board is chosen based on applications from the add-ons community. Members must:"
-msgstr "Každých šest měsíců je ustanoven nový Advisory Board, který je sestaven na základě žádostí z naší komunity okolo doplňků. Členové musí:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "be active members of the add-ons community, whether as a developer, evangelist, or fan"
-msgstr "být aktivním členem komunity doplňků, ať už jako vývojář, evangelista či fanoušek"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "commit to trying all the nominations submitted, giving their feedback, and casting their votes every month"
-msgstr "aktivně zkoušet všechny nominované doplňky, poskytovat k nim reakce a účastnit se každý měsíc hlasování"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "abstain from voting on add-ons that they have any business or personal affiliations with, as well as direct competitors of any such add-ons"
-msgstr "zdržet se hlasování o doplňcích, se kterými je nějak osobně či obchodně spjat, stejně tak nebude hlasovat o svých konkurentech"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Members of the Mozilla Add-ons team may veto any add-on's selection because of security, privacy, compatibility, or any other reason, but in general it is up to the Board to select add-ons to "
-"feature."
-msgstr ""
-"Členové týmu serveru Doplňky Mozilly mají právo veta u volby libovolného doplňku a to z důvodu bezpečnosti, soukromí, kompatibility či jiného důvodu, ale obecně je na členech, aby zvolili, které "
-"doplňky budou propagovány."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"This featured policy only applies to the addons.mozilla.org global list of featured add-ons. Add-ons featured in other locations are often pulled from this list, but Mozilla may feature any add-on "
-"in other locations without the Board's consent. Additionally, locale-specific features override the global defaults, so if a locale has opted to select its own features, some or all of the global "
-"features may not appear in that locale."
-msgstr ""
-"Tyto zásady pro doporučované doplňky jsou platné pro seznam doporučovaných doplňků na addons.mozilla.org. Doplňky doporučované na jiných místech jsou často brány z tohoto seznamu, ale Mozilla může "
-"doporučovat libovolný doplněk na jiných místech bez ohledu na souhlas hodnotitelů. Vedle toho mohou některé jazykově specifické vlastnosti přebít globální nastavení, takže pokud jsou pro jazyk k "
-"dispozici některé speciální vlastnosti, mohou nahradit globálně doporučované doplňky."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "Follow the <a href=\"%(link_blog)s\">Add-ons Blog</a> or <a href=\"%(link_twitter)s\">@mozamo</a> on Twitter to learn when the next application period opens."
-msgstr "Pro informace o další periodě sledujte <a href=\"%(link_blog)s\">blog Mozilla Add-ons</a> nebo <a href=\"%(link_twitter)s\">@mozamo</a> na Twitteru."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Last updated: January 31, 2013"
-msgstr "Poslední aktualizace: 31. ledna 2013"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Review Process"
-msgstr "Proces kontroly"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"In order to ensure all add-ons hosted in our gallery are safe for users to install, Mozilla will begin requiring all hosted add-ons to undergo review. We offer two types of review and developers "
-"are free to choose the best fit for their add-on."
-msgstr ""
-"Protože se snažíme, aby všechny doplňky hostované v naší galerii byly bezpečné, začala Mozilla vyžadovat kontrolu u všech hostovaných doplňků. K dispozici jsou dva typy kontroly a je na vývojáři, "
-"kterou z nich zvolí, a o které si myslí, že lépe sedne vyvíjenému doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong><a href=\"#full\">Full Review</a></strong> &mdash; a thorough functional and code review of the add-on, appropriate for add-ons ready for distribution to the masses. All site features are "
-"available to these add-ons."
-msgstr ""
-"<strong><a href=\"#full\">Plná kontrola</a></strong> &mdash; je zkontrolována funkcionalita a proběhne kontrola kódu doplňku. Tato kontrola je vhodná pro doplňky určené pro běžné uživatele. Pro "
-"takto zkontrolované doplňky jsou dostupné všechny funkce webu."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong><a href=\"#preliminary\">Preliminary Review</a></strong> &mdash; a faster review intended for experimental add-ons. Preliminary reviews do not check for functionality or full policy "
-"compliance, but the reviewed add-ons have install button cautions and some feature limitations."
-msgstr ""
-"<strong><a href=\"#preliminary\">Předběžná kontrola</a></strong> &mdash; jedná se o rychlejší kontrolu určenou hlavně pro experimentální doplňky. V rámci předběžné kontroly se nekontroluje "
-"funkcionalita nebo plná shoda se zásadami pro doplňky, u doplňku se na webu zobrazuje varování a nejsou pro něj dostupné všechny funkce webu."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Detailed descriptions of each option are below. After selecting a review process at submission, the add-on will be placed in the queue. Add-ons are reviewed by the <a href=\"https://wiki.mozilla."
-"org/AMO:Editors\">AMO Editors</a>, a group of talented developers that volunteer to help the Mozilla project by reviewing add-ons to ensure a stable and safe experience for users. Developers will "
-"receive an email with any updates throughout the review process."
-msgstr ""
-"Detailní popisy jednotlivých možností jsou popsány níže. Po zvolení typu kontroly a odeslání je doplněk zařazen do fronty. Doplňky jsou kontrolovány <a href=\"https://wiki.mozilla.org/AMO:Editors"
-"\">redaktory serveru</a>, skupinou talentovaných vývojářů, kteří ve svém volném čase pomáhají projektu Mozilla kontrolou doplňků a ujišťují se, že jsou stabilní a bezpečné pro uživatele. Vývojáři "
-"budou o jakýchkoliv aktualizacích v rámci kontroly vyrozuměni e-mailem."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"While waiting for review, add-ons will not appear anywhere in the gallery publicly, but direct links to the add-on's details page will work. This allows the author to blog or share the link with "
-"friends, inviting them to try it out, even when not yet reviewed."
-msgstr ""
-"Po dobu kontroly nejsou doplňky v galerii viditelné, odkaz na stránku s detailem doplňku by ale měl fungovat. Autor tak může na doplněk odkázat ze svého blogu či poslat odkaz známým, aby doplněk "
-"vyzkoušeli ještě dříve, než bude zkontrolován."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Full reviews are appropriate for add-ons that are well-tested, stable, fast, and have wide appeal to our users. If you aren't confident that your add-on meets that criteria, please consider working "
-"out the kinks while in preliminary review and accumulating user feedback first."
-msgstr ""
-"Plné kontroly jsou doporučeny pro doplňky, které jsou dobře otestovány, stabilní, rychlé a jsou určeny pro běžné uživatele. Pokud si nejste jisti, zda váš doplněk splňuje tato kritéria, zvolte "
-"předběžnou kontrolu a získejte nejprve zpětnou vazbu od uživatelů."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "We aim to perform full reviews in under 10 days, though most add-ons are reviewed in much less time."
-msgstr "Snažíme se provádět plné kontroly do 10 dní. U většiny doplňků je však čas pro kontrolu o mnoho kratší."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Testing Methods &amp; Common Issues"
-msgstr "Metody testování a nejčastější problémy"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "When performing a full review, editors will:"
-msgstr "V rámci plné kontroly bude redaktor provádět:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "install the add-on, making sure it functions as described and is free of major defects"
-msgstr "nainstalovat doplněk, vyzkoušet jeho funkčnost tak, jak je popsána a kontrolovat, zda nevykazuje problémy"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "perform a source code review, looking for performance and security best practices"
-msgstr "provést kontrolu zdrojového kódu a koukat, zda splňuje zásady pro výkon a bezpečnost"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "ensure the add-on's privacy policy is in line with its functionality"
-msgstr "ujistit se, zda zásady ochrany soukromí odpovídají tomu, jak se doplněk chová"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "look for compliance with all of Mozilla's policies, detailed in these documents"
-msgstr "podívat se po možném rozporu s nějakými zásadami Mozilly, které jsou popsány v tomto dokumentu"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Some of the most common issues we see when performing these reviews are:"
-msgstr "Nejčastější problémy, se kterými se v rámci kontroly setkáváme:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong>JavaScript namespace pollution</strong> &mdash; the most common violation. Be sure to <a href=\"https://developer.mozilla.org/en/XUL_School/JavaScript_Object_Management\">wrap your loose "
-"variables</a>"
-msgstr ""
-"<strong>Konflikt jmenného prostoru JavaScriptu</strong> &mdash; nejčastější problém. Ujistěte se, že <a href=\"https://developer.mozilla.org/en/XUL_School/JavaScript_Object_Management\">pracujete "
-"správně s proměnnými</a>"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "proper preference naming - all preference names should begin with \"extensions.\", followed by the add-on name or some other unique identifier"
-msgstr "nekorektní pojmenování předvoleb - jména všech předvoleb by měla začínat prefixem \"extensions.\" a následována názvem doplňku či jiným unikátním identifikátorem"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "remote JavaScript execution or injection"
-msgstr "volání vzdáleného JavaScriptu nebo jeho vkládání"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "remote XUL"
-msgstr "vzdálené XUL"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "synchronous XMLHttpRequests"
-msgstr "synchronní XMLHttpRequests"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "obfuscated code"
-msgstr "obfuskovaný kód"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "binary components or executables"
-msgstr "binární komponenty nebo spustitelné soubory"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "inclusion of third-party software"
-msgstr "software třetích stran"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "errors generated in the Error Console"
-msgstr "chyby v Chybové konzoli"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "memory leaks"
-msgstr "úniky paměti"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "possible conflicts with other add-ons"
-msgstr "konflikt s jinými doplňky"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "application start-up or page load performance degradation"
-msgstr "výrazný vliv na rychlost startu aplikace nebo na pokles výkonu"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid ""
-"For information on how to avoid these problems, please see our <a href=\"%(link_howto)s\">How-to Library</a>. Some of these practices, such as binary or obfuscated code, are allowed under certain "
-"conditions outlined below."
-msgstr ""
-"Pro informace, jak se těmto problémům vyhnout, se podívejte do sekce <a href=\"%(link_howto)s\">Databáze ukázek, jak na to</a>. Některé z výše uvedených bodů, jako ne například binární kód či kód "
-"je prohnaný skrze obfuskátor, je povolen pod určitými podmínkami, které jsou popsány níže."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid ""
-"Many of the above restrictions are tested automatically by an extension scanner that will flag suspicious add-ons for editor review. You can read more about this scanner in the <a href="
-"\"%(link_validation)s\">Validation Help</a> document."
-msgstr ""
-"Řada z výše uvedených omezení je testována automaticky procesem kontroly doplňku, která na problémy upozorňuje redaktora při kontrole. Více informací o této kontrole si můžete přečíst v dokumentu "
-"<a href=\"%(link_validation)s\">nápověda ke kontrole</a>."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If the add-on is site-specific, it is recommended that a test account is provided for use during the review process. Additionally, including detailed testing instructions will allow an editor to "
-"better understand how the add-on functions and expedite the testing process. This information can be placed in the Notes to Reviewer field when editing a version in the Developer Hub."
-msgstr ""
-"Pokud je doplněk určen pro konkrétní stránku, pak je doporučeno, aby byl v rámci procesu kontroly poskytnut testovací účet pro zmíněnou stránku, pokud je vyžadován. Taktéž je dobré uvést instrukce "
-"pro redaktora, které mu pomohou lépe porozumět doplňku, jeho funkčnosti, a které mu usnadní jeho otestování. Tato informace může být vložena do pole s poznámkou pro redaktora při přidávání nové "
-"verze v rámci stránek pro vývojáře."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "After the Review"
-msgstr "Po kontrole"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Once an add-on is granted full review, it will immediately be available in the gallery, showing in browse and search results with a warning-free install button. All features, including voluntary "
-"contributions and beta channels will be available."
-msgstr ""
-"Jakmile bude doplněk jednou plně zkontrolován, bude dostupný v galerii, bude se zobrazovat v kategoriích a ve výsledcích vyhledávání. A to bez jakéhokoliv varování u tlačítka k instalaci. Všechny "
-"funkce, včetně možnosti dobrovolných příspěvků a beta kanálů, budou k dispozici."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Subsequent versions of the add-on will automatically be placed in the full review queue. Until the review is completed, the new version will only be displayed on the Version History page of the add-"
-"on. Once reviewed, the version will be updated across the site and deployed through the automatic update service."
-msgstr ""
-"Další verze doplňku budou automaticky umisťovány do fronty pro plnou kontrolu doplňku. Do doby, než bude kontrola dokončena, bude nová verze zobrazena pouze na stránce s historií verzí doplňku. "
-"Jakmile bude schválena, zobrazí se napříč webem a bude distribuována v rámci služby automatických aktualizací."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If a version does not meet the criteria for full review, it can either be granted preliminary review or disabled if there is a security concern. The author will receive an email explaining the "
-"action taken and how to fix it. In most cases, the developer can simply fix the problem and re-submit for full review."
-msgstr ""
-"Pokud verze nesplní kritéria pro plnou kontrolu, může jí být udělena předběžná kontrola nebo zakázána v případě, že je v ní bezpečnostní problém. Autor obdrží e-mail s vysvětlením a informací, jak "
-"problém vyřešit. Ve většině případech vývojář jednoduše problém opraví a nahraje novou verzi doplňku k plné kontrole."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Preliminary reviews are appropriate for experimental add-ons and provide a way to get user testing and feedback without going through the longer, more thorough review process. We aim to complete "
-"these reviews in under 3 days."
-msgstr ""
-"Předběžné kontroly jsou vhodné pro experimentální doplňky a poskytují způsob, jak získat zpětnou vazbu od uživatelů bez toho, aby doplněk procházel delším a podrobnějším procesem kontroly. Snažíme "
-"se, aby tyto kontroly byly do 3 dnů."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Testing Methods"
-msgstr "Metodika testování"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"When performing a preliminary review, editors will review the source code for security issues and major policy violations, but will not install the add-on to test functionality in most cases. "
-"Preliminary review will be granted unless a security vulnerability or major policy violation is discovered."
-msgstr ""
-"Při kontrole doplňku editorem bude zkontrolován jeho zdrojový kód, zda neobsahuje bezpečnostní problémy či vážná porušení zásad, ale ve většině případů nebude instalován a nebude ověřována jeho "
-"funkcionalita. Předběžná kontrola bude udělena, pokud nebude nalezen bezpečnostní problém či vážné porušení zásad."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Once preliminary review is granted, the add-on will be immediately available in the gallery, showing in browse and search results but ranked lower than fully-reviewed add-ons. Install buttons will "
-"have caution stripes and a notice that the add-on is experimental and not fully reviewed by Mozilla, though no click-through is required. Additionally, these add-ons cannot use the voluntary "
-"contributions and beta channel features."
-msgstr ""
-"Jakmile bude udělena předběžná kontrola, bude doplněk okamžitě k dispozici v galerii, bude dostupný v kategoriích a výsledcích vyhledávání, ale jeho hodnocení bude nižší než u plně zkontrolovaných "
-"doplňků. Tlačítko pro instalaci bude obsahovat varování, že doplněk je experimentální a nebyl Mozillou plně zkontrolován. U takových doplňků nemůže být žádáno o dobrovolné příspěvky a funkce beta "
-"kanálu není dostupná."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "After being granted preliminary review, Mozilla may later revoke the review if other serious problems are reported to us by users."
-msgstr "Po udělení předběžné kontroly ji může Mozilla později zrušit, pokud se objeví závažný problém, který bude uživateli nahlášen."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Subsequent versions of the add-on will automatically be placed in the preliminary review queue. Until the review is completed, the new version will only be displayed on the Version History page of "
-"the add-on. Once reviewed, the version will be updated across the site and deployed through the automatic update service."
-msgstr ""
-"Další verze doplňku budou automaticky umisťovány do fronty pro předběžnou kontrolu. Dokud nebude kontrola dokončena, bude nová verze zobrazena pouze na stránce s historií verzí doplňku. Jakmile "
-"bude zkontrolována, bude dostupná napříč webem a distribuována skrze službu automatických aktualizací."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Policies on Specific Add-on Practices"
-msgstr "Zásady pro doplňky"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Prohibited Add-ons"
-msgstr "Zakázané doplňky"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "The following add-ons are not permitted in any form:"
-msgstr "Následující doplňky nejsou v žádné formě dovoleny:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that embed known <a href=\"http://en.wikipedia.org/wiki/Spyware\">spyware</a> or <a href=\"http://en.wikipedia.org/wiki/Malware\">malware</a>"
-msgstr "Doplňky, které obsahují <a href=\"http://cs.wikipedia.org/wiki/Spyware\">spyware</a> či <a href=\"http://cs.wikipedia.org/wiki/Malware\">malware</a>"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Illegal and criminal add-ons, such as <a href=\"http://en.wikipedia.org/wiki/Click_fraud\">click fraud</a> generators, <a href=\"http://en.wikipedia.org/wiki/Warez\">warez</a> download and "
-"directory assistants, child pornography finders, etc."
-msgstr ""
-"Ilegální nebo kriminální doplňky a doplňky, které vytváří <a href=\"http://en.wikipedia.org/wiki/Click_fraud\">podvodná kliknutí</a>, umožňují stahovat <a href=\"http://cs.wikipedia.org/wiki/Warez"
-"\">warez</a>, pomáhají vyhledávat dětskou pornografii atd."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons whose main purpose is to facilitate access to pornographic material, or include references to this material in their descriptions"
-msgstr "Doplňky, jejichž hlavním účelem je zprostředkovávat přístup k pornografickému materiálu či zahrnovat tento materiál v jejich popiscích"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that, upon installation, auto-install or launch installers of non-Firefox software"
-msgstr "Doplňky, které po instalaci automaticky instalují či spouští instalátory software, který není součástí Firefoxu"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that provide their own update mechanism for code or search engines"
-msgstr "Doplňky, které poskytují vlastní aktualizační mechanizmus pro kód a vyhledávací moduly"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that make changes to web content in ways that are non-obvious or difficult to trace by their users"
-msgstr "Doplňky, které mění webový obsah způsobem, který je neobvyklý nebo obtížně rozpoznatelný uživateli"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that snoop on or intercept the network traffic of other users"
-msgstr "Doplňky, které špehují či zachytávají síťový provoz jiných uživatelů"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Conduit-based toolbars without explicit pre-approval"
-msgstr "Automaticky generované lišty (Conduit), které nebyly dopředu explicitně schváleny"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Changing of Defaults and Unexpected Features"
-msgstr "Změna výchozích hodnot či neočekávané funkce"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Surprises can be appropriate in many situations, but they are not welcome when user security, privacy, and control are at stake. It is extremely important to be as transparent as possible when "
-"submitting an add-on for hosting on this site. A Mozilla user should be able to easily discern what the functionality of an add-on is and not be presented with unexpected experiences post-install."
-msgstr ""
-"Překvapení může být přijatelné v řadě situací, ale nejsou vítána, když jde o bezpečnost uživatele, jeho soukromí či ovládání prohlížeče. Když přidávate doplněk na server, je extrémně důležité být "
-"transparentní jak jen to jde. Uživatel Mozilly by měl snadno poznat, jakou funkcionalitu doplněk poskytuje a ne být po instalaci překvapen nezvyklým chováním."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<p> Whenever an add-on includes any unexpected* feature that </p> <ul> <li>compromises user privacy or security (like sending data to third parties),</li> <li>changes default settings like the "
-"homepage or search engine, or</li> <li>changes settings or features in other add-ons or deactivates them altogether</li> </ul> <p>the features must adhere to the following requirements:</p> <ul> "
-"<li>The add-on description must clearly state what changes the add-on makes.</li> <li>All changes must be opt-in, meaning the user must take non-default action to enact the change.</li> <li>The opt-"
-"in dialog must clearly state the name of the add-on requesting the change.</li> <li>Uninstalling the add-on restores the user's original settings if they were changed.</li> </ul> <p>*Unexpected "
-"features are those that are unrelated to the add-on's primary function.</p>"
-msgstr ""
-"<p> Když doplněk obsahuje neočekávané* funkce, které </p> <ul> <li>kompromitují soukromí uživatele nebo jeho bezpečnost (např. posíláním dat třetí straně),</li> <li>mění výchozí nastavení jako je "
-"domovská stránka nebo vyhledávací modul,</li> <li>mění nastavení nebo funkce jiných doplňků nebo je deaktivuje,</li> </ul> <p>musí taková funkce splnit následující požadavky:</p> <ul> <li>Popis "
-"doplňku musí jasně uvádět, jaké změny činí. </li> <li> Všechny změny musí být schváleny uživatelem. To znamená, že uživatel musí realizovat nevýchozí akci, která provede změnu.</li> <li> Dialog "
-"změny musí jasně uvádět jméno doplňku, který změnu realizuje.</li> <li>Odinstalace doplňku obnoví výchozí nastavení uživatele, pokud bylo doplňkem změněno.</li> </ul> <p>*Neočekávané funkce jsou "
-"takové funkce, které nesouvisí s primární funkci doplňku.</p>"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "These features cannot be introduced into an update of a fully-reviewed add-on; the opt-in change process must be part of the initial review."
-msgstr "Podobné funkce nemohou být zahrnuty do aktualizace plně zkontrolovaného doplňku, ale musí být zahrnuty v úvodní kontrole."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "These are minimum requirements and not a guarantee that the add-on will be approved. This section applies to all add-ons hosted on the site, including preliminarily reviewed add-ons."
-msgstr "Jedná se o minimální požadavky, které negarantují, že bude doplněk schválen. Tato sekce je platná pro všechny doplňky hostaované na tomto webu a to včetně předběžně zkontrolovaných doplňků."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Private Browsing Mode"
-msgstr "Režim anonymního prohlížení"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Add-ons that store or otherwise handle browsing data must support <a href=\"https://developer.mozilla.org/En/Supporting_private_browsing_mode\">Private Browsing Mode</a>. During a Private Browsing "
-"session, no browsing data can be written to disk, and all of this data must be cleared when Firefox quits or the Private Browsing session ends."
-msgstr ""
-"Doplňky, které ukládají nebo jinak pracují s daty prohlížeče musí podporovat <a href=\"https://developer.mozilla.org/En/Supporting_private_browsing_mode\">Režim anonymního prohlížení</a>. Během "
-"relace anonymního prohlížení nemohou být taková data zapisována na disk a všechna taková data musí být smazána v situaci, kdy Firefox ukončuje relaci anonymního prohlížení."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Binary Components & Obfuscated Code"
-msgstr "Binární komponenty a kód z obfuskátoru"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Add-ons may contain binary, obfuscated and minified source code, but Mozilla must be allowed to review a copy of the human-readable source code of each version of an add-on submitted for review. "
-"These add-ons are ineligible for preliminary review and must choose the full review process."
-msgstr ""
-"Doplňky mohou obsahovat binární komponenty, kód z obfuskátoru a minimalizovaný kód, ale Mozille musí být dovoleno zkontrolovat kopii lidsky čitelného zdrojového kódu každé verze doplňku, která byla "
-"odeslána na kontrolu. Tyto doplňky nemohou být pouze předběžně zkontrolovány a musí projít plným procesem kontroly."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If an add-on contains binary or obfuscated source code, the author will receive a message when the add-on is reviewed indicating whom to contact at Mozilla to coordinate review of the source code. "
-"This code will be reviewed by an administrator and will not be shared or redistributed in any way. The code will only be used for the purpose of reviewing the add-on."
-msgstr ""
-"Pokud doplněk obsahuje binární komponentu nebo kód z obfuskátoru, obdrží autor zprávu, když je doplněk zkontrolován s informací, koho v Mozille kontaktovat a koordinovat s ním kontrolu zdrojového "
-"kódu. Tento kód bude zkontrolován administrátorem a nebude v žádné podobě sdílen či distribuován. Kód bude použit pouze pro účely kontroly doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid "If your add-on contains binary or obfuscated code that you don't own or can't get the source code for, you may <a href=\"%(link_contact)s\">contact us</a> for information on how to proceed."
-msgstr ""
-"Pokud doplněk obsahuje binární komponentu nebo kód z obfuskátoru, který nevlastníte nebo k němu nemůžete poskytnout zdrojový kód, <a href=\"%(link_contact)s\">kontaktujte nás</a> pro více "
-"informací, jak tuto situaci vyřešit."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Criteria for Submission"
-msgstr "Kritéria pro přidání"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"Add-ons hosted on Mozilla Add-ons should be of high quality and give users an improved web experience. We look for the following things when deciding whether an add-on is appropriate to be public "
-"and unrestricted:"
-msgstr ""
-"Doplňky hostované na serveru Doplňky Mozilly by měly mít odpovídající kvalitu a poskytovat uživatelům lepší prožitek z webu. Pro posouzení toho, zda má být doplněk schválen a veřejný, se díváme na "
-"následující kritéria:"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Are you responsive?</strong> We expect that an author who is promoting their add-on to our applications' many users is responsive to problem reports, maintains their contact information, "
-"and updates their add-on promptly to keep current with Firefox releases and changes in our policies. This doesn't mean that you have to reply to every question that someone posts in the "
-"discussions, or that you even need to fix every bug, but we do expect that you will respond to issues in a manner that's appropriate to the severity of the issue in question."
-msgstr ""
-"<strong>Reagujete?</strong> Očekáváme, že autor, který propaguje své doplňky v rámci našich aplikací reaguje na problémy nahlášené uživateli, udržuje své kontaktní informace aktuální a aktualizuje "
-"své doplňky včas tak, aby byly aktuální vzhledem k posledním verzím Firefoxu a změnám v našich zásadách. To neznamená, že musíte odpovědět na každou otázku, kterou někdo přidá do diskuse nebo že "
-"musíte opravit každou chybu, ale očekáváme, že obecně budete reagovat na problémy a řešit jejich závažnost."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on clearly and accurately described?</strong> It's of the utmost importance to us that users get what they expect when they try a new add-on. Your add-on name should be clear and "
-"concise, and you should refrain from using special characters or numbers to get higher search rankings or for decorative purposes. Your description should provide details about what the add-on "
-"does, how a user should take advantage of it, and what the user should expect when they install it. Links to external documents for detailed instructions are fine, but the description itself should "
-"cover the basics and leave users confident that they know what they'll get. Also, it is important that you maintain version notes appropriately as you improve and change your add-on. Users should "
-"be able to see what's new in an add-on they may have tried previously, and should be made aware of changes that might affect their current use of the add-on when they update."
-msgstr ""
-"<strong>Je doplněk jasně a srozumitelně popsán?</strong> Je pro nás maximálně důležité, aby při získání doplňku uživatelé získali to, co čekají. Jméno doplňku by proto mělo být jasné a výstižné. Ve "
-"snaze získat lepší pozici ve vyhledávání byste se měli vyvarovat speciálních znaků a čísel. Popis by měl poskytovat přehled o tom, co doplněk umí, co uživateli přinese a co by tak měl očekávat po "
-"jeho instalaci. Odkazy na externí dokumenty pro více informací jsou v pořádku, ale samotný popis by měl uživateli poskytnout základní informace. Je též důležité spravovat poznámky k verzi podle "
-"toho, jak se váš doplněk vyvíjí a aktualizuje. Uživatelé by měli být schopni vidět, co je nového u doplňku, který třeba již někdy zkoušeli, a u kterého mohou realizované změny ovlivnit to, zda si "
-"jej znovu nainstaluje."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Are all privacy and security concerns clearly spelled out?</strong> This is an aspect of a clear and accurate description, but such an important one that we feel it deserves specific "
-"mention. Many very useful and well-written add-ons manipulate some form of user data, or can present security hazards if misused; they are welcome on the site, but they must make it very clear to "
-"users what risks they might encounter, and what they can do to protect themselves."
-msgstr ""
-"<strong>Jsou všechny otázky ohledně soukromí a bezpečnosti zodpovězeny?</strong> Jedná se o součást dobře psané popisu, ale jedná se o důležitou otázku, a proto si myslíme, že si zaslouží "
-"samostatnou zmínku. Řada velmi užitečných a kvalitních doplňku manipuluje nějakou formou s daty uživatele nebo může představovat bezpečnostní riziko, pokud nejsou korektně použity. Tyto doplňky "
-"jsou na serveru vítány, ale musí velmi jasně říci uživatelům, co dělají, jaká rizika představují a co mají uživatelé dělat, aby se ochránili."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Has the add-on been well-tested, and is it free of obvious or serious defects?</strong> One important thing that we look for when considering an add-on is whether its user reviews indicate "
-"that it has received thorough testing, and that it doesn't have serious problems or negative impacts on the browser. If reviewers report problems such as major performance issues, crashes, frequent "
-"problems using the functions of the add-on, or spamming of messages to the error console, you should take those reports to heart, and re-submit your add-on after you've addressed them as best you "
-"can. We don't expect you to perfectly optimize or have zero bugs &mdash; Firefox itself undergoes constant improvement in these areas &mdash; but we do want you to take reasonable efforts to "
-"minimize downsides, and to clearly call out cases where users may be surprised by those that remain."
-msgstr ""
-"<strong>Byl doplněk řádně otestován a neobsahuje žádné závažné problémy?</strong> Jedním z důležitých bodů pro posuzování kvality doplňku jsou recenze uživatelů, které indikují, zda byl doplněk "
-"otestován a zda nemá vážné problémy nebo negativní vliv na prohlížeč. Pokud vám redaktor nahlásí problémy jako je vážný vliv na výkon, pády, časté problémy s funkcionalitou doplňku, spamování práv "
-"do chybové konzole, měli byste si to vzít k srdci a poslat novou verzi doplňku, která vyřeší maximum z těchto problémů. Neočekáváme perfektní optimalizaci či nulové množství chyb &mdash; Firefox "
-"sám se neustále zlepšuje &mdash; chceme ale, abyste doplněk konstantně zlepšovali a minimalizovali situace, kdy nefunguje dle očekávání uživatelů. Zároveň prosím tyto situace popište, aby uživatelé "
-"nebyli překvapeni."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Do the add-on and add-on author both treat the user respectfully?</strong> Your software should not intrude on the user unnecessarily, try to trick the user, or conceal any of its "
-"activities from the user. Users (or even non-users) are sometimes rude in their comments, and while we will do our best to filter out inaccurate reviews as they're reported to us, we do expect that "
-"authors will avoid retaliating with rudeness of their own."
-msgstr ""
-"<strong>Respektujete vy a váš doplněk uživatele?</strong> Váš software by neměl uživatele bez důvodu rušit, zkoušet na něj různé triky nebo dělat aktivity bez jeho vědomí. Uživatelé (a někdy i "
-"roboti) píší nepříjemné komentáře. My se snažíme filtrovat ty urážlivé či pomlouvačné, které nám nahlásíte, a od vás očekáváme, že nebudete jejím autorům oplácet stejnou mincí."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on useful to an appropriately wide portion of Firefox's users?</strong> Your add-on doesn't need to be the next Greasemonkey or Firebug, but if it is only useful to people at "
-"your company or who are part of a small web community, we may feel that it's not yet appropriate to put it in front of all of our users."
-msgstr ""
-"<strong>Je doplněk užitečný pro široké spektrum uživatelů Firefoxu?</strong> Váš doplněk nemusí být zrovna další Greasemonkey či Firebug, ale pokud je doplněk užitečný pouze pro zaměstnance ve vaší "
-"firmě nebo pro ty, kteří jsou součástí malé webové komunity, pak možná cítíte, že není vhodný pro široké spektrum uživatelů, kteří Firefox používají."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"We are constantly looking at ways to improve the organization of the site to better accommodate add-ons that are exemplary in other ways, but are aimed at only a small community of potential users. "
-"Correctly categorizing and maintaining the metadata of your add-on will help us figure out how we can surface more of those sorts of add-ons to people who are most likely to benefit from them."
-msgstr ""
-"Neustále hledáme způsoby, jak vylepšit organizaci webu tak, aby lépe vyhověl doplňkům, které jsou v nějakém ohledu užitečné, ale jsou zaměřeny pouze na malou skupinu potenciálních uživatelů. Správa "
-"kategorizace a správa metadat vašeho doplňku nám pomůže rozpoznat, kam můžeme váš doplněk správně zařadit, aby jej uživatelé, kteří jej budou hledat, nalezli."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"If your add-on just provides bookmarks or other simple access points to your site, it's probably not appropriate for the gallery. Like the rest of the Mozilla project, we love web applications and "
-"new web services, but Firefox add-ons should provide an improved browsing experience for the user and not just be a way to promote a new site or service through a Mozilla Add-ons listing."
-msgstr ""
-"Pokud váš doplněk poskytuje pouze záložky nebo jiný jednoduchý přístup k vašemu webu, není patrně vhodný pro přidání do naší galerie. Stejně jako zbytek projektu Mozilla, tak i my máme rádi webové "
-"aplikace a nové webové služby, ale doplňky pro Firefox by měly poskytovat lepší prožitek z prohlížení webu pro uživatele a ne být pouze způsobem pro propagaci vlastního webu skrze web Doplňky "
-"Mozilly."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on free of unlicensed trademarks and copyrights?</strong> Though you may mean no harm to the holder of a trademark, or the owner of a copyrighted work, we can't host add-ons that "
-"infringe on trademarks or copyrights. If you don't have permission to use a trademarked name or image, please do not submit your add-on to us. If your add-on includes code that is copyrighted by "
-"someone else, and is not licensed to you to use in your add-on, please do not submit your add-on to us."
-msgstr ""
-"<strong>Neobsahuje váš doplněk materiál porušující ochranné známky či copyright?</strong> I když si myslíte, že váš doplněk nemůže držiteli ochranné známky způsobit žádnou škodu, nemůžeme hostovat "
-"doplňky, které ochranné známky či copyright porušují. Pokud nemáte právo pro použití chráněného názvu či obrázku, prosíme, nepřidávejte doplněk do galerie. Pokud váš doplněk zahrnuje kód, který je "
-"vlastněný někým jiným a není licencován pro použití ve vašem doplňku, prosíme, nepřidávejte doplněk do galerie."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"In terms of reuse of source code from other add-ons, if the author has not clearly stated that you are permitted to use his or her code in your own work &mdash; such as by placing it under an open "
-"source license &mdash; then you should assume that you do not have the right to do so. You can contact the author to seek such permission, but we can't provide you with any special rights to it "
-"just because it's listed on the site, or because the author isn't responding to your request."
-msgstr ""
-"Pokud v souvislosti s využitím kódu z jiných doplňků jejich autor jasně neřekl, že můžete jeho kód ve své práci použít, např. definováním, pod jakou open source licencí je dostupný, pak "
-"předpokládejte, že nemáte práva jej přebírat. Můžete autora takového kódu kontaktovat a požádat ho o svolení. My vám však nedáváme žádná speciální práva jen proto, že je doplněk umístěn na našem "
-"webu nebo proto, že autor doplňku neodpovídá na váš dotaz."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"This applies to the Mozilla Foundation's trademarks as well, including \"Mozilla\", \"Firefox\", and \"Thunderbird\". The Mozilla policy on trademark use is designed to protect against confusion, "
-"and prevent the trademarks from being overturned due to lack of protection; please respect the need for such protection, and help us preserve some of the most valuable assets of the Mozilla "
-"Foundation."
-msgstr ""
-"To samé platí též pro ochranné známky Mozilla Foundation jako jsou \"Mozilla\", \"Firefox\" či \"Thunderbird\". Zásady ochrany ochranných známek Mozilly jsou stanoveny tak, aby zabraňovaly zmatení "
-"uživatelů a zabraňují jejich zneužití. Respektujte prosím potřebu podobné ochrany a pomozte nám ochránít tato aktiva Mozilla Foundation."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Licensing"
-msgstr "Licencování"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"Selecting an appropriate license for your add-on is a very important step in the submission process. A license specifies the rights you grant on your source code and is important in protecting your "
-"intellectual property."
-msgstr ""
-"Volba správné licence pro váš doplněk je velmi důležitý krok při procesu přidávání doplňku na server. Licence určuje, jaká práva dáváte ke svému zdrojovému kódu a je důležitá pro ochranu vašeho "
-"intelektuálního vlastnictví."
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"During the add-on submission process, you will be presented with a list of popular licenses to choose from, as well as the ability to specify your own license. It is best to consult with a legal "
-"professional about which license option is best for you. Choosing the right license for your source code will help to prevent confusion and code conflicts in the future."
-msgstr ""
-"V průběhu procesu přidání doplňku vám bude nabídnut seznam populárních licencí, z kterého budete moci vybrat. Budete mít též možnost si určit vlastní licenci. Pro volbu správné licence je dobré se "
-"poradit s profesionálem. Volba správné licence pro váš zdrojový kód vám pomůže do budoucna zamezit nedorozuměním a konfliktům při jeho použití."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Add-on Submission"
-msgstr "Přidání doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Maintaining Your Add-on"
-msgstr "Správa mého doplňku"
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Mozilla is committed to ensuring a great add-ons experience for our users and developers. Please review the policies below before submitting your add-on."
-msgstr "Snahou Mozilly je zajistit skvělé prožitky jak pro uživatele, tak vývojáře. Proto si prosím dříve, než odešlete svůj doplněk, pročtěte následující zásady."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Find out what is expected of add-ons we host and our policies on specific add-on practices."
-msgstr "Podívejte se na to, co očekáváme od zde umístěných doplňků a přečtěte si zásady pro speciální případy doplňků."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "What happens after your add-on is submitted? Learn about how our Editors review submissions."
-msgstr "Co se děje po odeslání doplňku? Přečtěte si, jak redaktoři kontrolují nové doplňky."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Add-on updates, transferring ownership, user reviews, and what to expect once your add-on is approved."
-msgstr "Aktualizace doplňků, změna vlastnictví, recenze od uživatelů a co očekávat po schválení doplňku."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "How up-and-coming add-ons become featured and what&#039;s involved in the process."
-msgstr "Jak se doplňky mohou stát doporučenými a co vše v tomto procesu hraje roli."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Terms of Service for submitting your work to our site. Developers are required to accept this agreement before submission."
-msgstr "Zásady používání služby pro odeslání vaší práce na tento web. Vývojáři musí před odesláním souhlasit s touto smlouvou."
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "How to get in touch with us regarding these policies or your add-on."
-msgstr "Jak se s námi spojit v případě otázek týkajících se těchto zásad či doplňku."
 
 #: src/olympia/devhub/templates/devhub/includes/addon_details.html
 msgid "You have disabled this add-on"
@@ -7129,13 +6230,15 @@ msgstr "Viditelnost doplňku"
 
 #: src/olympia/devhub/templates/devhub/versions/list.html
 msgid "Why can't I switch to <i>Listed</i> or <i>Hidden</i>?"
-msgstr ""
+msgstr "Proč nemůžu přepínat na <i>veřejný</i> nebo <i>skrytý</i> doplněk?"
 
 #: src/olympia/devhub/templates/devhub/versions/list.html
 msgid ""
 "Due to technical limitations, you need to delete your entire add-on and resubmit it using this AMO account in order to switch your add-on to listed.\n"
 "            The process is described in detail in <a href=\"{link}\">this documentation</a>."
 msgstr ""
+"Kvůli technickým omezením je nutné doplněk smazat a znovu jej nahrát pomocí stejného AMO účtu, aby byl veřejný.\n"
+"            Proces je detailně popsán v <a href=\"{link}\">této dokumentaci</a>."
 
 #: src/olympia/devhub/templates/devhub/versions/list.html
 msgid "Listed:"
@@ -7485,10 +6588,6 @@ msgstr "Předběžné kontroly"
 msgid "Moderated Reviews"
 msgstr "Moderované recenze"
 
-#: src/olympia/editors/helpers.py src/olympia/editors/templates/editors/base.html
-msgid "Fast Track"
-msgstr "Rychlá kontrola"
-
 #: src/olympia/editors/helpers.py
 msgid "Pending Themes"
 msgstr "Čekající motivy"
@@ -7516,13 +6615,6 @@ msgstr "Nezařazené předběžné kontroly"
 #: src/olympia/editors/helpers.py
 msgid "All Unlisted Add-ons"
 msgstr "Všechny neveřejné doplňky"
-
-#: src/olympia/editors/helpers.py
-msgid "Fast Track ({0})"
-msgid_plural "Fast Track ({0})"
-msgstr[0] "Rychlá kontrola ({0})"
-msgstr[1] "Rychlá kontrola ({0})"
-msgstr[2] "Rychlá kontrola ({0})"
 
 #: src/olympia/editors/helpers.py
 msgid "Full Review ({0})"
@@ -7743,10 +6835,6 @@ msgstr "Kontrola administrátorem"
 #: src/olympia/editors/models.py
 msgid "Jetpack Add-on"
 msgstr "Doplněk postavený na Jetpacku"
-
-#: src/olympia/editors/models.py
-msgid "Restartless Add-on"
-msgstr "Doplněk nevyžaduje restart"
 
 #: src/olympia/editors/models.py
 msgid "More Information Requested"
@@ -8580,7 +7668,7 @@ msgstr "ID doplňku může být maximálně 64 znaků dlouhé."
 #: src/olympia/files/utils.py
 #, python-format
 msgid "The add-on ID in your manifest.json or install.rdf (%s) does not match the ID of your add-on on AMO (%s)"
-msgstr ""
+msgstr "ID doplňku v souboru manifest.json nebo install.rdf (%s) je jiné, než ID doplňku na AMO (%s)"
 
 #: src/olympia/files/utils.py
 msgid "Duplicate add-on ID found."
@@ -8597,7 +7685,7 @@ msgstr "Čísla verzí by měla obsahovat pouze základní znaky, čísla a nás
 #: src/olympia/files/utils.py
 #, python-format
 msgid "<em:type> in your install.rdf (%s) does not match the type of your add-on on AMO (%s)"
-msgstr ""
+msgstr "<em:type> v souboru install.rdf (%s) není stejného typu jako zde na AMO (%s)"
 
 #: src/olympia/files/views.py
 msgid "Back to review"
@@ -8830,11 +7918,11 @@ msgstr "Přidejte si do Firefoxu více zábavy. Hrajte hromady her přímo ze sv
 
 #: src/olympia/legacy_discovery/modules.py
 msgid "Must-Have Media"
-msgstr ""
+msgstr "Multimédia"
 
 #: src/olympia/legacy_discovery/modules.py
 msgid "Take better screenshots, improve your online video experience, finally learn how to make a GIF, and other great media tools."
-msgstr ""
+msgstr "Pořizujte lepší snímky obrazovky, konečně se naučte vytvářet GIFy, nebo používejte jiný ze skvělých nástrojů pro práci s médii."
 
 #: src/olympia/legacy_discovery/templates/legacy_discovery/base.html
 msgid "Discover Add-ons"
@@ -12427,9 +11515,8 @@ msgid "all"
 msgstr "vše"
 
 #: src/olympia/users/templates/users/fxa_login_prompt_content.html
-#, fuzzy
 msgid "Mozilla Add-ons has transitioned to Firefox Accounts for login. Continue to complete the simple login process."
-msgstr "Server s doplňky nyní pro přihlášení využívá účty Firefox Account. Pokračujte prosím pro dokončení jednoduchého procesu migrace vašeho účtu."
+msgstr "Server s doplňky nyní pro přihlášení využívá účty Firefox Account. Pokračujte prosím pro dokončení jednoduchého přihlašovacího procesu."
 
 #: src/olympia/users/templates/users/fxa_migration.html src/olympia/users/templates/users/mobile/fxa_migration.html
 msgid "Migrate to Firefox Accounts"
@@ -12448,13 +11535,16 @@ msgid "User Login"
 msgstr "Přihlášení uživatele"
 
 #: src/olympia/users/templates/users/login.html src/olympia/users/templates/users/mobile/login.html
-#, fuzzy
 msgid "Login with Firefox Accounts"
-msgstr "Používat účet Firefox Account"
+msgstr "Přihlásit se účtem Firefox Account"
 
-#: src/olympia/users/templates/users/login.html src/olympia/users/templates/users/mobile/login.html
-msgid "Enter your email"
-msgstr "Zadejte svoji e-mailovou adresu"
+#: src/olympia/users/templates/users/login.html
+msgid "Log in or register with your email address"
+msgstr "Přihlaste se nebo se zaregistrujte pomocí své e-mailové adresy"
+
+#: src/olympia/users/templates/users/login.html
+msgid "We are migrating existing Add-ons users to Firefox Accounts. We will detect if your account needs migrating automatically."
+msgstr "Aktuální uživatele serveru Mozilla Doplňky převádíme na účty Firefox Account. Pokud váš účet také potřebuje migraci, automaticky to detekujeme."
 
 #: src/olympia/users/templates/users/login_form.html src/olympia/users/templates/users/mobile/login.html
 msgid "Email address"
@@ -12681,6 +11771,10 @@ msgstr[2] "%(num)s doplňků"
 msgid "Average rating of developer's add-ons"
 msgstr "Průměrné hodnocení doplňků vývojáře"
 
+#: src/olympia/users/templates/users/mobile/login.html
+msgid "Enter your email"
+msgstr "Zadejte svoji e-mailovou adresu"
+
 #: src/olympia/versions/feeds.py
 #, python-format
 msgid "%s Version History"
@@ -12775,3 +11869,23 @@ msgstr "Logovat e-maily na místo jejich odesílání"
 #: src/olympia/zadmin/forms.py
 msgid "Deleted versions can`t be changed."
 msgstr "Smazané verze nelze měnit."
+
+#: src/olympia/zadmin/views.py
+msgid "Message ID"
+msgstr "ID zprávy"
+
+#: src/olympia/zadmin/views.py
+msgid "Message"
+msgstr "Zpráva"
+
+#: src/olympia/zadmin/views.py
+msgid "Compat Type"
+msgstr "Typ kompatibility"
+
+#: src/olympia/zadmin/views.py
+msgid "Addons Affected"
+msgstr "Ovlivněné doplňky"
+
+#: src/olympia/zadmin/views.py
+msgid "Addon"
+msgstr "Doplněk"

@@ -399,6 +399,7 @@ def parse_search(fileorpath, addon=None):
     return {'guid': None,
             'type': amo.ADDON_SEARCH,
             'name': data['name'],
+            'no_restart': True,
             'summary': data['description'],
             'version': datetime.now().strftime('%Y%m%d')}
 
@@ -967,8 +968,12 @@ def resolve_i18n_message(message, messages, locale, default_locale=None):
     if match is None:
         return message
 
-    msgid = match.group('msgid')
+    locale = find_language(locale)
 
+    if default_locale:
+        default_locale = find_language(default_locale)
+
+    msgid = match.group('msgid')
     default = {'message': message}
 
     if locale in messages:

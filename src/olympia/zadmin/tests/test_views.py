@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 import csv
 import json
-import time
 from cStringIO import StringIO
 from datetime import datetime
 
 from django.conf import settings
 from django.core import mail
 from django.core.cache import cache
-from django.test import override_settings
 
 import mock
 from pyquery import PyQuery as pq
@@ -23,6 +21,7 @@ from olympia.amo.tests.test_helpers import get_image_path
 from olympia.amo.utils import urlparams
 from olympia.applications.models import AppVersion
 from olympia.bandwagon.models import FeaturedCollection, MonthlyPick
+from olympia.compat import FIREFOX_COMPAT
 from olympia.compat.cron import compatibility_report
 from olympia.compat.models import CompatReport
 from olympia.constants.base import VALIDATOR_SKELETON_RESULTS
@@ -35,7 +34,8 @@ from olympia.versions.models import ApplicationsVersions, Version
 from olympia.zadmin import forms, tasks
 from olympia.zadmin.forms import DevMailerForm
 from olympia.zadmin.models import (
-    EmailPreviewTopic, ValidationJob, ValidationResult)
+    EmailPreviewTopic, ValidationJob, ValidationResult,
+    ValidationResultAffectedAddon)
 from olympia.zadmin.tasks import updated_versions
 from olympia.zadmin.views import find_files
 
@@ -1021,70 +1021,23 @@ class TestTallyValidationErrors(BulkValidationTest):
                 "warnings": 1,
                 "notices": 0}}
 
-    def csv(self, job_id):
-        r = self.client.get(reverse('zadmin.validation_tally_csv',
-                            args=[job_id]))
-        assert r.status_code == 200
-        rdr = csv.reader(StringIO(r.content))
-        header = rdr.next()
-        rows = sorted((r for r in rdr), key=lambda r: r[0])
-        return header, rows
-
     @mock.patch('olympia.zadmin.tasks.run_validator')
-    def test_csv(self, run_validator):
+    def test_result_messages(self, run_validator):
         run_validator.return_value = json.dumps(self.data)
         self.start_validation()
         res = ValidationResult.objects.get()
         assert res.task_error is None
-        header, rows = self.csv(res.validation_job.pk)
-        assert header == ['message_id', 'message', 'long_message',
-                          'type', 'addons_affected']
-        assert rows.pop(0) == ['path.to.test_one',
-                               'message one', 'message one long', 'error', '1']
-        assert rows.pop(0) == ['path.to.test_two',
-                               'message two', 'message two long', 'error', '1']
 
-    def test_count_per_addon(self):
-        job = self.create_job()
-        data_str = json.dumps(self.data)
-        for i in range(3):
-            tasks.tally_validation_results(job.pk, data_str)
-        header, rows = self.csv(job.pk)
-        assert rows.pop(0) == ['path.to.test_one',
-                               'message one', 'message one long', 'error', '3']
-        assert rows.pop(0) == ['path.to.test_two',
-                               'message two', 'message two long', 'error', '3']
+        messages = res.validation_job.message_summary.all()
 
-    def test_nested_list_messages(self):
-        job = self.create_job()
-        self.data['messages'] = [{
-            "message": "message one",
-            "description": ["message one long", ["something nested"]],
-            "id": ["path", "to", "test_one"],
-            "uid": "de93a48831454e0b9d965642f6d6bf8f",
-            "type": "error",
-        }]
-        data_str = json.dumps(self.data)
-        # This was raising an exception. bug 733845
-        tasks.tally_validation_results(job.pk, data_str)
+        assert messages.count() == 2
+        assert messages[0].message_id == 'path.to.test_one'
+        assert messages[0].message == 'message one'
+        assert messages[0].compat_type == 'error'
+        assert messages[0].addons_affected == 1
 
-    @override_settings(CACHES=SHORT_LIVED_CACHE_PARAMS)
-    @mock.patch('olympia.zadmin.tasks.run_validator')
-    def test_messages_dont_expire(self, run_validator):
-        run_validator.return_value = json.dumps(self.data)
-        self.start_validation()
-        res = ValidationResult.objects.get()
-        assert res.task_error is None
-        header, rows = self.csv(res.validation_job.pk)
-        assert header
-        assert rows
-
-        # Sleep for the default cache expire time, test again to make sure
-        # we don't expire the keys.
-        time.sleep(3)
-        header, rows = self.csv(res.validation_job.pk)
-        assert header
-        assert rows
+        # One `affected addon` per message
+        assert ValidationResultAffectedAddon.objects.all().count() == 2
 
 
 class TestEmailPreview(TestCase):
@@ -1470,10 +1423,9 @@ class TestCompat(amo.tests.ESTestCase):
         super(TestCompat, self).setUp()
         self.url = reverse('zadmin.compat')
         self.client.login(username='admin@mozilla.com', password='password')
-        self.app = amo.FIREFOX
-        self.app_version = amo.COMPAT[0]['main']
+        self.app_version = FIREFOX_COMPAT[0]['main']
         self.addon = self.populate(guid='xxx')
-        self.generate_reports(self.addon, good=0, bad=0, app=self.app,
+        self.generate_reports(self.addon, good=0, bad=0, app=amo.FIREFOX,
                               app_version=self.app_version)
 
     def update(self):
@@ -1498,20 +1450,18 @@ class TestCompat(amo.tests.ESTestCase):
         self.update()
 
     def get_pq(self, **kw):
-        r = self.client.get(self.url, kw)
-        assert r.status_code == 200
-        return pq(r.content)('#compat-results')
+        response = self.client.get(self.url, kw)
+        assert response.status_code == 200
+        return pq(response.content)('#compat-results')
 
     def test_defaults(self):
         r = self.client.get(self.url)
         assert r.status_code == 200
-        assert r.context['app'] == self.app
-        assert r.context['version'] == self.app_version
         table = pq(r.content)('#compat-results')
         assert table.length == 1
         assert table.find('.no-results').length == 1
 
-    def check_row(self, tr, addon, good, bad, percentage, app, app_version):
+    def check_row(self, tr, addon, good, bad, percentage, app_version):
         assert tr.length == 1
         version = addon.current_version.version
 
@@ -1521,7 +1471,7 @@ class TestCompat(amo.tests.ESTestCase):
         assert name.find('a').attr('href') == addon.get_url_path()
 
         assert tr.find('.maxver').text() == (
-            addon.compatible_apps[app].max.version)
+            addon.compatible_apps[amo.FIREFOX].max.version)
 
         incompat = tr.find('.incompat')
         assert incompat.find('.bad').text() == str(bad)
@@ -1549,7 +1499,6 @@ class TestCompat(amo.tests.ESTestCase):
         compat_field = '_compat_ranges-0-%s'
         self.check_field(form, compat_field % 'min_version', '0')
         self.check_field(form, compat_field % 'max_version', version)
-        self.check_field(form, compat_field % 'app', str(app.id))
         self.check_field(form, compat_field % 'min_app_version',
                          app_version + 'a1')
         self.check_field(form, compat_field % 'max_app_version',
@@ -1560,12 +1509,12 @@ class TestCompat(amo.tests.ESTestCase):
 
     def test_firefox_hosted(self):
         addon = self.populate()
-        self.generate_reports(addon, good=0, bad=11, app=self.app,
+        self.generate_reports(addon, good=0, bad=11, app=amo.FIREFOX,
                               app_version=self.app_version)
 
         tr = self.get_pq().find('tr[data-guid="%s"]' % addon.guid)
         self.check_row(tr, addon, good=0, bad=11, percentage='100.0',
-                       app=self.app, app_version=self.app_version)
+                       app_version=self.app_version)
 
         # Add an override for this current app version.
         compat = CompatOverride.objects.create(addon=addon, guid=addon.guid)
@@ -1580,33 +1529,33 @@ class TestCompat(amo.tests.ESTestCase):
             reverse('admin:addons_compatoverride_change', args=[compat.id]))
 
     def test_non_default_version(self):
-        app_version = amo.COMPAT[2]['main']
+        app_version = FIREFOX_COMPAT[2]['main']
         addon = self.populate()
-        self.generate_reports(addon, good=0, bad=11, app=self.app,
+        self.generate_reports(addon, good=0, bad=11, app=amo.FIREFOX,
                               app_version=app_version)
         pq = self.get_pq()
         assert pq.find('tr[data-guid="%s"]' % addon.guid).length == 0
 
-        appver = '%s-%s' % (self.app.id, app_version)
+        appver = app_version
         tr = self.get_pq(appver=appver)('tr[data-guid="%s"]' % addon.guid)
         self.check_row(tr, addon, good=0, bad=11, percentage='100.0',
-                       app=self.app, app_version=app_version)
+                       app_version=app_version)
 
     def test_minor_versions(self):
         addon = self.populate()
-        self.generate_reports(addon, good=0, bad=1, app=self.app,
+        self.generate_reports(addon, good=0, bad=1, app=amo.FIREFOX,
                               app_version=self.app_version)
-        self.generate_reports(addon, good=1, bad=2, app=self.app,
+        self.generate_reports(addon, good=1, bad=2, app=amo.FIREFOX,
                               app_version=self.app_version + 'a2')
 
         tr = self.get_pq(ratio=0.0, minimum=0).find('tr[data-guid="%s"]' %
                                                     addon.guid)
         self.check_row(tr, addon, good=1, bad=3, percentage='75.0',
-                       app=self.app, app_version=self.app_version)
+                       app_version=self.app_version)
 
     def test_ratio(self):
         addon = self.populate()
-        self.generate_reports(addon, good=11, bad=11, app=self.app,
+        self.generate_reports(addon, good=11, bad=11, app=amo.FIREFOX,
                               app_version=self.app_version)
 
         # Should not show up for > 80%.
@@ -1623,7 +1572,7 @@ class TestCompat(amo.tests.ESTestCase):
 
     def test_min_incompatible(self):
         addon = self.populate()
-        self.generate_reports(addon, good=0, bad=11, app=self.app,
+        self.generate_reports(addon, good=0, bad=11, app=amo.FIREFOX,
                               app_version=self.app_version)
 
         # Should show up for >= 10.

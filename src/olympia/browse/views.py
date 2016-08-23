@@ -1,4 +1,5 @@
 import collections
+from operator import attrgetter
 
 from django.conf import settings
 from django.db.transaction import non_atomic_requests
@@ -18,7 +19,6 @@ from olympia.amo.utils import render
 from olympia.addons.models import Addon, AddonCategory, Category, FrozenAddon
 from olympia.addons.utils import get_featured_ids, get_creatured_ids
 from olympia.addons.views import BaseFilter, ESBaseFilter
-from olympia.translations.query import order_by_translation
 
 
 languages = dict((lang.lower(), val)
@@ -92,9 +92,7 @@ def addon_listing(request, addon_types, filter_=AddonFilter, default=None):
 
 
 def _get_locales(addons):
-    """Does the heavy lifting for language_tools."""
-    # This is a generator so we can {% cache addons %} in the template without
-    # running any of this code.
+    """Generator doing the heavy lifting for language_tools."""
     for addon in addons:
         locale = addon.target_locale.lower()
         try:
@@ -135,13 +133,12 @@ def language_tools(request, category=None):
     addons = (Addon.objects.public()
               .filter(appsupport__app=request.APP.id, type__in=types,
                       target_locale__isnull=False).exclude(target_locale=''))
-    locales = _get_locales(addons)
-    lang_addons = _get_locales(addons.filter(target_locale=request.LANG))
-    addon_ids = addons.values_list('pk', flat=True)
+    all_locales_addons = _get_locales(addons)
+    this_locale_addons = _get_locales(
+        addons.filter(target_locale=request.LANG))
     return render(request, 'browse/language_tools.html',
-                  {'locales': list(locales), 'lang_addons': list(lang_addons),
-                   # Pass keys separately so only IDs get cached.
-                   'addons': addon_ids,
+                  {'this_locale_addons': list(this_locale_addons),
+                   'all_locales_addons': list(all_locales_addons),
                    'search_cat': '%s,0' % amo.ADDON_DICT})
 
 
@@ -271,8 +268,8 @@ class PersonasFilter(BaseFilter):
 def personas_listing(request, category_slug=None):
     # Common pieces used by browse and search.
     TYPE = amo.ADDON_PERSONA
-    q = Category.objects.filter(type=TYPE)
-    categories = order_by_translation(q, 'name')
+    qs = Category.objects.filter(type=TYPE)
+    categories = sorted(qs, key=attrgetter('weight', 'name'))
 
     frozen = list(FrozenAddon.objects.values_list('addon', flat=True))
 
@@ -455,7 +452,7 @@ def search_tools(request, category=None):
     """View the search tools page."""
     APP, TYPE = request.APP, amo.ADDON_SEARCH
     qs = Category.objects.filter(application=APP.id, type=TYPE)
-    categories = order_by_translation(qs, 'name')
+    categories = sorted(qs, key=attrgetter('weight', 'name'))
 
     addons, filter = addon_listing(request, [TYPE], SearchToolsFilter,
                                    'popular')

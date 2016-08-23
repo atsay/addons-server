@@ -19,6 +19,7 @@ import waffle
 from jingo.helpers import datetime as datetime_filter
 from PIL import Image
 from pyquery import PyQuery as pq
+from waffle.testutils import override_flag
 
 from olympia import amo, paypal, files
 from olympia.amo.tests import TestCase, version_factory
@@ -1347,10 +1348,10 @@ class TestSubmitStep3(TestSubmitBase):
 
         AddonCategory.objects.filter(
             addon=self.get_addon(),
-            category=Category.objects.get(id=23)).delete()
+            category=Category.objects.get(id=1)).delete()
         AddonCategory.objects.filter(
             addon=self.get_addon(),
-            category=Category.objects.get(id=24)).delete()
+            category=Category.objects.get(id=71)).delete()
 
         ctx = self.client.get(self.url).context['cat_form']
         self.cat_initial = initial(ctx.initial_forms[0])
@@ -1515,7 +1516,7 @@ class TestSubmitStep3(TestSubmitBase):
 
     def test_submit_categories_max(self):
         assert amo.MAX_CATEGORIES == 2
-        self.cat_initial['categories'] = [22, 23, 24]
+        self.cat_initial['categories'] = [22, 1, 71]
         r = self.client.post(self.url,
                              self.get_dict(cat_initial=self.cat_initial))
         assert r.context['cat_form'].errors[0]['categories'] == (
@@ -1523,26 +1524,28 @@ class TestSubmitStep3(TestSubmitBase):
 
     def test_submit_categories_add(self):
         assert [c.id for c in self.get_addon().all_categories] == [22]
-        self.cat_initial['categories'] = [22, 23]
+        self.cat_initial['categories'] = [22, 1]
 
         self.client.post(self.url, self.get_dict())
 
         addon_cats = self.get_addon().categories.values_list('id', flat=True)
-        assert sorted(addon_cats) == [22, 23]
+        assert sorted(addon_cats) == [1, 22]
 
     def test_submit_categories_addandremove(self):
-        AddonCategory(addon=self.addon, category_id=23).save()
-        assert [c.id for c in self.get_addon().all_categories] == [22, 23]
+        AddonCategory(addon=self.addon, category_id=1).save()
+        assert sorted(
+            [c.id for c in self.get_addon().all_categories]) == [1, 22]
 
-        self.cat_initial['categories'] = [22, 24]
+        self.cat_initial['categories'] = [22, 71]
         self.client.post(self.url, self.get_dict(cat_initial=self.cat_initial))
         category_ids_new = [c.id for c in self.get_addon().all_categories]
-        assert category_ids_new == [22, 24]
+        assert sorted(category_ids_new) == [22, 71]
 
     def test_submit_categories_remove(self):
-        c = Category.objects.get(id=23)
+        c = Category.objects.get(id=1)
         AddonCategory(addon=self.addon, category=c).save()
-        assert [a.id for a in self.get_addon().all_categories] == [22, 23]
+        assert sorted(
+            [a.id for a in self.get_addon().all_categories]) == [1, 22]
 
         self.cat_initial['categories'] = [22]
         self.client.post(self.url, self.get_dict(cat_initial=self.cat_initial))
@@ -1718,18 +1721,15 @@ class TestSubmitStep4(TestSubmitBase):
         assert self.get_step().step == 5
 
 
-class Step5TestBase(TestSubmitBase):
+class TestSubmitStep5_with_prelim(TestSubmitBase):
+    """License submission."""
 
     def setUp(self):
-        super(Step5TestBase, self).setUp()
+        super(TestSubmitStep5_with_prelim, self).setUp()
         SubmitStep.objects.create(addon_id=self.addon.id, step=5)
         self.url = reverse('devhub.submit.5', args=['a3615'])
         self.next_step = reverse('devhub.submit.6', args=['a3615'])
         License.objects.create(builtin=3, on_form=True)
-
-
-class TestSubmitStep5(Step5TestBase):
-    """License submission."""
 
     def test_get(self):
         assert self.client.get(self.url).status_code == 200
@@ -1769,6 +1769,74 @@ class TestSubmitStep5(Step5TestBase):
         r = self.client.post(self.url, dict(builtin=3, has_eula=True))
         self.assert3xx(r, self.next_step)
         assert self.get_step().step == 6
+
+
+@override_flag('no-prelim-review', active=True)
+class TestSubmitStep5_no_prelim(TestSubmitBase):
+    """License submission."""
+
+    def setUp(self):
+        super(TestSubmitStep5_no_prelim, self).setUp()
+        SubmitStep.objects.create(addon_id=self.addon.id, step=5)
+        self.url = reverse('devhub.submit.5', args=['a3615'])
+        self.next_step = reverse('devhub.submit.7', args=['a3615'])
+        License.objects.create(builtin=3, on_form=True)
+
+    def test_get(self):
+        assert self.client.get(self.url).status_code == 200
+
+    def test_set_license(self):
+        r = self.client.post(self.url, {'builtin': 3})
+        self.assert3xx(r, self.next_step)
+        assert self.get_addon().current_version.license.builtin == 3
+        pytest.raises(SubmitStep.DoesNotExist, self.get_step)
+        log_items = ActivityLog.objects.for_addons(self.get_addon())
+        assert not log_items.filter(action=amo.LOG.CHANGE_LICENSE.id), (
+            "Initial license choice:6 needn't be logged.")
+
+    def test_license_error(self):
+        r = self.client.post(self.url, {'builtin': 4})
+        assert r.status_code == 200
+        self.assertFormError(r, 'license_form', 'builtin',
+                             'Select a valid choice. 4 is not one of '
+                             'the available choices.')
+        assert self.get_step().step == 5
+
+    def test_set_eula(self):
+        self.get_addon().update(eula=None, privacy_policy=None)
+        r = self.client.post(self.url, dict(builtin=3, has_eula=True,
+                                            eula='xxx'))
+        self.assert3xx(r, self.next_step)
+        assert unicode(self.get_addon().eula) == 'xxx'
+        pytest.raises(SubmitStep.DoesNotExist, self.get_step)
+
+    def test_set_eula_nomsg(self):
+        """
+        You should not get punished with a 500 for not writing your EULA...
+        but perhaps you should feel shame for lying to us.  This test does not
+        test for shame.
+        """
+        self.get_addon().update(eula=None, privacy_policy=None)
+        r = self.client.post(self.url, dict(builtin=3, has_eula=True))
+        self.assert3xx(r, self.next_step)
+        pytest.raises(SubmitStep.DoesNotExist, self.get_step)
+
+    def test_status_is_nominated(self):
+        self.get_version().update(nomination=None)
+        r = self.client.post(self.url, {'builtin': 3})
+        assert r.status_code == 302
+        addon = self.get_addon()
+        assert addon.status == amo.STATUS_NOMINATED
+        self.assertCloseToNow(self.get_version().nomination)
+        pytest.raises(SubmitStep.DoesNotExist, self.get_step)
+
+        # Check nomination date is only set once, see bug 632191.
+        nomdate = datetime.now() - timedelta(days=5)
+        self.get_version().update(nomination=nomdate, _signal=False)
+        # Update something else in the addon:
+        self.get_addon().update(slug='foobar')
+        assert self.get_version().nomination.timetuple()[0:5] == (
+            nomdate.timetuple()[0:5])
 
 
 class TestSubmitStep6(TestSubmitBase):
@@ -2119,6 +2187,18 @@ class TestSubmitSteps(TestCase):
         # "all") aren't displayed.
         assert len(doc('.submit-addon-progress li.all')) == 4
         # The step 7 is thus the 4th visible in the list.
+        self.assert_highlight(doc, 7)  # Current step is still the 7th.
+
+    @override_flag('no-prelim-review', active=True)
+    def test_menu_step_7_no_prelim(self):
+        SubmitStep.objects.create(addon_id=3615, step=7)
+        url = reverse('devhub.submit.7', args=['a3615'])
+        doc = pq(self.client.get(url).content)
+        self.assert_linked(doc, [])  # Last step: no previous step linked.
+        # Skipped step 6, so we're one short, as no review selection.
+        assert (len(doc('.submit-addon-progress li.all')) +
+                len(doc('.submit-addon-progress li.listed'))) == 6
+        # The step 7 is thus the 6th visible in the list.
         self.assert_highlight(doc, 7)  # Current step is still the 7th.
 
 
@@ -2798,6 +2878,58 @@ class TestVersionAddFile(UploadTest):
         log = ActivityLog.objects.order_by('pk').last()
         assert log.action == amo.LOG.UNLISTED_SIGNED_VALIDATION_PASSED.id
 
+    @override_flag('no-prelim-review', active=True)
+    @mock.patch('olympia.editors.helpers.sign_file')
+    def test_unlisted_addon_fail_validation_no_prelim(self, mock_sign_file):
+        """Files that fail validation are also auto signed/reviewed."""
+        self.version.all_files[0].update(status=amo.STATUS_PUBLIC)
+        self.addon.update(is_listed=False, status=amo.STATUS_PUBLIC)
+        assert self.addon.status == amo.STATUS_PUBLIC
+        # Make sure the file has validation warnings or errors.
+        self.upload.update(
+            validation='{"notices": 2, "errors": 0, "messages": [],'
+                       ' "metadata": {}, "warnings": 1,'
+                       ' "signing_summary": {"trivial": 1, "low": 1,'
+                       '                     "medium": 0, "high": 0},'
+                       ' "passed_auto_validation": 1}')
+        self.post()
+        file_ = File.objects.latest()
+        # Status is changed to reviewed and the file is signed.
+        assert self.addon.status == amo.STATUS_PUBLIC
+        assert file_.status == amo.STATUS_PUBLIC
+        assert mock_sign_file.called
+        # There is a log for that unlisted file signature (with failed
+        # validation).
+        log = ActivityLog.objects.order_by('pk').last()
+        expected = amo.LOG.UNLISTED_SIDELOAD_SIGNED_VALIDATION_FAILED.id
+        assert log.action == expected
+
+    @override_flag('no-prelim-review', active=True)
+    @mock.patch('olympia.editors.helpers.sign_file')
+    def test_unlisted_addon_pass_validation_noprelim(self, mock_sign_file):
+        """Files that pass validation are automatically signed/reviewed."""
+        self.version.all_files[0].update(status=amo.STATUS_PUBLIC)
+        self.addon.update(is_listed=False, status=amo.STATUS_PUBLIC)
+        # Make sure the file has no validation signing related messages.
+        self.upload.update(
+            validation='{"notices": 2, "errors": 0, "messages": [],'
+                       ' "metadata": {}, "warnings": 1,'
+                       ' "signing_summary": {"trivial": 1, "low": 0,'
+                       '                     "medium": 0, "high": 0},'
+                       ' "passed_auto_validation": 1}')
+        assert self.addon.status == amo.STATUS_PUBLIC
+        self.post()
+        file_ = File.objects.latest()
+        # Status is changed to reviewed and the file is signed.
+        assert self.addon.status == amo.STATUS_PUBLIC
+        assert file_.status == amo.STATUS_PUBLIC
+        assert mock_sign_file.called
+        # There is a log for that unlisted file signature (with passed
+        # validation).
+        log = ActivityLog.objects.order_by('pk').last()
+        expected = amo.LOG.UNLISTED_SIDELOAD_SIGNED_VALIDATION_PASSED.id
+        assert log.action == expected
+
     @mock.patch('olympia.devhub.views.sign_file')
     def test_beta_addon_pass_validation(self, mock_sign_file):
         """Beta files that pass validation are automatically
@@ -2931,7 +3063,7 @@ class AddVersionTest(UploadTest):
         if nomination_type:
             d['nomination_type'] = nomination_type
         r = self.client.post(self.url, d)
-        assert r.status_code == expected_status
+        assert r.status_code == expected_status, r.content
         return r
 
     def setUp(self):
@@ -2972,6 +3104,17 @@ class TestAddVersion(AddVersionTest):
         assert_json_field(r, 'url',
                           reverse('devhub.versions.edit',
                                   args=[self.addon.slug, version.id]))
+
+    @override_flag('no-prelim-review', active=True)
+    def test_incomplete_addon_now_nominated_when_no_prelim(self):
+        """Uploading a new version for an incomplete addon should set it to
+        nominated."""
+        self.version.delete()
+        # Deleting the only version should make it null.
+        assert self.addon.status == amo.STATUS_NULL
+        self.post()
+        self.addon.reload()
+        assert self.addon.status == amo.STATUS_NOMINATED
 
     def test_not_public(self):
         self.post()
@@ -3412,6 +3555,46 @@ class TestCreateAddon(BaseUploadTest, UploadAddon, TestCase):
         addon = Addon.with_unlisted.get()
         assert not addon.is_listed
         assert addon.status == amo.STATUS_LITE  # Prelim review.
+        assert mock_sign_file.called
+
+    @override_flag('no-prelim-review', active=True)
+    @mock.patch('olympia.editors.helpers.sign_file')
+    def test_success_unlisted_no_prelim(self, mock_sign_file):
+        """Sign automatically."""
+        assert Addon.with_unlisted.count() == 0
+        # No validation errors or warning.
+        self.upload = self.get_upload(
+            'extension.xpi',
+            validation=json.dumps(dict(errors=0, warnings=0, notices=2,
+                                       metadata={}, messages=[],
+                                       signing_summary={
+                                           'trivial': 1, 'low': 0, 'medium': 0,
+                                           'high': 0},
+                                       passed_auto_validation=True
+                                       )))
+        self.post(is_listed=False)
+        addon = Addon.with_unlisted.get()
+        assert not addon.is_listed
+        assert addon.status == amo.STATUS_PUBLIC  # Automatic signing.
+        assert mock_sign_file.called
+
+    @override_flag('no-prelim-review', active=True)
+    @mock.patch('olympia.editors.helpers.sign_file')
+    def test_success_unlisted_fail_validation_no_prelim(self, mock_sign_file):
+        assert Addon.with_unlisted.count() == 0
+        self.upload = self.get_upload(
+            'extension.xpi',
+            validation=json.dumps(dict(errors=0, warnings=0, notices=2,
+                                       metadata={}, messages=[],
+                                       signing_summary={
+                                           'trivial': 0, 'low': 1, 'medium': 0,
+                                           'high': 0},
+                                       passed_auto_validation=False
+                                       )))
+        self.post(is_listed=False)
+        addon = Addon.with_unlisted.get()
+        assert not addon.is_listed
+        assert addon.status == amo.STATUS_PUBLIC
         assert mock_sign_file.called
 
     @mock.patch('olympia.editors.helpers.sign_file')

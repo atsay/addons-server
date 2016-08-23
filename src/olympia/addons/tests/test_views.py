@@ -22,9 +22,10 @@ from olympia.amo.urlresolvers import reverse
 from olympia.addons.utils import generate_addon_guid
 from olympia.abuse.models import AbuseReport
 from olympia.addons.models import (
-    Addon, AddonDependency, AddonFeatureCompatibility, AddonUser, Charity,
-    Persona)
+    Addon, AddonCategory, AddonDependency, AddonFeatureCompatibility,
+    AddonUser, Category, Charity, Persona)
 from olympia.bandwagon.models import Collection
+from olympia.constants.categories import CATEGORIES
 from olympia.paypal.tests.test import other_error
 from olympia.stats.models import Contribution
 from olympia.users.helpers import users_list
@@ -843,18 +844,19 @@ class TestDetailPage(TestCase):
         self.addon.save()
         assert pq(self.client.get(self.url).content)(selector)
 
-    def test_no_restart(self):
-        no_restart = '<span class="no-restart">No Restart</span>'
+    def test_requires_restart(self):
+        span_restart = '<span class="requires-restart">Requires Restart</span>'
         f = self.addon.current_version.all_files[0]
 
-        assert not f.no_restart
+        assert f.requires_restart is True
         r = self.client.get(self.url)
-        assert no_restart not in r.content
+        assert span_restart in r.content
 
         f.no_restart = True
         f.save()
+        assert f.requires_restart is False
         r = self.client.get(self.url)
-        self.assertContains(r, no_restart)
+        assert span_restart not in r.content
 
     def test_disabled_user_message(self):
         self.addon.update(disabled_by_user=True)
@@ -993,12 +995,13 @@ class TestImpalaDetailPage(TestCase):
         assert d.find('.install-button a').attr('href').endswith(
             '?src=dp-hc-dependencies')
 
-    def test_no_restart(self):
+    def test_requires_restart(self):
         f = self.addon.current_version.all_files[0]
-        assert not f.no_restart
-        assert self.get_pq()('.no-restart').length == 0
+        assert f.requires_restart
+        assert self.get_pq()('.requires-restart').length == 1
         f.update(no_restart=True)
-        assert self.get_pq()('.no-restart').length == 1
+        assert not f.requires_restart
+        assert self.get_pq()('.requires-restart').length == 0
 
     def test_license_link_builtin(self):
         g = 'http://google.com'
@@ -1055,7 +1058,6 @@ class TestImpalaDetailPage(TestCase):
     def test_categories(self):
         cat = self.addon.all_categories[0]
         cat.application = amo.THUNDERBIRD.id
-        cat.save()
         links = self.get_more_pq()('#related ul:first').find('a')
         expected = [(unicode(c.name), c.get_url_path())
                     for c in self.addon.categories.filter(
@@ -1127,7 +1129,7 @@ class TestPersonaDetailPage(TestPersonas, TestCase):
 
         r = self.client.get(self.url)
         assert list(r.context['author_personas']) == [other]
-        a = pq(r.content)('#more-artist .persona.hovercard a')
+        a = pq(r.content)('#more-artist .persona.hovercard > a')
         assert a.length == 1
         assert a.attr('href') == other.get_url_path()
 
@@ -1942,6 +1944,10 @@ class TestVersionViewSetList(AddonAndVersionViewSetDetailMixin, TestCase):
         self._test_url_only_contains_old_version(filter='all')
         self._test_url_only_contains_old_version(filter='all_with_deleted')
 
+    def test_beta_version(self):
+        self.old_version.files.update(status=amo.STATUS_BETA)
+        self._test_url_only_contains_old_version(filter='beta_only')
+
 
 class TestAddonViewSetFeatureCompatibility(TestCase):
     def setUp(self):
@@ -1973,6 +1979,41 @@ class TestAddonViewSetFeatureCompatibility(TestCase):
         assert response.status_code == 200
         data = json.loads(response.content)
         assert data['e10s'] == 'compatible'
+
+
+class TestAddonViewSetEulaPolicy(TestCase):
+    def setUp(self):
+        super(TestAddonViewSetEulaPolicy, self).setUp()
+        self.addon = addon_factory(
+            guid=generate_addon_guid(), name=u'My Addôn', slug='my-addon')
+        self.url = reverse(
+            'addon-eula-policy', kwargs={'pk': self.addon.pk})
+
+    def test_url(self):
+        self.detail_url = reverse('addon-detail', kwargs={'pk': self.addon.pk})
+        assert self.url == '%s%s' % (self.detail_url, 'eula_policy/')
+
+    def test_disabled_anonymous(self):
+        self.addon.update(disabled_by_user=True)
+        response = self.client.get(self.url)
+        assert response.status_code == 401
+
+    def test_policy_none(self):
+        response = self.client.get(self.url)
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['eula'] is None
+        assert data['privacy_policy'] is None
+
+    def test_policy(self):
+        self.addon.eula = {'en-US': u'My Addôn EULA', 'fr': u'Hoüla'}
+        self.addon.privacy_policy = u'My Prïvacy, My Policy'
+        self.addon.save()
+        response = self.client.get(self.url)
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['eula'] == {'en-US': u'My Addôn EULA', 'fr': u'Hoüla'}
+        assert data['privacy_policy'] == {'en-US': u'My Prïvacy, My Policy'}
 
 
 class TestAddonSearchView(ESTestCase):
@@ -2274,3 +2315,160 @@ class TestAddonSearchView(ESTestCase):
         assert data['count'] == 1
         assert len(data['results']) == 1
         assert data['results'][0]['id'] == tb_addon.pk
+
+    def test_filter_by_category(self):
+        addon = addon_factory(slug='my-addon', name=u'My Addôn')
+        category = Category.from_static_category(
+            CATEGORIES[amo.FIREFOX.id][amo.ADDON_EXTENSION]['alerts-updates'])
+        category.save()
+        AddonCategory.objects.create(addon=addon, category=category)
+        addon_factory(slug='different-addon', name=u'Addôn not in that cat')
+
+        # Because the AddonCategory was created manually after the initial
+        # save, we need to reindex and not just refresh.
+        self.reindex(Addon)
+
+        data = self.perform_search(self.url, {'app': 'firefox',
+                                              'type': 'extension',
+                                              'category': 'alerts-updates'})
+        assert data['count'] == 1
+        assert len(data['results']) == 1
+        assert data['results'][0]['id'] == addon.pk
+
+
+class TestAddonFeaturedView(TestCase):
+    def setUp(self):
+        self.url = reverse('addon-featured')
+
+    def test_no_parameters(self):
+        response = self.client.get(self.url)
+        assert response.status_code == 400
+        assert json.loads(response.content) == {
+            'detail': 'Invalid app, category and/or type parameter(s).'}
+
+    @patch('olympia.addons.views.get_featured_ids')
+    def test_app_only(self, get_featured_ids_mock):
+        addon1 = addon_factory()
+        addon2 = addon_factory()
+        get_featured_ids_mock.return_value = [addon1.pk, addon2.pk]
+
+        response = self.client.get(self.url, {'app': 'firefox'})
+        assert get_featured_ids_mock.call_count == 1
+        assert (get_featured_ids_mock.call_args_list[0][0][0] ==
+                amo.FIREFOX)  # app
+        assert (get_featured_ids_mock.call_args_list[0][1] ==
+                {'type': None, 'lang': None})
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['results']
+        assert len(data['results']) == 2
+        assert data['results'][0]['id'] == addon1.pk
+        assert data['results'][1]['id'] == addon2.pk
+
+    @patch('olympia.addons.views.get_featured_ids')
+    def test_app_and_type(self, get_featured_ids_mock):
+        addon1 = addon_factory()
+        addon2 = addon_factory()
+        get_featured_ids_mock.return_value = [addon1.pk, addon2.pk]
+
+        response = self.client.get(self.url, {
+            'app': 'firefox', 'type': 'extension'
+        })
+        assert get_featured_ids_mock.call_count == 1
+        assert (get_featured_ids_mock.call_args_list[0][0][0] ==
+                amo.FIREFOX)  # app
+        assert (get_featured_ids_mock.call_args_list[0][1] ==
+                {'type': amo.ADDON_EXTENSION, 'lang': None})
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['results']
+        assert len(data['results']) == 2
+        assert data['results'][0]['id'] == addon1.pk
+        assert data['results'][1]['id'] == addon2.pk
+
+    @patch('olympia.addons.views.get_featured_ids')
+    def test_app_and_type_and_lang(self, get_featured_ids_mock):
+        addon1 = addon_factory()
+        addon2 = addon_factory()
+        get_featured_ids_mock.return_value = [addon1.pk, addon2.pk]
+
+        response = self.client.get(self.url, {
+            'app': 'firefox', 'type': 'extension', 'lang': 'es'
+        })
+        assert get_featured_ids_mock.call_count == 1
+        assert (get_featured_ids_mock.call_args_list[0][0][0] ==
+                amo.FIREFOX)  # app
+        assert (get_featured_ids_mock.call_args_list[0][1] ==
+                {'type': amo.ADDON_EXTENSION, 'lang': 'es'})
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['results']
+        assert len(data['results']) == 2
+        assert data['results'][0]['id'] == addon1.pk
+        assert data['results'][1]['id'] == addon2.pk
+
+    def test_invalid_app(self):
+        response = self.client.get(
+            self.url, {'app': 'foxeh', 'type': 'extension'})
+        assert response.status_code == 400
+        assert json.loads(response.content) == {
+            'detail': 'Invalid app, category and/or type parameter(s).'}
+
+    def test_invalid_type(self):
+        response = self.client.get(self.url, {'app': 'firefox', 'type': 'lol'})
+        assert response.status_code == 400
+        assert json.loads(response.content) == {
+            'detail': 'Invalid app, category and/or type parameter(s).'}
+
+    def test_category_no_app_or_type(self):
+        response = self.client.get(self.url, {'category': 'lol'})
+        assert response.status_code == 400
+        assert json.loads(response.content) == {
+            'detail': 'Invalid app, category and/or type parameter(s).'}
+
+    def test_invalid_category(self):
+        response = self.client.get(self.url, {
+            'category': 'lol', 'app': 'firefox', 'type': 'extension'
+        })
+        assert response.status_code == 400
+        assert json.loads(response.content) == {
+            'detail': 'Invalid app, category and/or type parameter(s).'}
+
+    @patch('olympia.addons.views.get_creatured_ids')
+    def test_category(self, get_creatured_ids_mock):
+        addon1 = addon_factory()
+        addon2 = addon_factory()
+        get_creatured_ids_mock.return_value = [addon1.pk, addon2.pk]
+
+        response = self.client.get(self.url, {
+            'category': 'alerts-updates', 'app': 'firefox', 'type': 'extension'
+        })
+        assert get_creatured_ids_mock.call_count == 1
+        assert get_creatured_ids_mock.call_args_list[0][0][0] == 72  # category
+        assert get_creatured_ids_mock.call_args_list[0][0][1] is None  # lang
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['results']
+        assert len(data['results']) == 2
+        assert data['results'][0]['id'] == addon1.pk
+        assert data['results'][1]['id'] == addon2.pk
+
+    @patch('olympia.addons.views.get_creatured_ids')
+    def test_category_with_lang(self, get_creatured_ids_mock):
+        addon1 = addon_factory()
+        addon2 = addon_factory()
+        get_creatured_ids_mock.return_value = [addon1.pk, addon2.pk]
+
+        response = self.client.get(self.url, {
+            'category': 'alerts-updates', 'app': 'firefox',
+            'type': 'extension', 'lang': 'fr',
+        })
+        assert get_creatured_ids_mock.call_count == 1
+        assert get_creatured_ids_mock.call_args_list[0][0][0] == 72  # cat id.
+        assert get_creatured_ids_mock.call_args_list[0][0][1] == 'fr'  # lang
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data['results']
+        assert len(data['results']) == 2
+        assert data['results'][0]['id'] == addon1.pk
+        assert data['results'][1]['id'] == addon2.pk

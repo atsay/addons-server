@@ -819,6 +819,17 @@ body:not(.home) .amo-header,
   text-overflow: ellipsis;
 }
 
+// Featured themes on home
+.home {
+  .hovercard.persona .persona-preview {
+    width: 150px;
+  }
+}
+
+.listing-grid.personas li {
+  height: 118px;
+}
+
 // Side nav on Home
 .home #side-nav {
   // pushed down to make room for more header
@@ -1008,16 +1019,21 @@ a.button.release-theme-lock {
   border-radius: 0;
   box-shadow: none;
   height: 30px;
+  left: -6px;
 
   &:hover,
-  &:focus,
-  &:active {
+  &:focus {
     box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.2);
   }
 
   &:active {
-    top: 1px;
+    box-shadow: none;
+    top: 0;
   }
+}
+
+.html-rtl .header-search .search-button {
+  left: 6px;
 }
 
 .button.CTA {
@@ -1143,6 +1159,10 @@ body:not(.developer-hub) section.secondary {
   .secondary {
     background: none;
     font-family: @primary-font;
+  }
+
+  .extra .button.disabled.not-available {
+    padding: 5px 5px 5px 20px;
   }
 }
 
@@ -1559,7 +1579,30 @@ h3.author .transfer-ownership {
 .personas-featured .persona-list-3col {
   border: 0;
   min-height: 125px;
-  padding-bottom: 20px;
+  padding-bottom: 36px;
+}
+
+.restyle .persona.hovercard {
+  height: 100px;
+
+  &:focus,
+  &:hover {
+    height: 136px;
+    margin-bottom: -36px;
+  }
+
+  h3 {
+    padding-bottom: 0;
+  }
+
+  h4 {
+    clear: both;
+    font-size: 12px;
+  }
+
+  a {
+    display: inline;
+  }
 }
 
 .persona-list-3col {
@@ -1630,7 +1673,7 @@ h3.author .transfer-ownership {
 
     ul {
       margin: 0;
-      padding: 0 0 25px;
+      padding: 0 0 40px;
       width: auto;
     }
   }
@@ -1660,8 +1703,10 @@ h3.author .transfer-ownership {
     max-width: 200px;
 
     .button.not-available {
-      margin-top: -12px;
       font-size: 12px;
+      margin-top: -10px;
+      min-width: 0;
+      padding: 5px 5px 5px 20px;
     }
   }
 }
@@ -1682,7 +1727,9 @@ h3.author .transfer-ownership {
   color: @default-font-color;
   font-size: 1rem;
   font-weight: normal;
-  padding: 5px 14px 5px 28px;
+  margin: 0;
+  min-width: 225px;
+  padding: 5px 0px 5px 16px;
 
   .addon-description-header &  {
     border: 0;
@@ -1790,6 +1837,10 @@ h3.author .transfer-ownership {
 
   .install-shell .install {
     display: inline-block;
+  }
+
+  .d2c-reasons-help {
+    margin: 0 0 0 -8px;
   }
 }
 
@@ -1959,10 +2010,17 @@ h3.author .transfer-ownership {
 
 // Theme detail page
 #persona #more-personas .article {
-  padding: 0 10px 20px;
+  padding: 0 10px 40px;
 
   .persona.hovercard:nth-child(odd) {
     clear: left;
+  }
+}
+
+#more-artist .persona.hovercard,
+#my-themes .persona.hovercard {
+  .persona-preview {
+    width: auto;
   }
 }
 
@@ -1972,7 +2030,7 @@ h3.author .transfer-ownership {
 
   &:hover,
   &:focus {
-    margin-bottom: -22px;
+    margin-bottom: -36px;
   }
 }
 
@@ -2401,4 +2459,21 @@ body.windows .install-shell .platform.mac {
 // Hide the datepicker display on stats at the bottom of the page.
 #ui-datepicker-div {
   display: none;
+}
+
+// Override weird impala styles that make hovers for incompatible add-ons
+// jump around (https://github.com/mozilla/addons-server/issues/3203)
+.addon.hovercard,
+.items .item.incompatible {
+  .extra .button.not-available {
+    display: inline-block;
+    visibility: hidden;
+  }
+
+  &:hover,
+  &:focus {
+    .extra .button.not-available {
+      visibility: visible;
+    }
+  }
 }

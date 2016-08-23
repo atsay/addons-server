@@ -13,11 +13,13 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.storage import default_storage as storage
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.encoding import force_bytes
+from django.utils.translation import ugettext_lazy as _lazy
+from django.utils.html import format_html
 from django.views import debug
 from django.views.decorators.cache import never_cache
 
 import commonware.log
+import django_tables2 as tables
 import jinja2
 
 from olympia import amo
@@ -31,8 +33,10 @@ from olympia.amo.mail import DevEmailBackend
 from olympia.amo.urlresolvers import reverse
 from olympia.amo.utils import HttpResponseSendFile, chunked, render
 from olympia.bandwagon.models import Collection
+from olympia.compat import FIREFOX_COMPAT
 from olympia.compat.models import AppCompat, CompatTotals
 from olympia.devhub.models import ActivityLog
+from olympia.editors.helpers import ItemStateTable
 from olympia.files.models import File, FileUpload
 from olympia.search.indexers import get_mappings as get_addons_mappings
 from olympia.stats.search import get_mappings as get_stats_mappings
@@ -48,7 +52,9 @@ from .forms import (
     AddonStatusForm, BulkValidationForm, CompatForm, DevMailerForm,
     FeaturedCollectionFormSet, FileFormSet, MonthlyPickFormSet, NotifyForm,
     YesImSure)
-from .models import EmailPreviewTopic, ValidationJob, ValidationJobTally
+from .models import (
+    EmailPreviewTopic, ValidationJob, ValidationResultMessage,
+    ValidationResultAffectedAddon)
 
 log = commonware.log.getLogger('z.zadmin')
 
@@ -234,32 +240,60 @@ def email_preview_csv(request, topic):
     return resp
 
 
+class BulkValidationResultTable(ItemStateTable, tables.Table):
+    message_id = tables.Column(verbose_name=_lazy('Message ID'))
+    message = tables.Column(verbose_name=_lazy('Message'))
+    compat_type = tables.Column(verbose_name=_lazy('Compat Type'))
+    addons_affected = tables.Column(verbose_name=_lazy('Addons Affected'))
+
+    def render_message_id(self, record):
+        detail_url = reverse(
+            'zadmin.validation_summary_detail',
+            args=(record.validation_job.pk, record.id))
+        return format_html(
+            '<a href="{0}">{1}</a>', detail_url, record.message_id)
+
+
+class BulkValidationAffectedAddonsTable(ItemStateTable, tables.Table):
+    addon = tables.Column(verbose_name=_lazy('Addon'))
+
+    def render_addon(self, value):
+        detail_url = reverse('addons.detail', args=(value.pk,))
+        return format_html('<a href="{0}">{1}</a>', detail_url, value.name)
+
+
 @any_permission_required([('Admin', '%'),
                           ('AdminTools', 'View'),
                           ('ReviewerAdminTools', 'View')])
-def validation_tally_csv(request, job_id):
-    resp = http.HttpResponse()
-    resp['Content-Type'] = 'text/csv; charset=utf-8'
-    resp['Content-Disposition'] = ('attachment; '
-                                   'filename=validation_tally_%s.csv'
-                                   % job_id)
-    writer = csv.writer(resp)
-    fields = ['message_id', 'message', 'long_message',
-              'type', 'addons_affected']
-    writer.writerow(fields)
-    job = ValidationJobTally(job_id)
-    keys = ['key', 'message', 'long_message', 'type', 'addons_affected']
-    for msg in job.get_messages():
-        writer.writerow(
-            [force_bytes(msg[k], encoding='utf8', strings_only=True)
-             for k in keys])
-    return resp
+def validation_summary(request, job_id):
+    messages = ValidationResultMessage.objects.filter(validation_job=job_id)
+    order_by = request.GET.get('sort', 'message_id')
+
+    table = BulkValidationResultTable(data=messages, order_by=order_by)
+
+    page = amo.utils.paginate(request, table.rows, per_page=25)
+    table.set_page(page)
+    return render(request, 'zadmin/validation_summary.html',
+                  {'table': table, 'page': page})
+
+
+@any_permission_required([('Admin', '%'),
+                          ('AdminTools', 'View'),
+                          ('ReviewerAdminTools', 'View')])
+def validation_summary_affected_addons(request, job_id, message_id):
+    addons = ValidationResultAffectedAddon.objects.filter(message=message_id)
+    order_by = request.GET.get('sort', 'addon')
+
+    table = BulkValidationAffectedAddonsTable(data=addons, order_by=order_by)
+
+    page = amo.utils.paginate(request, table.rows, per_page=25)
+    table.set_page(page)
+    return render(request, 'zadmin/validation_summary.html',
+                  {'table': table, 'page': page})
 
 
 @admin_required
 def compat(request):
-    APP = amo.FIREFOX
-    VER = amo.COMPAT[0]['main']  # Default: latest Firefox version.
     minimum = 10
     ratio = .8
     binary = None
@@ -268,40 +302,38 @@ def compat(request):
     #     For Firefox 8.0 reports:      ?appver=1-8.0
     #     For over 70% incompatibility: ?appver=1-8.0&ratio=0.7
     #     For binary-only add-ons:      ?appver=1-8.0&type=binary
-    initial = {'appver': '%s-%s' % (APP.id, VER), 'minimum': minimum,
-               'ratio': ratio, 'type': 'all'}
-    initial.update(request.GET.items())
+    data = {'appver': '%s' % FIREFOX_COMPAT[0]['main'],
+            'minimum': minimum, 'ratio': ratio, 'type': 'all'}
+    version = data['appver']
+    data.update(request.GET.items())
 
-    form = CompatForm(initial)
+    form = CompatForm(data)
     if request.GET and form.is_valid():
-        APP, VER = form.cleaned_data['appver'].split('-')
-        APP = amo.APP_IDS[int(APP)]
+        version = form.cleaned_data['appver']
         if form.cleaned_data['ratio'] is not None:
             ratio = float(form.cleaned_data['ratio'])
         if form.cleaned_data['minimum'] is not None:
             minimum = int(form.cleaned_data['minimum'])
         if form.cleaned_data['type'] == 'binary':
             binary = True
-
-    app, ver = str(APP.id), VER
-    usage_addons, usage_total = compat_stats(request, app, ver, minimum, ratio,
-                                             binary)
+    usage_addons, usage_total = compat_stats(
+        request, version, minimum, ratio, binary)
 
     return render(request, 'zadmin/compat.html', {
-        'app': APP, 'version': VER, 'form': form, 'usage_addons': usage_addons,
+        'form': form, 'usage_addons': usage_addons,
         'usage_total': usage_total})
 
 
-def compat_stats(request, app, ver, minimum, ratio, binary):
+def compat_stats(request, version, minimum, ratio, binary):
     # Get the list of add-ons for usage stats.
     # Show add-ons marked as incompatible with this current version having
     # greater than 10 incompatible reports and whose average exceeds 80%.
-    ver_int = str(vint(ver))
-    prefix = 'works.%s.%s' % (app, ver_int)
+    version_int = str(vint(version))
+    prefix = 'works.%s' % version_int
     qs = (AppCompat.search()
           .filter(**{'%s.failure__gt' % prefix: minimum,
                      '%s.failure_ratio__gt' % prefix: ratio,
-                     'support.%s.max__gte' % app: 0})
+                     'support.max__gte': 0})
           .order_by('-%s.failure_ratio' % prefix,
                     '-%s.total' % prefix)
           .values_dict())
@@ -309,15 +341,15 @@ def compat_stats(request, app, ver, minimum, ratio, binary):
         qs = qs.filter(binary=binary)
     addons = amo.utils.paginate(request, qs)
     for obj in addons.object_list:
-        obj['usage'] = obj['usage'][app]
-        obj['max_version'] = obj['max_version'][app]
-        obj['works'] = obj['works'][app].get(ver_int, {})
+        obj['usage'] = obj['usage']
+        obj['max_version'] = obj['max_version']
+        obj['works'] = obj['works'].get(version_int, {})
         # Get all overrides for this add-on.
         obj['overrides'] = CompatOverride.objects.filter(addon__id=obj['id'])
         # Determine if there is an override for this current app version.
         obj['has_override'] = obj['overrides'].filter(
-            _compat_ranges__min_app_version=ver + 'a1').exists()
-    return addons, CompatTotals.objects.get(app=app).total
+            _compat_ranges__min_app_version=version + 'a1').exists()
+    return addons, CompatTotals.objects.get().total
 
 
 @login_required

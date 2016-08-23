@@ -15,7 +15,7 @@ from olympia.files.models import File
 from olympia.applications.models import AppVersion
 from olympia.editors.models import (
     EditorSubscription, RereviewQueueTheme, ReviewerScore, send_notifications,
-    ViewFastTrackQueue, ViewFullReviewQueue, ViewPendingQueue,
+    ViewFullReviewQueue, ViewPendingQueue,
     ViewPreliminaryQueue, ViewUnlistedAllList, ViewUnlistedFullReviewQueue,
     ViewUnlistedPendingQueue, ViewUnlistedPreliminaryQueue)
 from olympia.users.models import UserProfile
@@ -47,9 +47,15 @@ def create_addon_file(name, version_str, addon_status, file_status,
         vr.update(**version_kw)
     va, created_ = ApplicationsVersions.objects.get_or_create(
         version=vr, application=application.id, min=app_vr, max=app_vr)
-    file_ = File.objects.create(version=vr, filename=u"%s.xpi" % name,
-                                platform=platform.id, status=file_status,
-                                **file_kw)
+    file_defaults = {
+        'version': vr,
+        'filename': u"%s.xpi" % name,
+        'platform': platform.id,
+        'status': file_status,
+        'no_restart': True
+    }
+    file_defaults.update(file_kw)
+    file_ = File.objects.create(**file_defaults)
     if created:
         vr.update(created=created)
         file_.update(created=created)
@@ -161,8 +167,6 @@ class TestPendingQueue(TestQueue):
         # Time zone will be off, hard to test this.
         assert row.waiting_time_hours is not None
 
-    # These apply to all queues, except that all add-ons in the Fast
-    # Track queue are Jetpack
     def test_flags_admin_review(self):
         f = self.new_file(version=u'0.1')
         f['addon'].update(admin_review=True)
@@ -181,18 +185,18 @@ class TestPendingQueue(TestQueue):
         q = self.Queue.objects.get()
         assert q.flags == [('editor', 'Contains Editor Comment')]
 
-    def test_flags_jetpack_and_restartless(self):
+    def test_flags_jetpack(self):
         self.new_file(version=u'0.1', file_kw={'jetpack_version': '1.8',
                                                'no_restart': True})
 
         q = self.Queue.objects.get()
         assert q.flags == [('jetpack', 'Jetpack Add-on')]
 
-    def test_flags_restartless(self):
-        self.new_file(version=u'0.1', file_kw={'no_restart': True})
+    def test_flags_requires_restart(self):
+        self.new_file(version=u'0.1', file_kw={'no_restart': False})
 
         q = self.Queue.objects.get()
-        assert q.flags == [('restartless', 'Restartless Add-on')]
+        assert q.flags == [('requires_restart', 'Requires Restart')]
 
     def test_flags_sources_provided(self):
         f = self.new_file(version=u'0.1')
@@ -281,71 +285,6 @@ class TestPreliminaryQueue(TestQueue):
         # Time zone might be off due to your MySQL install, hard to test this.
         assert row.waiting_time_min is not None
         assert row.waiting_time_hours is not None
-
-
-class TestFastTrackQueue(TestQueue):
-    __test__ = True
-    Queue = ViewFastTrackQueue
-
-    def query(self):
-        return sorted(list(q.addon_name for q in self.Queue.objects.all()))
-
-    def new_file(self, name=u'FastTrack', version=u'1.0',
-                 addon_status=amo.STATUS_LITE,
-                 file_status=amo.STATUS_UNREVIEWED, file_params=None,
-                 **kw):
-        res = create_addon_file(name, version, addon_status, file_status, **kw)
-        file_ = res['file']
-        params = dict(no_restart=True, requires_chrome=False,
-                      jetpack_version='1.1')
-        if not file_params:
-            file_params = {}
-        params.update(file_params)
-        for k, v in params.items():
-            setattr(file_, k, v)
-        file_.save()
-        return res
-
-    def new_search_ext(self, name, version, **kw):
-        addon = create_search_ext(name, version,
-                                  amo.STATUS_LITE, amo.STATUS_UNREVIEWED,
-                                  **kw)
-        file_ = addon.versions.get().files.get()
-        file_.no_restart = True
-        file_.jetpack_version = '1.1'
-        file_.requires_chrome = False
-        file_.save()
-        return addon
-
-    def test_include_jetpacks(self):
-        self.new_file(name='jetpack')
-        assert self.query() == ['jetpack']
-
-    def test_ignore_non_jetpacks(self):
-        self.new_file(file_params=dict(no_restart=False))
-        assert self.query() == []
-
-    def test_ignore_non_sdk_bootstrapped_addons(self):
-        self.new_file(file_params=dict(jetpack_version=None))
-        assert self.query() == []
-
-    def test_ignore_sneaky_jetpacks(self):
-        self.new_file(file_params=dict(requires_chrome=True))
-        assert self.query() == []
-
-    def test_include_full_review(self):
-        ad = self.new_file(name='full')['addon']
-        ad.status = amo.STATUS_NOMINATED
-        ad.save()
-        assert self.query() == ['full']
-
-    def test_include_webextensions(self):
-        self.new_file(name='webext', file_params=dict(is_webextension=True))
-        assert self.query() == ['webext']
-
-    def test_include_jpm_addons(self):
-        self.new_file(name='jpm', file_params=dict(jetpack_version='jpm'))
-        assert self.query() == ['jpm']
 
 
 class TestUnlistedPendingQueue(TestPendingQueue):

@@ -28,7 +28,6 @@ from olympia.amo.urlresolvers import reverse
 from olympia.amo.helpers import user_media_path, user_media_url
 from olympia.applications.models import AppVersion
 from olympia.files.utils import SafeUnzip, write_crx_as_xpi
-from olympia.tags.models import Tag
 
 log = commonware.log.getLogger('z.files')
 
@@ -110,6 +109,13 @@ class File(OnChangeMixin, ModelBase):
         return (self.version.addon.automated_signing or
                 self.status == amo.STATUS_BETA)
 
+    @property
+    def requires_restart(self):
+        """Whether the add-on file requires a browser restart to work."""
+        # For historical purposes the field we store is "no_restart", which
+        # is exactly the opposite.
+        return not self.no_restart
+
     def is_mirrorable(self):
         return self.status in amo.MIRROR_STATUSES
 
@@ -158,8 +164,6 @@ class File(OnChangeMixin, ModelBase):
         data = cls.get_jetpack_metadata(upload.path)
         if 'sdkVersion' in data and data['sdkVersion']:
             file_.jetpack_version = data['sdkVersion'][:10]
-        if file_.jetpack_version:
-            Tag(tag_text='jetpack').save_tag(addon)
         file_.no_restart = parse_data.get('no_restart', False)
         file_.strict_compatibility = parse_data.get('strict_compatibility',
                                                     False)
@@ -545,8 +549,6 @@ def track_file_status_change(file_):
     if (file_.jetpack_version and
             file_.no_restart and
             not file_.requires_chrome):
-        # These files are easier to review and typically go into the
-        # "fast queue"
         statsd.incr('file_status_change.jetpack_sdk_only.status_{}'
                     .format(file_.status))
 

@@ -5,6 +5,7 @@ from elasticsearch_dsl.filter import Bool
 from rest_framework.filters import BaseFilterBackend
 
 from olympia import amo
+from olympia.constants.categories import CATEGORIES, CATEGORIES_BY_ID
 from olympia.versions.compare import version_int
 
 
@@ -40,12 +41,15 @@ class AddonFilterParam(object):
         value = self.request.GET.get(self.query_param, '')
         return self.reverse_dict.get(value.lower())
 
-    def get_value_from_object_from_reverse_dict(self):
+    def get_object_from_reverse_dict(self):
         value = self.request.GET.get(self.query_param, '')
         value = self.reverse_dict.get(value.lower())
         if value is None:
             raise ValueError('Invalid value (not found in reverse dict).')
-        return value.id
+        return value
+
+    def get_value_from_object_from_reverse_dict(self):
+        return self.get_object_from_reverse_dict().id
 
     def get_es_filter(self):
         return [F(self.operator, **{self.es_field: self.get_value()})]
@@ -84,8 +88,10 @@ class AddonAppVersionFilterParam(AddonFilterParam):
     def get_es_filter(self):
         app_id, low, high = self.get_values()
         return [
-            F('range', **{'appversion.%d.min' % app_id: {'lte': low}}),
-            F('range', **{'appversion.%d.max' % app_id: {'gte': high}}),
+            F('range', **{'current_version.compatible_apps.%d.min' % app_id:
+              {'lte': low}}),
+            F('range', **{'current_version.compatible_apps.%d.max' % app_id:
+              {'gte': high}}),
         ]
 
 
@@ -122,6 +128,29 @@ class AddonStatusFilterParam(AddonFilterParam):
     reverse_dict = amo.STATUS_CHOICES_API_LOOKUP
     valid_values = amo.STATUS_CHOICES_API
     es_field = 'status'
+
+
+class AddonCategoryFilterParam(AddonFilterParam):
+    query_param = 'category'
+    es_field = 'category'
+    valid_values = CATEGORIES_BY_ID.keys()
+
+    def __init__(self, request):
+        super(AddonCategoryFilterParam, self).__init__(request)
+        # Category slugs are only unique for a given type+app combination.
+        # Once we have that, it's just a matter of selecting the corresponding
+        # dict in the categories constants and use that as the reverse dict,
+        # and make sure to use get_value_from_object_from_reverse_dict().
+        try:
+            app = AddonAppFilterParam(self.request).get_value()
+            type_ = AddonTypeFilterParam(self.request).get_value()
+
+            self.reverse_dict = CATEGORIES[app][type_]
+        except KeyError:
+            raise ValueError('This app + type combination has no categories.')
+
+    def get_value_from_reverse_dict(self):
+        return self.get_value_from_object_from_reverse_dict()
 
 
 class SearchQueryFilter(BaseFilterBackend):
@@ -229,18 +258,19 @@ class SearchParameterFilter(BaseFilterBackend):
     type.
     """
     available_filters = [AddonAppFilterParam, AddonAppVersionFilterParam,
-                         AddonPlatformFilterParam, AddonTypeFilterParam]
+                         AddonPlatformFilterParam, AddonTypeFilterParam,
+                         AddonCategoryFilterParam]
 
     def filter_queryset(self, request, qs, view):
         must = []
 
         for filter_class in self.available_filters:
-            filter_ = filter_class(request)
-            if filter_.query_param in request.GET:
-                try:
+            try:
+                filter_ = filter_class(request)
+                if filter_.query_param in request.GET:
                     must.extend(filter_.get_es_filter())
-                except ValueError:
-                    continue
+            except ValueError:
+                continue
 
         return qs.filter(Bool(must=must)) if must else qs
 

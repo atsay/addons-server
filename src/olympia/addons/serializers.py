@@ -9,6 +9,7 @@ from olympia.api.fields import ReverseChoiceField, TranslationSerializerField
 from olympia.api.serializers import BaseESSerializer
 from olympia.applications.models import AppVersion
 from olympia.constants.applications import APPS_ALL
+from olympia.constants.categories import CATEGORIES_BY_ID
 from olympia.files.models import File
 from olympia.users.models import UserProfile
 from olympia.versions.models import ApplicationsVersions, License, Version
@@ -129,11 +130,27 @@ class VersionSerializer(SimpleVersionSerializer):
                   'release_notes', 'reviewed', 'url', 'version')
 
 
+class AddonEulaPolicySerializer(serializers.ModelSerializer):
+    eula = TranslationSerializerField()
+    privacy_policy = TranslationSerializerField()
+
+    class Meta:
+        model = Addon
+        fields = (
+            'eula',
+            'privacy_policy',
+        )
+
+
 class AddonSerializer(serializers.ModelSerializer):
     authors = AddonAuthorSerializer(many=True, source='listed_authors')
+    categories = serializers.SerializerMethodField()
+    current_beta_version = SimpleVersionSerializer()
     current_version = SimpleVersionSerializer()
     description = TranslationSerializerField()
     edit_url = serializers.SerializerMethodField()
+    has_eula = serializers.SerializerMethodField()
+    has_privacy_policy = serializers.SerializerMethodField()
     homepage = TranslationSerializerField()
     icon_url = serializers.SerializerMethodField()
     is_source_public = serializers.BooleanField(source='view_source')
@@ -152,20 +169,62 @@ class AddonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Addon
-        fields = ('id', 'authors', 'average_daily_users', 'current_version',
-                  'default_locale', 'description', 'edit_url', 'guid',
-                  'homepage', 'icon_url', 'is_disabled', 'is_experimental',
-                  'is_listed',
-                  'is_source_public', 'name', 'last_updated', 'previews',
-                  'public_stats', 'ratings', 'review_url', 'slug', 'status',
-                  'summary', 'support_email', 'support_url', 'tags',
-                  'theme_data', 'type', 'url', 'weekly_downloads')
+        fields = (
+            'id',
+            'authors',
+            'average_daily_users',
+            'categories',
+            'current_beta_version',
+            'current_version',
+            'default_locale',
+            'description',
+            'edit_url',
+            'guid',
+            'has_eula',
+            'has_privacy_policy',
+            'homepage',
+            'icon_url',
+            'is_disabled',
+            'is_experimental',
+            'is_listed',
+            'is_source_public',
+            'name',
+            'last_updated',
+            'previews',
+            'public_stats',
+            'ratings',
+            'review_url',
+            'slug',
+            'status',
+            'summary',
+            'support_email',
+            'support_url',
+            'tags',
+            'theme_data',
+            'type',
+            'url',
+            'weekly_downloads'
+        )
 
     def to_representation(self, obj):
         data = super(AddonSerializer, self).to_representation(obj)
         if data['theme_data'] is None:
             data.pop('theme_data')
         return data
+
+    def get_categories(self, obj):
+        # Return a dict of lists like obj.app_categories does, but exposing
+        # slugs for keys and values instead of objects.
+        return {
+            app.short: [cat.slug for cat in obj.app_categories[app]]
+            for app in obj.app_categories.keys()
+        }
+
+    def get_has_eula(self, obj):
+        return bool(getattr(obj, 'has_eula', obj.eula))
+
+    def get_has_privacy_policy(self, obj):
+        return bool(getattr(obj, 'has_privacy_policy', obj.privacy_policy))
 
     def get_tags(self, obj):
         if not hasattr(obj, 'tag_list'):
@@ -232,6 +291,34 @@ class ESAddonSerializer(BaseESSerializer, AddonSerializer):
     translated_fields = ('name', 'description', 'homepage', 'summary',
                          'support_email', 'support_url')
 
+    def fake_version_object(self, obj, data):
+        if data:
+            version = Version(
+                addon=obj, id=data['id'],
+                reviewed=self.handle_date(data['reviewed']),
+                version=data['version'])
+            version.all_files = [
+                File(
+                    id=file_['id'], created=self.handle_date(file_['created']),
+                    hash=file_['hash'], filename=file_['filename'],
+                    platform=file_['platform'], size=file_['size'],
+                    status=file_['status'], version=version)
+                for file_ in data.get('files', [])
+            ]
+
+            # In ES we store integers for the appversion info, we need to
+            # convert it back to strings.
+            compatible_apps = {}
+            for app_id, compat_dict in data.get('compatible_apps', {}).items():
+                app_name = APPS_ALL[int(app_id)]
+                compatible_apps[app_name] = ApplicationsVersions(
+                    min=AppVersion(version=compat_dict.get('min_human', '')),
+                    max=AppVersion(version=compat_dict.get('max_human', '')))
+            version.compatible_apps = compatible_apps
+        else:
+            version = None
+        return version
+
     def fake_object(self, data):
         """Create a fake instance of Addon and related models from ES data."""
         obj = Addon(id=data['id'], slug=data['slug'])
@@ -239,52 +326,46 @@ class ESAddonSerializer(BaseESSerializer, AddonSerializer):
         # Attach base attributes that have the same name/format in ES and in
         # the model.
         self._attach_fields(
-            obj, data,
-            ('average_daily_users', 'bayesian_rating', 'created',
-             'default_locale', 'guid', 'hotness', 'icon_type',
-             'is_experimental', 'is_listed',
-             'last_updated', 'modified', 'public_stats', 'slug', 'status',
-             'type', 'view_source', 'weekly_downloads'))
+            obj, data, (
+                'average_daily_users',
+                'bayesian_rating',
+                'created',
+                'default_locale',
+                'guid',
+                'has_eula',
+                'has_privacy_policy',
+                'hotness',
+                'icon_type',
+                'is_experimental',
+                'is_listed',
+                'last_updated',
+                'modified',
+                'public_stats',
+                'slug',
+                'status',
+                'type',
+                'view_source',
+                'weekly_downloads'
+            )
+        )
 
         # Attach attributes that do not have the same name/format in ES.
         obj.tag_list = data['tags']
         obj.disabled_by_user = data['is_disabled']  # Not accurate, but enough.
-
-        # Categories are annoying, skip them for now. We probably need to start
-        # declaring them in the code to properly handle translations etc if we
-        # want to display them in search results. See #2923.
-        obj.all_categories = []
+        obj.all_categories = [
+            CATEGORIES_BY_ID[cat_id] for cat_id in data.get('category', [])]
 
         # Attach translations (they require special treatment).
         self._attach_translations(obj, data, self.translated_fields)
 
-        # Attach related models (also faking them).
-        data_version = data.get('current_version')
-        if data_version:
-            obj._current_version = Version(
-                addon=obj, id=data_version['id'],
-                reviewed=self.handle_date(data_version['reviewed']),
-                version=data_version['version'])
-            data_files = data_version.get('files', [])
-            obj._current_version.all_files = [
-                File(
-                    id=file_['id'], created=self.handle_date(file_['created']),
-                    hash=file_['hash'], filename=file_['filename'],
-                    platform=file_['platform'], size=file_['size'],
-                    status=file_['status'], version=obj._current_version)
-                for file_ in data_files
-            ]
-
-            # In ES we store integers for the appversion info, we need to
-            # convert it back to strings.
-            compatible_apps = {}
-            for app_id, compat_dict in data['appversion'].items():
-                app_name = APPS_ALL[int(app_id)]
-                compatible_apps[app_name] = ApplicationsVersions(
-                    min=AppVersion(version=compat_dict.get('min_human', '')),
-                    max=AppVersion(version=compat_dict.get('max_human', '')))
-
-            obj._current_version.compatible_apps = compatible_apps
+        # Attach related models (also faking them). `current_version` is a
+        # property we can't write to, so we use the underlying field which
+        # begins with an underscore. `current_beta_version` is a
+        # cached_property so we can directly write to it.
+        obj.current_beta_version = self.fake_version_object(
+            obj, data.get('current_beta_version'))
+        obj._current_version = self.fake_version_object(
+            obj, data.get('current_version'))
 
         data_authors = data.get('listed_authors', [])
         obj.listed_authors = [

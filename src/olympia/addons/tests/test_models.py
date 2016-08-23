@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 from django import forms
 from django.conf import settings
 from django.core import mail
-from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage as storage
 from django.db import IntegrityError
 from django.utils import translation
@@ -26,6 +25,7 @@ from olympia.addons.models import (
     Persona, Preview, track_addon_status_change)
 from olympia.applications.models import AppVersion
 from olympia.bandwagon.models import Collection
+from olympia.constants.categories import CATEGORIES
 from olympia.devhub.models import ActivityLog, AddonLog, RssKey, SubmitStep
 from olympia.editors.models import EscalationQueue
 from olympia.files.models import File
@@ -739,18 +739,19 @@ class TestAddonModels(TestCase):
         addon.status = amo.STATUS_UNREVIEWED
         assert not addon.is_reviewed()
 
-    def test_is_no_restart(self):
-        a = Addon.objects.get(pk=3615)
-        f = a.current_version.all_files[0]
-        assert not f.no_restart
-        assert not a.is_no_restart()
+    def test_requires_restart(self):
+        addon = Addon.objects.get(pk=3615)
+        file_ = addon.current_version.all_files[0]
+        assert not file_.no_restart
+        assert file_.requires_restart
+        assert addon.requires_restart
 
-        f.update(no_restart=True)
-        assert Addon.objects.get(pk=3615).is_no_restart()
+        file_.update(no_restart=True)
+        assert not Addon.objects.get(pk=3615).requires_restart
 
-        a.versions.all().delete()
-        a._current_version = None
-        assert not a.is_no_restart()
+        addon.versions.all().delete()
+        addon._current_version = None
+        assert not addon.requires_restart
 
     def test_is_featured(self):
         """Test if an add-on is globally featured"""
@@ -801,21 +802,6 @@ class TestAddonModels(TestCase):
         a.the_future = ''
         a.save()
         assert not addon().has_profile()
-
-    def test_has_eula(self):
-        def addon():
-            return Addon.objects.get(pk=3615)
-
-        assert addon().has_eula
-
-        a = addon()
-        a.eula = ''
-        a.save()
-        assert not addon().has_eula
-
-        a.eula = 'eula'
-        a.save()
-        assert addon().has_eula
 
     def newlines_helper(self, string_before):
         addon = Addon.objects.get(pk=3615)
@@ -1101,60 +1087,85 @@ class TestAddonModels(TestCase):
 
         assert self.newlines_helper(before) == after
 
-    def test_app_numeric_slug(self):
-        cat = Category.objects.get(id=22)
-        cat.slug = 123
-        with self.assertRaises(ValidationError):
-            cat.full_clean()
-
     def test_app_categories(self):
-        def addon():
-            return Addon.objects.get(pk=3615)
-
-        c22 = Category.objects.get(id=22)
-        c22.name = 'CCC'
-        c22.save()
-        c23 = Category.objects.get(id=23)
-        c23.name = 'BBB'
-        c23.save()
-        c24 = Category.objects.get(id=24)
-        c24.name = 'AAA'
-        c24.save()
-
-        cats = addon().all_categories
-        assert cats == [c22, c23, c24]
-        for cat in cats:
-            assert cat.application == amo.FIREFOX.id
-
-        cats = [c24, c23, c22]
-        app_cats = [(amo.FIREFOX, cats)]
-        assert addon().app_categories == app_cats
-
-        c = Category(application=amo.THUNDERBIRD.id, name='XXX',
-                     type=addon().type, count=1, weight=1)
-        c.save()
-        AddonCategory.objects.create(addon=addon(), category=c)
-        c24.save()  # Clear the app_categories cache.
-        app_cats += [(amo.THUNDERBIRD, [c])]
-        assert addon().app_categories == app_cats
-
-    def test_app_categories_sunbird(self):
         def get_addon():
             return Addon.objects.get(pk=3615)
 
+        # This add-on is already associated with three Firefox categories
+        # using fixtures: Bookmarks, Feeds, Social.
+        FIREFOX_EXT_CATS = CATEGORIES[amo.FIREFOX.id][amo.ADDON_EXTENSION]
+        expected_firefox_cats = [
+            FIREFOX_EXT_CATS['bookmarks'],
+            FIREFOX_EXT_CATS['feeds-news-blogging'],
+            FIREFOX_EXT_CATS['social-communication']
+        ]
+
+        addon = get_addon()
+        assert set(addon.all_categories) == set(expected_firefox_cats)
+        assert addon.app_categories == {amo.FIREFOX: expected_firefox_cats}
+
+        # Let's add a thunderbird category.
+        thunderbird_static_cat = (
+            CATEGORIES[amo.THUNDERBIRD.id][amo.ADDON_EXTENSION]['tags'])
+        tb_category = Category.from_static_category(thunderbird_static_cat)
+        tb_category.save()
+        AddonCategory.objects.create(addon=addon, category=tb_category)
+
+        # Reload the addon to get a fresh, uncached categories list.
         addon = get_addon()
 
-        # This add-on is already associated with three Firefox categories.
-        cats = sorted(addon.categories.all(), key=lambda x: x.name)
-        assert addon.app_categories == [(amo.FIREFOX, cats)]
+        # Test that the thunderbird category was added correctly.
+        assert set(addon.all_categories) == set(
+            expected_firefox_cats + [thunderbird_static_cat])
+        assert set(addon.app_categories.keys()) == set(
+            [amo.FIREFOX, amo.THUNDERBIRD])
+        assert set(addon.app_categories[amo.FIREFOX]) == set(
+            expected_firefox_cats)
+        assert set(addon.app_categories[amo.THUNDERBIRD]) == set(
+            [thunderbird_static_cat])
 
-        # Associate this add-on with a Sunbird category.
-        c2 = Category.objects.create(application=amo.SUNBIRD.id,
-                                     type=amo.ADDON_EXTENSION, name='Sunny D')
-        AddonCategory.objects.create(addon=addon, category=c2)
+    def test_app_categories_ignore_unknown_cats(self):
+        def get_addon():
+            return Addon.objects.get(pk=3615)
 
-        # Sunbird category should be excluded.
-        assert get_addon().app_categories == [(amo.FIREFOX, cats)]
+        # This add-on is already associated with three Firefox categories
+        # using fixtures: Bookmarks, Feeds, Social.
+        FIREFOX_EXT_CATS = CATEGORIES[amo.FIREFOX.id][amo.ADDON_EXTENSION]
+        expected_firefox_cats = [
+            FIREFOX_EXT_CATS['bookmarks'],
+            FIREFOX_EXT_CATS['feeds-news-blogging'],
+            FIREFOX_EXT_CATS['social-communication']
+        ]
+
+        addon = get_addon()
+        assert set(addon.all_categories) == set(expected_firefox_cats)
+        assert addon.app_categories == {amo.FIREFOX: expected_firefox_cats}
+
+        # Associate this add-on with a couple more categories, including
+        # one that does not exist in the constants.
+        unknown_cat = Category.objects.create(
+            application=amo.SUNBIRD.id, id=123456, type=amo.ADDON_EXTENSION,
+            name='Sunny D')
+        AddonCategory.objects.create(addon=addon, category=unknown_cat)
+        thunderbird_static_cat = (
+            CATEGORIES[amo.THUNDERBIRD.id][amo.ADDON_EXTENSION]['appearance'])
+        tb_category = Category.from_static_category(thunderbird_static_cat)
+        tb_category.save()
+        AddonCategory.objects.create(addon=addon, category=tb_category)
+
+        # Reload the addon to get a fresh, uncached categories list.
+        addon = get_addon()
+
+        # The sunbird category should not be present since it does not match
+        # an existing static category, thunderbird one should have been added.
+        assert set(addon.all_categories) == set(
+            expected_firefox_cats + [thunderbird_static_cat])
+        assert set(addon.app_categories.keys()) == set(
+            [amo.FIREFOX, amo.THUNDERBIRD])
+        assert set(addon.app_categories[amo.FIREFOX]) == set(
+            expected_firefox_cats)
+        assert set(addon.app_categories[amo.THUNDERBIRD]) == set(
+            [thunderbird_static_cat])
 
     def test_review_replies(self):
         """
@@ -1262,7 +1273,7 @@ class TestAddonModels(TestCase):
         addon, version = self.setup_files(amo.STATUS_UNREVIEWED)
         addon.update(status=amo.STATUS_PUBLIC)
         version.save()
-        assert addon.status == amo.STATUS_UNREVIEWED
+        assert addon.status == amo.STATUS_NOMINATED
 
     def test_removing_public_with_prelim(self):
         addon, version = self.setup_files(amo.STATUS_LITE)
@@ -1280,18 +1291,20 @@ class TestAddonModels(TestCase):
         addon.latest_version.files.update(status=amo.STATUS_DISABLED)
         assert addon.can_request_review() == ()
 
-    def check(self, status, exp, kw={}):
+    def check(self, status, expected, disallow_preliminary=False,
+              extra_update_kw={}):
         addon = Addon.objects.get(pk=3615)
         changes = {'status': status, 'disabled_by_user': False}
-        changes.update(**kw)
+        changes.update(**extra_update_kw)
         addon.update(**changes)
-        assert addon.can_request_review() == exp
+        assert addon.can_request_review(disallow_preliminary) == expected
 
     def test_can_request_review_null(self):
         self.check(amo.STATUS_NULL, (amo.STATUS_LITE, amo.STATUS_PUBLIC))
 
     def test_can_request_review_null_disabled(self):
-        self.check(amo.STATUS_NULL, (), {'disabled_by_user': True})
+        self.check(amo.STATUS_NULL, (),
+                   extra_update_kw={'disabled_by_user': True})
 
     def test_can_request_review_unreviewed(self):
         self.check(amo.STATUS_UNREVIEWED, (amo.STATUS_PUBLIC,))
@@ -1313,6 +1326,38 @@ class TestAddonModels(TestCase):
 
     def test_can_request_review_lite_and_nominated(self):
         self.check(amo.STATUS_LITE_AND_NOMINATED, ())
+
+    def test_can_request_review_null_no_prelim(self):
+        self.check(amo.STATUS_NULL, (amo.STATUS_PUBLIC,),
+                   disallow_preliminary=True)
+
+    def test_can_request_review_null_disabled_no_prelim(self):
+        self.check(amo.STATUS_NULL, (), disallow_preliminary=True,
+                   extra_update_kw={'disabled_by_user': True})
+
+    def test_can_request_review_unreviewed_no_prelim(self):
+        self.check(amo.STATUS_UNREVIEWED, (amo.STATUS_PUBLIC,),
+                   disallow_preliminary=True)
+
+    def test_can_request_review_nominated_no_prelim(self):
+        self.check(amo.STATUS_NOMINATED, (), disallow_preliminary=True)
+
+    def test_can_request_review_public_no_prelim(self):
+        self.check(amo.STATUS_PUBLIC, (), disallow_preliminary=True)
+
+    def test_can_request_review_disabled_no_prelim(self):
+        self.check(amo.STATUS_DISABLED, (), disallow_preliminary=True)
+
+    def test_can_request_review_deleted_no_prelim(self):
+        self.check(amo.STATUS_DELETED, (), disallow_preliminary=True)
+
+    def test_can_request_review_lite_no_prelim(self):
+        self.check(amo.STATUS_LITE, (amo.STATUS_PUBLIC,),
+                   disallow_preliminary=True)
+
+    def test_can_request_review_lite_and_nominated_no_prelim(self):
+        self.check(amo.STATUS_LITE_AND_NOMINATED, (),
+                   disallow_preliminary=True)
 
     def test_none_homepage(self):
         # There was an odd error when a translation was set to None.
@@ -1833,6 +1878,23 @@ class TestCategoryModel(TestCase):
             cat = Category(type=t, slug='omg')
             assert cat.get_url_path()
 
+    def test_name_from_constants(self):
+        category = Category(
+            type=amo.ADDON_EXTENSION, application=amo.FIREFOX.id,
+            slug='alerts-updates')
+        assert category.name == u'Alerts & Updates'
+        with translation.override('fr'):
+            assert category.name == u'Alertes et mises à jour'
+
+    def test_name_fallback_to_db(self):
+        category = Category.objects.create(
+            type=amo.ADDON_EXTENSION, application=amo.FIREFOX.id,
+            slug='this-cat-does-not-exist', db_name=u'ALAAAAAAARM')
+
+        assert category.name == u'ALAAAAAAARM'
+        with translation.override('fr'):
+            assert category.name == u'ALAAAAAAARM'
+
 
 class TestPersonaModel(TestCase):
     fixtures = ['addons/persona']
@@ -1870,7 +1932,7 @@ class TestPersonaModel(TestCase):
             assert url_.endswith('/fr/themes/update-check/15663')
 
     def test_json_data(self):
-        self.persona.addon.all_categories = [Category(name='Yolo Art')]
+        self.persona.addon.all_categories = [Category(db_name='Yolo Art')]
 
         VAMO = 'https://vamo/%(locale)s/themes/update-check/%(id)d'
 
@@ -1909,7 +1971,7 @@ class TestPersonaModel(TestCase):
         self.persona.persona_id = 0  # Make this a "new" theme.
         self.persona.save()
 
-        self.persona.addon.all_categories = [Category(name='Yolo Art')]
+        self.persona.addon.all_categories = [Category(db_name='Yolo Art')]
 
         VAMO = 'https://vamo/%(locale)s/themes/update-check/%(id)d'
 

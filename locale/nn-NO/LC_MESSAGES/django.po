@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-28 10:05+0000\n"
-"PO-Revision-Date: 2016-07-16 16:57+0000\n"
+"POT-Creation-Date: 2016-08-23 15:32+0000\n"
+"PO-Revision-Date: 2016-08-12 13:42+0000\n"
 "Last-Translator: bjorn.svindseth <bjorn.svindseth@online.no>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nn_NO\n"
@@ -226,6 +226,10 @@ msgstr "Denne utvidinga er ikkje vurdert av Mozilla. <a href=\"%(url)s\">Les mei
 msgid "This add-on has been preliminarily reviewed by Mozilla. <a href=\"%(url)s\">Learn more</a>"
 msgstr "Denne utvidinga er førebels godkjend av Mozilla. <a href=\"%(url)s\">Les meir</a>"
 
+#: src/olympia/addons/templates/addons/button.html
+msgid "This add-on has been marked as experimental by its developers."
+msgstr ""
+
 #: src/olympia/addons/templates/addons/contribution.html src/olympia/addons/templates/addons/impala/developers.html
 msgid "The developer of this add-on asks that you help support its continued development by making a small contribution."
 msgstr "Utviklaren av denne utvidinga ber deg om å støtte framleis utvjikling av utvidinga ved å donera eit mindre beløp."
@@ -283,13 +287,13 @@ msgstr "Gje eitt bidrag"
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 #, python-format
 msgid "Help support the continued development of <strong>%(addon_name)s</strong> by making a small contribution through <a href=\"%(paypal_url)s\">PayPal</a>."
-msgstr ""
+msgstr "Hjelp til og støtt vidare utvikling av <strong>%(addon_name)s</strong> ved å gje eit lite bidrag via <a href=\"%(paypal_url)s\">PayPal</a>."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 #, python-format
 msgid ""
 "To show your support for <b>%(addon_name)s</b>, the developer asks that you make a donation to the <a href=\"%(charity_url)s\">%(charity_name)s</a> through <a href=\"%(paypal_url)s\">PayPal</a>."
-msgstr ""
+msgstr "For å visa støtta di til <b>%(addon_name)s</b>, ber utviklaren deg donera til <a href=\"%(charity_url)s\">%(charity_name)s</a> med <a href=\"%(paypal_url)s\">PayPal</a>."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 #, python-format
@@ -297,6 +301,7 @@ msgid ""
 "To show your support for <b>%(addon_name)s</b>, the developer asks that you make a small contribution to <a href=\"%(charity_url)s\">%(charity_name)s</a> through <a href=\"%(paypal_url)s\">PayPal</"
 "a>."
 msgstr ""
+"For at visa støtta di til <b>%(addon_name)s</b>, ber udviklaren deg om at du gjev eit mindre bidrag til <a href=\"%(charity_url)s\">%(charity_name)s</a> via <a href=\"%(paypal_url)s\">Paypal</a>."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "How much would you like to contribute?"
@@ -304,30 +309,30 @@ msgstr "Kor mykje vil du bidra med?"
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "The maximum contribution amount is {0}."
-msgstr ""
+msgstr "Maksimalt bidragsbeløp er {0}."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "The minimum contribution amount is {0}."
-msgstr ""
+msgstr "Minimum bidragsbeløp er {0}."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "Contribution amount must be a number."
-msgstr ""
+msgstr "Bidragsbeløpet må vera eit tal."
 
 #. {0} is a currency amount (e.g., $5.00)
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "A one-time suggested contribution of {0}"
-msgstr ""
+msgstr "Eit føreslått eingongsbidrag på {0}"
 
 #. {0} is a currency symbol (e.g., $),                    {1} is an amount input
 #. field
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "A one-time contribution of {0} {1}"
-msgstr ""
+msgstr "Eit eingongsbidrag på {0} {1}"
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "Leave a comment or request with your contribution."
-msgstr ""
+msgstr "Legg att ein kommentar eller ein førespurnad med bidraget ditt."
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html src/olympia/bandwagon/templates/bandwagon/ajax_new.html src/olympia/bandwagon/templates/bandwagon/includes/addedit.html
 #: src/olympia/reviews/templates/reviews/mobile/add_form.html src/olympia/templates/includes/forms.html
@@ -348,11 +353,13 @@ msgstr "Nei takk"
 
 #: src/olympia/addons/templates/addons/contributions_lightbox.html
 msgid "Contribution made, thank you."
-msgstr ""
+msgstr "Takk for bidraget ditt."
 
-#: src/olympia/addons/templates/addons/details_box.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
-msgid "No restart required"
-msgstr "Ingen omstart nødvendig"
+#: src/olympia/addons/templates/addons/details_box.html src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/impala/listing/items.html
+#: src/olympia/editors/models.py src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
+#, fuzzy
+msgid "Requires Restart"
+msgstr "Ingen omstart"
 
 #. This is a caption for a table. {0} is an add-on name.
 #: src/olympia/addons/templates/addons/details_box.html src/olympia/addons/templates/addons/includes/persona.html
@@ -413,11 +420,11 @@ msgstr "Vis statistikk"
 
 #: src/olympia/addons/templates/addons/details_box.html
 msgid "Average Daily Users"
-msgstr ""
+msgstr "Daglege brukarar i gjennomsnitt"
 
 #: src/olympia/addons/templates/addons/details_box.html
 msgid "Abuse Reports"
-msgstr ""
+msgstr "Rapportar om misbruk"
 
 #. The Privacy Policy for this add-on.
 #: src/olympia/addons/templates/addons/details_box.html src/olympia/addons/templates/addons/impala/button.html src/olympia/addons/templates/addons/impala/details.html
@@ -481,12 +488,12 @@ msgstr "Versjonsmerknad"
 #. {0} is the name of the add-on
 #: src/olympia/addons/templates/addons/eula.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/eula.html
 msgid "End-User License Agreement for {0}"
-msgstr ""
+msgstr "Sluttbrukarlisens for {0}"
 
 #: src/olympia/addons/templates/addons/eula.html src/olympia/addons/templates/addons/impala/button.html src/olympia/addons/templates/addons/impala/details.html
 #: src/olympia/devhub/templates/devhub/includes/policy_form.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/eula.html
 msgid "End-User License Agreement"
-msgstr ""
+msgstr "Sluttbrukarlisens"
 
 #: src/olympia/addons/templates/addons/eula.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/eula.html
 #, python-format
@@ -594,7 +601,8 @@ msgid "Return to the addon."
 msgstr "Tilbake til utvidinga."
 
 #: src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/mobile/details.html src/olympia/addons/templates/addons/mobile/persona_detail.html
-#: src/olympia/addons/templates/addons/persona_detail.html src/olympia/editors/templates/editors/review.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/base.html
+#: src/olympia/addons/templates/addons/persona_detail.html src/olympia/addons/templates/addons/persona_preview.html src/olympia/discovery/serializers.py
+#: src/olympia/editors/templates/editors/review.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/base.html
 msgid "by"
 msgstr "av"
 
@@ -639,7 +647,7 @@ msgstr "Lisens"
 
 #: src/olympia/addons/templates/addons/persona_preview.html src/olympia/constants/base.py
 msgid "Awaiting Review"
-msgstr ""
+msgstr "Ventar på vurdering"
 
 #: src/olympia/addons/templates/addons/persona_preview.html src/olympia/amo/log.py src/olympia/constants/base.py src/olympia/editors/helpers.py
 msgid "Rejected"
@@ -653,12 +661,12 @@ msgstr "Godkjend"
 #: src/olympia/addons/templates/addons/listing/items_mobile.html src/olympia/addons/templates/addons/listing/macros.html src/olympia/addons/templates/addons/persona_preview.html
 msgid "<strong>{0}</strong> user"
 msgid_plural "<strong>{0}</strong> users"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<strong>{0}</strong> brukar"
+msgstr[1] "<strong>{0}</strong> brukarar"
 
 #: src/olympia/addons/templates/addons/persona_preview.html
 msgid "Hover to Preview"
-msgstr ""
+msgstr "Hald musepeikaren over for å førehandsvise"
 
 #: src/olympia/addons/templates/addons/persona_preview.html src/olympia/reviews/templates/reviews/add.html
 msgid "Add"
@@ -676,24 +684,29 @@ msgstr "Rediger"
 #: src/olympia/addons/templates/addons/persona_preview.html
 #, python-format
 msgid "%%Y-%%m-%%d"
-msgstr ""
+msgstr "%%d. %%m %%Y"
 
 #: src/olympia/addons/templates/addons/persona_preview.html
 msgid "by {0} on {1}"
-msgstr ""
+msgstr "av {0} den {1}"
 
 #: src/olympia/addons/templates/addons/persona_preview.html src/olympia/reviews/helpers.py src/olympia/reviews/templates/reviews/impala/reviews_link.html
 #: src/olympia/reviews/templates/reviews/review_list.html src/olympia/reviews/templates/reviews/reviews_link.html
 msgid "Not yet rated"
-msgstr ""
+msgstr "Ikkje vurdert enno"
 
 #: src/olympia/addons/templates/addons/persona_preview.html
 msgid "<b>{0}</b> users"
-msgstr ""
+msgstr "<b>{0}</b> brukarar"
+
+#: src/olympia/addons/templates/addons/persona_preview.html
+#, fuzzy
+msgid "{0} Daily Users"
+msgstr "Daglege brukarar"
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "To install this add-on and thousands more, <b>get Firefox</b>, a free and open web browser from Mozilla."
-msgstr ""
+msgstr "For å installera denne utvidinga og tusenvis andre, <b>last ned Firefox</b>, ein gratis og open kjeldekode-nettlesar frå Mozilla."
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "Learn more about Firefox"
@@ -715,7 +728,7 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "Learn more about Thunderbird"
-msgstr ""
+msgstr "Les meir om Thunderbird"
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "To install this Theme and thousands more, <b>get Firefox</b>, a free and open web browser from Mozilla."
@@ -736,7 +749,7 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/popups.html
 msgid "Help test new Firefox Versions"
-msgstr ""
+msgstr "Hjelp til med å testa nye Firefox-versjonar"
 
 #: src/olympia/addons/templates/addons/popups.html
 #, python-format
@@ -858,7 +871,7 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/impala/review_add_box.html src/olympia/addons/templates/addons/review_add_box.html src/olympia/pages/templates/pages/review_guide.html
 msgid "Review Guidelines"
-msgstr ""
+msgstr "Retningslinjer for vurderingar"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html src/olympia/addons/templates/addons/review_list_box.html src/olympia/editors/helpers.py src/olympia/reviews/templates/reviews/add.html
 #: src/olympia/reviews/templates/reviews/mobile/review_list.html src/olympia/reviews/templates/reviews/reply.html src/olympia/reviews/templates/reviews/review_list.html
@@ -868,18 +881,18 @@ msgstr "Vurderingar"
 #: src/olympia/addons/templates/addons/impala/review_list_box.html src/olympia/addons/templates/addons/review_list_box.html src/olympia/reviews/templates/reviews/review.html
 #, python-format
 msgid "by %(user)s on %(date)s"
-msgstr ""
+msgstr "av %(user)s den %(date)s"
 
 #: src/olympia/addons/templates/addons/impala/review_list_box.html src/olympia/addons/templates/addons/review_list_box.html
 msgid "Show the developer's reply to this review"
-msgstr ""
+msgstr "Vis utviklaren sitt svar på denne vurderinga"
 
 #: src/olympia/addons/templates/addons/review_list_box.html
 #, python-format
 msgid "See all reviews of this add-on"
 msgid_plural "See all %(cnt)s reviews of this add-on"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vis alle vurderingar for denne utvidinga"
+msgstr[1] "Vis alle %(cnt)s vurderingar for denne utvidinga"
 
 #: src/olympia/addons/templates/addons/tags_box.html src/olympia/constants/categories.py src/olympia/devhub/templates/devhub/addons/edit/basic.html
 msgid "Tags"
@@ -894,6 +907,10 @@ msgstr "Ikon for {0}"
 #, python-format
 msgid "by %(users)s"
 msgstr "av %(users)s"
+
+#: src/olympia/addons/templates/addons/impala/button.html
+msgid "This add-on has been marked as experimental by its developers"
+msgstr ""
 
 #: src/olympia/addons/templates/addons/impala/button.html
 msgid "Download Anyway"
@@ -925,11 +942,11 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/impala/dependencies_note.html
 msgid "This add-on requires the following add-ons to work properly:"
-msgstr ""
+msgstr "Denne utvidinga krev følgjande utviding for å fungera på rett måte:"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html
 msgid "Average"
-msgstr ""
+msgstr "Gjennomsnitt"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html
 msgid "Write a review"
@@ -937,25 +954,25 @@ msgstr "Skriv ei vurdering"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html
 msgid "Related Categories"
-msgstr ""
+msgstr "Relaterte kategoriar"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html
 msgid "Part of these Collections"
-msgstr ""
+msgstr "Del av desse samlingane"
 
 #: src/olympia/addons/templates/addons/impala/details-more.html
 #, python-format
 msgid "Other add-ons by %(author)s"
 msgid_plural "Other add-ons by these authors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Andre utvidingar av %(author)s"
+msgstr[1] "Andre utvidingar av desse utviklarane"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 #, python-format
 msgid "<span itemprop=\"ratingCount\">%(num)s</span> user review"
 msgid_plural "<span itemprop=\"ratingCount\">%(num)s</span> user reviews"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<span itemprop=\"ratingCount\">%(num)s</span> brukarvurdering"
+msgstr[1] "<span itemprop=\"ratingCount\">%(num)s</span> brukarvurderingar"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "View statistics"
@@ -970,16 +987,12 @@ msgstr "Handsam"
 msgid "Icon of {0}"
 msgstr "Ikon for {0}"
 
-#: src/olympia/addons/templates/addons/impala/details.html src/olympia/addons/templates/addons/impala/listing/items.html
-msgid "No Restart"
-msgstr "Ingen omstart"
-
 #: src/olympia/addons/templates/addons/impala/details.html
 #, python-format
 msgid "Meet the Developer: <a href=\"%(url)s\">%(name)s</a>"
 msgid_plural "<a href=\"%(url)s\">Meet the Developers</a>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Møt utviklaren: <a href=\"%(url)s\">%(name)s</a>"
+msgstr[1] "<a href=\"%(url)s\">Møt utviklarane</a>"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Learn why {0} was created and find out what's next for this add-on."
@@ -988,11 +1001,11 @@ msgstr ""
 #. {0} is an index.
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Add-on screenshot #{0}"
-msgstr ""
+msgstr "Skjermbilde #{0} av utviding"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Add-on home page"
-msgstr ""
+msgstr "Heimesida for utvidinga"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Support site"
@@ -1018,11 +1031,11 @@ msgstr "Sist oppdatert:"
 #: src/olympia/addons/templates/addons/impala/details.html
 #, python-format
 msgid "Released under <a href=\"%(url)s\">%(name)s</a>"
-msgstr ""
+msgstr "Utgitt under <a href=\"%(url)s\">%(name)s</a>"
 
 #: src/olympia/addons/templates/addons/impala/details.html src/olympia/amo/helpers.py src/olympia/devhub/forms.py src/olympia/versions/templates/versions/version.html
 msgid "Custom License"
-msgstr ""
+msgstr "Eigen lisens"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "About this Add-on"
@@ -1034,11 +1047,11 @@ msgstr "Utviklaren sine kommentarer"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "Version Information"
-msgstr ""
+msgstr "Versjonsinformasjon"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid "See complete version history"
-msgstr ""
+msgstr "Vis fullstendig versjonshistorikk"
 
 #: src/olympia/addons/templates/addons/impala/details.html
 msgid ""
@@ -1075,11 +1088,11 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/impala/developers.html
 msgid "Why was {0} created?"
-msgstr ""
+msgstr "Kvifor vart {0} laga?"
 
 #: src/olympia/addons/templates/addons/impala/developers.html
 msgid "What's next for {0}"
-msgstr ""
+msgstr "Framtidige planar for {0}"
 
 #: src/olympia/addons/templates/addons/impala/developers.html
 msgid "About the Developer"
@@ -1089,7 +1102,7 @@ msgstr[1] "Om utviklarane"
 
 #: src/olympia/addons/templates/addons/impala/developers.html src/olympia/users/templates/users/edit.html src/olympia/users/templates/users/profile.html
 msgid "No Photo"
-msgstr ""
+msgstr "Ingen foto"
 
 #: src/olympia/addons/templates/addons/impala/developers.html
 msgid "Who is {0}?"
@@ -1105,11 +1118,11 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/impala/license.html
 msgid "Source Code License for {addon}"
-msgstr ""
+msgstr "Kjeldekodelisens for {addon}"
 
 #: src/olympia/addons/templates/addons/impala/license.html src/olympia/versions/templates/versions/mobile/version.html
 msgid "Source Code License"
-msgstr ""
+msgstr "Kjeldekodelisens"
 
 #: src/olympia/addons/templates/addons/impala/review_list_box.html src/olympia/reviews/templates/reviews/review.html
 msgid "permalink"
@@ -1123,7 +1136,7 @@ msgstr "omset"
 #, python-format
 msgid "See all user reviews"
 msgid_plural "See all %(cnt)s user reviews"
-msgstr[0] ""
+msgstr[0] "Vis alle brukarvurderingane"
 msgstr[1] ""
 
 #: src/olympia/addons/templates/addons/impala/review_list_box.html src/olympia/reviews/templates/reviews/review_list.html
@@ -1168,7 +1181,7 @@ msgstr "Godkjenn/Avvis"
 
 #: src/olympia/addons/templates/addons/includes/persona.html src/olympia/editors/templates/editors/themes/single.html
 msgid "Review History"
-msgstr ""
+msgstr "Vurderingshistorikk"
 
 #: src/olympia/addons/templates/addons/includes/persona_pending_notice.html
 msgid "Sorry, this theme is pending. Please come back later."
@@ -1180,7 +1193,7 @@ msgstr ""
 
 #: src/olympia/addons/templates/addons/listing/items.html
 msgid "Collector's Note"
-msgstr ""
+msgstr "Samlar sin merknad"
 
 #: src/olympia/addons/templates/addons/listing/items_mobile.html
 msgid "Not Yet Rated"
@@ -1190,8 +1203,8 @@ msgstr "Ikkje vurdert enno"
 #: src/olympia/addons/templates/addons/listing/items_mobile.html src/olympia/addons/templates/addons/listing/macros.html src/olympia/devhub/templates/devhub/addons/listing/macros.html
 msgid "<strong>{0}</strong> weekly download"
 msgid_plural "<strong>{0}</strong> weekly downloads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<strong>{0}</strong> nedlasting pr. veke"
+msgstr[1] "<strong>{0}</strong> nedlastingar pr. veke"
 
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "Read More"
@@ -1212,7 +1225,7 @@ msgstr "Versjon"
 #. {0} is a version number.
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "{0} (Version Notes)"
-msgstr ""
+msgstr "{0} (versjonsnotat)"
 
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "View All Versions"
@@ -1224,15 +1237,15 @@ msgstr "Vis utviklingsversjon"
 
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "Caution"
-msgstr ""
+msgstr "Åtvaring"
 
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "Visit the Support Site"
-msgstr ""
+msgstr "Gå til brukarstøttesida"
 
 #: src/olympia/addons/templates/addons/mobile/details.html
 msgid "Ask the Author a Question"
-msgstr ""
+msgstr "Still eit spørsmål til utviklaren"
 
 #: src/olympia/addons/templates/addons/mobile/eula.html
 msgid "License Agreement"
@@ -1241,7 +1254,7 @@ msgstr "Lisensavtale"
 #: src/olympia/addons/templates/addons/mobile/eula.html
 #, python-format
 msgid "%(name)s requires that you accept the following End-User License Agreement before installation can proceed:"
-msgstr ""
+msgstr "%(name)s krev at du godtek følgjande lisensavtale for sluttbrukarar før installeringa kan fortsetta:"
 
 #: src/olympia/addons/templates/addons/mobile/eula.html
 msgid "Accept"
@@ -1249,15 +1262,15 @@ msgstr "Godta"
 
 #: src/olympia/addons/templates/addons/mobile/home.html src/olympia/templates/mobile/base_addons.html
 msgid "Add-ons are not currently available on Firefox for iOS."
-msgstr ""
+msgstr "Utvidinga er ikkje tilgjengeleg på Firefox for iOS."
 
 #: src/olympia/addons/templates/addons/mobile/home.html src/olympia/templates/mobile/base_addons.html
 msgid "You need Firefox to install add-ons. <a href=\"http://mozilla.com/mobile\">Learn More&nbsp;&raquo;</a>"
-msgstr ""
+msgstr "Du må ha Firefox for å installera utvidingar. <a href=\"http://mozilla.com/mobile\">Les meir&nbsp;&raquo;</a>"
 
 #: src/olympia/addons/templates/addons/mobile/home.html src/olympia/templates/header_title.html src/olympia/templates/impala/header_title.html
 msgid "Return to the {0} Add-ons homepage"
-msgstr ""
+msgstr "Gå tilbake til heimesida for {0}-utvidingar"
 
 #: src/olympia/addons/templates/addons/mobile/home.html src/olympia/amo/helpers.py src/olympia/bandwagon/templates/bandwagon/edit.html src/olympia/editors/templates/editors/base.html
 #: src/olympia/editors/templates/editors/performance.html src/olympia/legacy_discovery/templates/legacy_discovery/pane.html src/olympia/templates/impala/header_title.html
@@ -1347,17 +1360,16 @@ msgstr "Logg ut"
 
 #: src/olympia/amo/context_processors.py src/olympia/devhub/templates/devhub/addons/dashboard.html
 msgid "Manage My Submissions"
-msgstr ""
+msgstr "Handsam bidraga mine"
 
 #: src/olympia/amo/context_processors.py src/olympia/devhub/templates/devhub/addons/dashboard.html src/olympia/devhub/templates/devhub/addons/submit/base.html
 #: src/olympia/devhub/templates/devhub/nav.html
 msgid "Submit a New Add-on"
-msgstr ""
+msgstr "Send inn ei ny utviding"
 
-#: src/olympia/amo/context_processors.py src/olympia/browse/templates/browse/personas/base.html src/olympia/devhub/templates/devhub/addons/dashboard.html
-#: src/olympia/devhub/templates/devhub/index.html
+#: src/olympia/amo/context_processors.py src/olympia/browse/templates/browse/personas/base.html src/olympia/devhub/templates/devhub/addons/dashboard.html src/olympia/devhub/templates/devhub/index.html
 msgid "Submit a New Theme"
-msgstr ""
+msgstr "Send inn eit nytt tema"
 
 #: src/olympia/amo/context_processors.py src/olympia/amo/templates/amo/site_nav.html src/olympia/devhub/helpers.py src/olympia/templates/footer.html
 msgid "Developer Hub"
@@ -1365,7 +1377,7 @@ msgstr "Utviklarsenter"
 
 #: src/olympia/amo/context_processors.py src/olympia/devhub/views.py
 msgid "Manage API Keys"
-msgstr ""
+msgstr "Handsam API-nøklar"
 
 #: src/olympia/amo/context_processors.py src/olympia/editors/helpers.py src/olympia/editors/templates/editors/base.html
 msgid "Editor Tools"
@@ -1377,15 +1389,15 @@ msgstr "Admin-verktøy"
 
 #: src/olympia/amo/fields.py
 msgid "Incorrect, please try again."
-msgstr ""
+msgstr "Feil, prøv på nytt."
 
 #: src/olympia/amo/fields.py
 msgid "Error verifying input, please try again."
-msgstr ""
+msgstr "Feil ved kontroll av input. Prøv på nytt."
 
 #: src/olympia/amo/fields.py
 msgid "This must be a valid hex color code, such as #000000."
-msgstr ""
+msgstr "Dette må vera ein gyldig hexadecimal-fargekode, som t.d. #000000."
 
 #: src/olympia/amo/helpers.py src/olympia/amo/templates/amo/site_nav.html src/olympia/bandwagon/templates/bandwagon/add.html src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 #: src/olympia/bandwagon/templates/bandwagon/delete.html src/olympia/bandwagon/templates/bandwagon/edit.html src/olympia/bandwagon/templates/bandwagon/impala/collection_listing.html
@@ -1396,7 +1408,7 @@ msgstr "Samlingar"
 
 #: src/olympia/amo/helpers.py src/olympia/amo/templates/amo/site_nav.html src/olympia/browse/templates/browse/language_tools.html
 msgid "Dictionaries & Language Packs"
-msgstr ""
+msgstr "Ordbøker og språkpakkar"
 
 #. L10n: relative time in the past, like '4 days ago'
 #: src/olympia/amo/helpers.py
@@ -1421,16 +1433,16 @@ msgstr "Kategoriar redigert for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{0.name} ({1}) added to {addon}."
-msgstr ""
+msgstr "{0.name} ({1}) lagt til på {addon}."
 
 #. L10n: {0} is the user being removed, {1} is their role.
 #: src/olympia/amo/log.py
 msgid "{0.name} ({1}) removed from {addon}."
-msgstr ""
+msgstr "{0.name} ({1}) fjerna frå {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Contributions for {addon}."
-msgstr ""
+msgstr "Bidrag til {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} disabled."
@@ -1442,363 +1454,363 @@ msgstr "{addon} slått på."
 
 #: src/olympia/amo/log.py
 msgid "Stats set public for {addon}."
-msgstr ""
+msgstr "Statistikk gjort offentleg for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} stats set to private."
-msgstr ""
+msgstr "{addon} statistikk gjort privat."
 
 #. L10n: {0} is the status
 #: src/olympia/amo/log.py
 msgid "{addon} status changed to {0}."
-msgstr ""
+msgstr "{addon}-status endra til {0}."
 
 #: src/olympia/amo/log.py
 msgid "Preview added to {addon}."
-msgstr ""
+msgstr "Førehandsvisning lagt til {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Preview edited for {addon}."
-msgstr ""
+msgstr "Førehandsvising redigert for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Preview deleted from {addon}."
-msgstr ""
+msgstr "Førehandsvising sletta frå {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{version} added to {addon}."
-msgstr ""
+msgstr "{version} lagt til {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{version} edited for {addon}."
-msgstr ""
+msgstr "{version} redigert for {addon}."
 
 #. L10n: {0} is the version number
 #: src/olympia/amo/log.py
 msgid "Version {0} deleted from {addon}."
-msgstr ""
+msgstr "Versjon {0} sletta frå {addon}."
 
 #: src/olympia/amo/log.py
 msgid "File {0.name} added to {version} of {addon}."
-msgstr ""
+msgstr "Fila {0.name} lagt til {version} av {addon}."
 
 #: src/olympia/amo/log.py
 msgid "File {0} deleted from {version} of {addon}."
-msgstr ""
+msgstr "Fila {0} sletta {version} av {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} approved."
-msgstr ""
+msgstr "{addon} {version} godkjend."
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} given preliminary review."
-msgstr ""
+msgstr "{addon} {version} er førebels vurdert."
 
 #: src/olympia/amo/log.py
 msgid "Preliminarily approved"
-msgstr ""
+msgstr "Førebels godkjend"
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} rejected."
-msgstr ""
+msgstr "{addon} {version} avvist."
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} retained."
-msgstr ""
+msgstr "{addon} {version} halden tilbake."
 
 #: src/olympia/amo/log.py
 msgid "Retained"
-msgstr ""
+msgstr "Halden tilbake"
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} escalated."
-msgstr ""
+msgstr "{addon} {version} eskalert."
 
 #: src/olympia/amo/log.py
 msgid "Escalated"
-msgstr ""
+msgstr "Eskalert"
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} review requested."
-msgstr ""
+msgstr "Det er bedt om ei vurdering av {addon} {version}."
 
 #: src/olympia/amo/log.py
 msgid "Review requested"
-msgstr ""
+msgstr "Det er bedt om ei vurdering"
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} more information requested."
-msgstr ""
+msgstr "{addon} {version} det er bedt om meir informasjon."
 
 #: src/olympia/amo/log.py
 msgid "More information requested"
-msgstr ""
+msgstr "Det er bedt om meir informasjon"
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} super review requested."
-msgstr ""
+msgstr "{addon} {version} det er bedt om supervurdering."
 
 #: src/olympia/amo/log.py
 msgid "Super review requested"
-msgstr ""
+msgstr "Det er bedt om ei supervurdering"
 
 #: src/olympia/amo/log.py
 msgid "Comment on {addon} {version}."
-msgstr ""
+msgstr "Kommentar på {addon} {version}."
 
 #: src/olympia/amo/log.py src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html src/olympia/editors/helpers.py src/olympia/editors/templates/editors/themes/history_table.html
 msgid "Comment"
-msgstr ""
+msgstr "Kommentar"
 
 #: src/olympia/amo/log.py
 msgid "{tag} added to {addon}."
-msgstr ""
+msgstr "{tag} lagt til på {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{tag} removed from {addon}."
-msgstr ""
+msgstr "{tag} fjerna frå {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} added to {collection}."
-msgstr ""
+msgstr "{addon} lagt til i {collection}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} removed from {collection}."
-msgstr ""
+msgstr "{addon} fjerna frå {collection}."
 
 #: src/olympia/amo/log.py
 msgid "{review} for {addon} written."
-msgstr ""
+msgstr "{review} for {addon} skriven."
 
 #. L10n: {0} is a category name.
 #: src/olympia/amo/log.py
 msgid "{addon} featured in {0}."
-msgstr ""
+msgstr "{addon} framheva i {0}."
 
 #. L10n: {0} is a category name.
 #: src/olympia/amo/log.py
 msgid "{addon} no longer featured in {0}."
-msgstr ""
+msgstr "{addon} ikkje lenger framheva i {0}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} is now featured."
-msgstr ""
+msgstr "{addon} er no framheva."
 
 #: src/olympia/amo/log.py
 msgid "{addon} is no longer featured."
-msgstr ""
+msgstr "{addon} er ikkje lenger framheva."
 
 #. L10n: {0} is the application, {1} is the version of the app
 #: src/olympia/amo/log.py
 msgid "{0} {1} added."
-msgstr ""
+msgstr "{0} {1} lagt til."
 
 #. L10n: {0} is a user, {1} is their role
 #: src/olympia/amo/log.py
 msgid "{0.name} role changed to {1} for {addon}."
-msgstr ""
+msgstr "{0.name} si rolle endra til {1} for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} is now licensed under {0.name}."
-msgstr ""
+msgstr "{addon} er no lisensiert under {0.name}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} policy changed."
-msgstr ""
+msgstr "{addon}-praksis endra."
 
 #: src/olympia/amo/log.py
 msgid "{addon} icon changed."
-msgstr ""
+msgstr "{addon}-ikon endra."
 
 #: src/olympia/amo/log.py
 msgid "{review} for {addon} approved."
-msgstr ""
+msgstr "{review} for {addon} godkjend."
 
 #: src/olympia/amo/log.py
 msgid "{user} approved {review} for {addon}."
-msgstr ""
+msgstr "{user} godkjende {review} for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Review {review} for {addon} deleted."
-msgstr ""
+msgstr "Vurdering {review} for {addon} sletta."
 
 #: src/olympia/amo/log.py
 msgid "{user} deleted {review} for {addon}."
-msgstr ""
+msgstr "{user} sletta {review} for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Application max version for {version} updated."
-msgstr ""
+msgstr "Applikasjonens maksimale versjon for {version} oppdatert."
 
 #: src/olympia/amo/log.py
 msgid "Authors emailed about compatibility of {version}."
-msgstr ""
+msgstr "E-post sendt til utviklaren om kompatibilitet for {version}."
 
 #: src/olympia/amo/log.py
 msgid "Email sent to Author about add-on compatibility."
-msgstr ""
+msgstr "E-post sendt til utviklaren om kompatibiliteten til utvidinga."
 
 #: src/olympia/amo/log.py
 msgid "Password changed."
-msgstr ""
+msgstr "Passord endra."
 
 #: src/olympia/amo/log.py
 msgid "{addon} failed checks with PayPal."
-msgstr ""
+msgstr "{addon} feila kontroll mot PayPal."
 
 #: src/olympia/amo/log.py
 msgid "{addon} manifest updated."
-msgstr ""
+msgstr "{addon}-manifest oppdatert."
 
 #: src/olympia/amo/log.py
 msgid "{addon} {version} approved but waiting to be made public."
-msgstr ""
+msgstr "{addon} {version} godkjend, men ventar på å bli gjort offentleg."
 
 #: src/olympia/amo/log.py
 msgid "Approved but waiting"
-msgstr ""
+msgstr "Godkjend men ventar"
 
 #: src/olympia/amo/log.py
 msgid "{addon} purchased."
-msgstr ""
+msgstr "{addon} kjøpt."
 
 #: src/olympia/amo/log.py
 msgid "{addon} installed."
-msgstr ""
+msgstr "{addon} installert."
 
 #: src/olympia/amo/log.py
 msgid "Account updated."
-msgstr ""
+msgstr "Konto oppdatert."
 
 #: src/olympia/amo/log.py
 msgid "Escalation cleared for {addon}."
-msgstr ""
+msgstr "Eskalering oppheva for {addon}."
 
 #: src/olympia/amo/log.py
 msgid "Escalation cleared"
-msgstr ""
+msgstr "Eskalering oppheva"
 
 #: src/olympia/amo/log.py
 msgid "App disabled"
-msgstr ""
+msgstr "App avslått"
 
 #: src/olympia/amo/log.py
 msgid "{addon} escalated because of high number of abuse reports."
-msgstr ""
+msgstr "{addon} eskalert på grunn av mange misbruksrapportar."
 
 #: src/olympia/amo/log.py
 msgid "High Abuse Reports"
-msgstr ""
+msgstr "Mange misbruksrapportar"
 
 #: src/olympia/amo/log.py
 msgid "{addon} escalated by reviewer."
-msgstr ""
+msgstr "{addon} eskalert av vurderar."
 
 #: src/olympia/amo/log.py
 msgid "Reviewer escalation"
-msgstr ""
+msgstr "Vurderar-eskalering"
 
 #: src/olympia/amo/log.py
 msgid "Video removed from {addon} because of a problem with the video. "
-msgstr ""
+msgstr "Video fjerna frå {addon} på grunn av eit problem med videoen. "
 
 #: src/olympia/amo/log.py
 msgid "Video removed"
-msgstr ""
+msgstr "Video fjerna"
 
 #: src/olympia/amo/log.py
 msgid "{addon} re-review because of new device(s) added."
-msgstr ""
+msgstr "{addon} ny vurdering på grunn av at ny(e) eining(ar) er lagt til."
 
 #: src/olympia/amo/log.py
 msgid "Device(s) Added"
-msgstr ""
+msgstr "Eining(ar) lagt til"
 
 #: src/olympia/amo/log.py
 msgid "{addon} device support manually changed by reviewer."
-msgstr ""
+msgstr "{addon} einingsstøtta manuelt endra av vurderar."
 
 #: src/olympia/amo/log.py
 msgid "Device(s) Changed by Reviewer"
-msgstr ""
+msgstr "Eining(ar) endra av vurderar"
 
 #: src/olympia/amo/log.py
 msgid "Created: {0}."
-msgstr ""
+msgstr "Oppretta: {0}."
 
 #: src/olympia/amo/log.py
 msgid "Edited field: {2} set to: {0}."
-msgstr ""
+msgstr "Redigerte felt: {2} sett til: {0}."
 
 #: src/olympia/amo/log.py
 msgid "Deleted: {1}."
-msgstr ""
+msgstr "Sletta: {1}."
 
 #: src/olympia/amo/log.py
 msgid "User {user} edited, reason: {1}"
-msgstr ""
+msgstr "Brukar {user} redigerte, årsak: {1}"
 
 #: src/olympia/amo/log.py
 msgid "User {user} anonymized."
-msgstr ""
+msgstr "Brukar {user} anonymisert."
 
 #: src/olympia/amo/log.py
 msgid "User {user} restricted."
-msgstr ""
+msgstr "Brukar {user} avgrensa."
 
 #: src/olympia/amo/log.py
 msgid "Admin {0} viewed activity log for {user}."
-msgstr ""
+msgstr "Admin {0} viste aktivitetslogg for {user}."
 
 #: src/olympia/amo/log.py
 msgid "{review} for {addon} updated."
-msgstr ""
+msgstr "{review} for {addon} oppdatert."
 
 #: src/olympia/amo/log.py
 msgid "{addon} reviewed."
-msgstr ""
+msgstr "{addon} vurdert."
 
 #: src/olympia/amo/log.py
 msgid "User {0.name} added to {group}."
-msgstr ""
+msgstr "Brukar {0.name} lagt til i {group}."
 
 #: src/olympia/amo/log.py
 msgid "User {0.name} removed from {group}."
-msgstr ""
+msgstr "Brukar {0.name} fjerna frå {group}."
 
 #: src/olympia/amo/log.py
 msgid "{addon} minimum requirements manually changed by reviewer."
-msgstr ""
+msgstr "{addon} minimumskrav manuelt endra av vurderaren."
 
 #: src/olympia/amo/log.py
 msgid "Requirements Changed by Reviewer"
-msgstr ""
+msgstr "Kravene endra av vurderar"
 
 #: src/olympia/amo/log.py
 msgid "{addon} minimum requirements manually changed."
-msgstr ""
+msgstr "{addon} minimumskrav manuelt endra."
 
 #: src/olympia/amo/log.py
 msgid "Requirements Changed"
-msgstr ""
+msgstr "Krav endra"
 
 #. L10n: {0} is the status
 #: src/olympia/amo/log.py
 msgid "{version} status changed to {0}."
-msgstr ""
+msgstr "{version} status endra til {0}."
 
 #. L10n: {0} is the status
 #: src/olympia/amo/log.py
 msgid "User {0.name} {0.id} deleted via lookup tool."
-msgstr ""
+msgstr "Brukar {0.name} {0.id} sletta via søkjeverktøyet."
 
 #: src/olympia/amo/log.py
 msgid "{addon} content rating changed to Adult."
-msgstr ""
+msgstr "Innhaldsvurdering for {addon} vart endra til vaksen."
 
 #: src/olympia/amo/log.py
 msgid "{addon} content rating changed."
-msgstr ""
+msgstr "Innhaldsvurdering for {addon} vart endra."
 
 #: src/olympia/amo/log.py
 msgid "{addon} unlisted."
@@ -1806,24 +1818,29 @@ msgstr "{addon} ikkje oppført."
 
 #: src/olympia/amo/log.py
 msgid "{file} was signed."
-msgstr ""
+msgstr "{file} vart signert."
 
 #. L10n: {0} is the add-on GUID.
 #: src/olympia/amo/log.py
 msgid "Addon id {0} with GUID {1} has been deleted"
-msgstr ""
+msgstr "Utvidings-ID {0} med GUID {1} er sletta"
+
+#: src/olympia/amo/log.py
+#, fuzzy
+msgid "{addon} migrated from preliminary."
+msgstr "{addon} {version} er førebels vurdert."
 
 #: src/olympia/amo/templates/amo/403.html
 msgid "Not allowed"
-msgstr ""
+msgstr "Ikkje tillate"
 
 #: src/olympia/amo/templates/amo/403.html
 msgid "<h1>Oops! Not allowed.</h1> <p>You tried to do something that you weren't allowed to.</p>"
-msgstr ""
+msgstr "<h1>Ops! Ikkje tillata.</h1> <p>Du prøvde gjera noko som du ikkje har løyve til.</p>"
 
 #: src/olympia/amo/templates/amo/403.html
 msgid "<p>Try going back to the previous page, refreshing and then trying again.</p>"
-msgstr ""
+msgstr "<p>Prøv å gå tilbake til føregåande side, oppdater og prøv på nytt.</p>"
 
 #: src/olympia/amo/templates/amo/404.html
 msgid "Not Found"
@@ -1846,15 +1863,15 @@ msgstr "Ojsann"
 #: src/olympia/amo/templates/amo/500.html
 #, python-format
 msgid "<h1>Oops!  We had an error.</h1> <p>We'll get to fixing that soon.</p> <p> You can try refreshing the page, or head back to the <a href=\"%(home)s\">Add-ons homepage</a>. </p>"
-msgstr ""
+msgstr "<h1>Ops!  Noko gjekk gale.</h1> <p>Vi kjem til å reparera det snart.</p> <p> Du kan prøva å oppdatera sida, eller gå tilbake til <a href=\"%(home)s\">startsida for utvidingar</a>. </p>"
 
 #: src/olympia/amo/templates/amo/license_link.html
 msgid "Some rights reserved"
-msgstr ""
+msgstr "Nokre rettar med atterhald"
 
 #: src/olympia/amo/templates/amo/no_results.html src/olympia/editors/templates/editors/includes/search_results_themes.html
 msgid "No results found"
-msgstr ""
+msgstr "Fann ingen resultat"
 
 #. abbreviation of 'previous'
 #: src/olympia/amo/templates/amo/mobile/paginator.html src/olympia/amo/templates/amo/paginator.html src/olympia/devhub/templates/devhub/addons/includes/validation_test_results.html
@@ -1870,23 +1887,23 @@ msgstr "Neste"
 #: src/olympia/amo/templates/amo/paginator.html src/olympia/editors/templates/editors/includes/paginator_history.html
 #, python-format
 msgid "Results <strong>%(begin)s</strong>&ndash;<strong>%(end)s</strong> of <strong>%(count)s</strong>"
-msgstr ""
+msgstr "Resultat <strong>%(begin)s</strong>&ndash;<strong>%(end)s</strong> av <strong>%(count)s</strong>"
 
 #: src/olympia/amo/templates/amo/read-only.html
 msgid "Maintenance in progress"
-msgstr ""
+msgstr "Under vedlikehald"
 
 #: src/olympia/amo/templates/amo/read-only.html
 msgid "This feature is temporarily disabled while we perform website maintenance. Please use your browser's Back button and try again a little later."
-msgstr ""
+msgstr "Denne funksjonen er for tida avslått medan vi utfører rutinemessig vedlikehald. Bruk Tilbake-knappen i nettlesaren for å gå tilbake, og prøv på nytt seinare."
 
 #: src/olympia/amo/templates/amo/read-only.html
 msgid "Some features on this page are temporarily disabled while we perform website maintenance. Please try again a little later."
-msgstr ""
+msgstr "Nokre funksjonar på denne sida er for tida avslått medan vi utfører rutinemessig vedlikehald. Prøv igjen litt seinare."
 
 #: src/olympia/amo/templates/amo/recaptcha.html
 msgid "Are you human?"
-msgstr ""
+msgstr "Er du eit menneske eller ein robot?"
 
 #: src/olympia/amo/templates/amo/recaptcha.html
 msgid ""
@@ -1896,11 +1913,11 @@ msgstr ""
 
 #: src/olympia/amo/templates/amo/side_nav.html src/olympia/amo/templates/amo/site_nav.html src/olympia/browse/views.py src/olympia/search/forms.py
 msgid "Top Rated"
-msgstr ""
+msgstr "Høgast vurdert"
 
 #: src/olympia/amo/templates/amo/side_nav.html
 msgid "Explore"
-msgstr ""
+msgstr "Utforsk"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/browse/feeds.py src/olympia/browse/templates/browse/base_listing.html src/olympia/browse/templates/browse/creatured.html
 #: src/olympia/browse/templates/browse/impala/base_listing.html src/olympia/constants/base.py
@@ -1909,25 +1926,25 @@ msgstr "Utvidingar"
 
 #: src/olympia/amo/templates/amo/site_nav.html
 msgid "Want more customization? Try <b>Complete Themes</b>"
-msgstr ""
+msgstr "Vil du ha meir tilpassing? Prøv <b>udvida tema</b>"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/bandwagon/views.py
 msgid "Most Followers"
-msgstr ""
+msgstr "Flest følgjarar"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/bandwagon/templates/bandwagon/impala/collection_sidebar.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 msgid "Collections I've Made"
-msgstr ""
+msgstr "Samlingar eg har laga"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/bandwagon/templates/bandwagon/impala/collection_sidebar.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 #: src/olympia/bandwagon/templates/bandwagon/user_listing.html
 msgid "Collections I'm Following"
-msgstr ""
+msgstr "Samlingar eg følgjer"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/bandwagon/templates/bandwagon/impala/collection_sidebar.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 #: src/olympia/users/models.py
 msgid "My Favorite Add-ons"
-msgstr ""
+msgstr "Mine favorittutvidingar"
 
 #: src/olympia/amo/templates/amo/site_nav.html
 msgid "More&hellip;"
@@ -1935,7 +1952,7 @@ msgstr "Meir&hellip;"
 
 #: src/olympia/amo/templates/amo/site_nav.html
 msgid "Add-ons for Mobile"
-msgstr ""
+msgstr "Utvidingar for mobil"
 
 #: src/olympia/amo/templates/amo/site_nav.html src/olympia/browse/feeds.py src/olympia/browse/templates/browse/search_tools.html src/olympia/constants/base.py src/olympia/constants/categories.py
 msgid "Search Tools"
@@ -1945,11 +1962,11 @@ msgstr "Søkjeverktøy"
 #: src/olympia/amo/templates/amo/impala/paginator.html src/olympia/amo/templates/amo/mobile/impala_paginator.html
 #, python-format
 msgid "Page <a href=\"%(current_pg_url)s\">%(current_pg)s</a> of <a href=\"%(last_pg_url)s\">%(last_pg)s</a>"
-msgstr ""
+msgstr "Side <a href=\"%(current_pg_url)s\">%(current_pg)s</a> av <a href=\"%(last_pg_url)s\">%(last_pg)s</a>"
 
 #: src/olympia/amo/templates/amo/impala/paginator.html src/olympia/amo/templates/amo/mobile/impala_paginator.html
 msgid "Jump to first page"
-msgstr ""
+msgstr "Hopp til førstesida"
 
 #: src/olympia/amo/templates/amo/impala/paginator.html src/olympia/amo/templates/amo/mobile/impala_paginator.html src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
 #: src/olympia/legacy_discovery/templates/legacy_discovery/pane.html src/olympia/stats/templates/stats/stats.html
@@ -1958,7 +1975,7 @@ msgstr "Førre"
 
 #: src/olympia/amo/templates/amo/impala/paginator.html
 msgid "Jump to last page"
-msgstr ""
+msgstr "Hopp til sistesida"
 
 #. First and second arguments are the result range (e.g., 1-20);
 #. third argument is the number of total results (e.g., 1,000).
@@ -1967,33 +1984,33 @@ msgstr ""
 #: src/olympia/amo/templates/amo/impala/paginator.html src/olympia/amo/templates/amo/mobile/impala_paginator.html
 #, python-format
 msgid "Showing <b>%(begin)s</b>&ndash;<b>%(end)s</b> of <b>%(count)s</b>"
-msgstr ""
+msgstr "Viser <b>%(begin)s</b>&ndash;<b>%(end)s</b> av <b>%(count)s</b>"
 
 #: src/olympia/amo/templates/amo/mobile/paginator.html
 msgid "Page {n}"
 msgid_plural "Page {n}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Side {n}"
+msgstr[1] "Side {n}"
 
 #: src/olympia/amo/tests/test_messages.py src/olympia/reviews/forms.py src/olympia/reviews/templates/reviews/add.html src/olympia/reviews/templates/reviews/reply.html
 msgid "Title"
-msgstr ""
+msgstr "Tittel"
 
 #: src/olympia/amo/tests/test_messages.py
 msgid "Body"
-msgstr ""
+msgstr "Innhald"
 
 #: src/olympia/amo/tests/test_messages.py
 msgid "Another Title"
-msgstr ""
+msgstr "Ein annan tittel"
 
 #: src/olympia/amo/tests/test_messages.py
 msgid "Another Body"
-msgstr ""
+msgstr "Eit anna innhald"
 
 #: src/olympia/api/authentication.py
 msgid "Signature has expired."
-msgstr ""
+msgstr "Signaturen har gått ut."
 
 #: src/olympia/api/authentication.py
 msgid "Error decoding signature."
@@ -2001,7 +2018,7 @@ msgstr ""
 
 #: src/olympia/api/authentication.py
 msgid "Invalid JWT Token."
-msgstr ""
+msgstr "Ugylig JWT-token."
 
 #: src/olympia/api/authentication.py
 msgid "Invalid Authorization header. No credentials provided."
@@ -2021,7 +2038,7 @@ msgstr ""
 
 #: src/olympia/applications/templates/applications/appversions.html src/olympia/applications/views.py
 msgid "Application Versions"
-msgstr ""
+msgstr "Applikasjonsversjonar"
 
 #: src/olympia/applications/views.py
 msgid "Acceptable versions for all applications on AMO."
@@ -2029,7 +2046,7 @@ msgstr ""
 
 #: src/olympia/applications/templates/applications/appversions.html
 msgid "Valid Application Versions"
-msgstr ""
+msgstr "Gyldige applikasjonsversjonar"
 
 #: src/olympia/applications/templates/applications/appversions.html
 msgid "Add-ons submitted to Mozilla Add-ons must have a manifest file with at least one of the below applications supported. Only the versions listed below are allowed for these applications."
@@ -2037,7 +2054,7 @@ msgstr ""
 
 #: src/olympia/applications/templates/applications/appversions.html src/olympia/editors/helpers.py
 msgid "GUID"
-msgstr ""
+msgstr "GUID"
 
 #. {0} is an add-on name.
 #: src/olympia/applications/templates/applications/appversions.html src/olympia/versions/templates/versions/version_list.html
@@ -2057,7 +2074,7 @@ msgstr ""
 #: src/olympia/bandwagon/feeds.py
 #, python-format
 msgid "Collections :: %s"
-msgstr ""
+msgstr "Samlingar :: %s"
 
 #: src/olympia/bandwagon/feeds.py src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Collections are groups of related add-ons that anyone can create and share."
@@ -2070,19 +2087,19 @@ msgstr "{0} :: Samlingar :: {1}"
 
 #: src/olympia/bandwagon/forms.py
 msgid "Only I can view this collection."
-msgstr ""
+msgstr "Berre eg kan sjå denne samlinga."
 
 #: src/olympia/bandwagon/forms.py
 msgid "Anybody can view this collection."
-msgstr ""
+msgstr "Alle kan sjå denne samlinga."
 
 #: src/olympia/bandwagon/forms.py
 msgid "Give your collection a name."
-msgstr ""
+msgstr "Gje samlinga eit namn."
 
 #: src/olympia/bandwagon/forms.py
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: src/olympia/bandwagon/forms.py
 msgid "Describe your collection (no links allowed)."
@@ -2094,7 +2111,7 @@ msgstr "Personvern:"
 
 #: src/olympia/bandwagon/forms.py
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #: src/olympia/bandwagon/forms.py
 msgid "Please don't fill out this field, it's used to catch bots"
@@ -2102,11 +2119,11 @@ msgstr ""
 
 #: src/olympia/bandwagon/forms.py
 msgid "This name cannot be used."
-msgstr ""
+msgstr "Dette namnet kan ikkje brukast."
 
 #: src/olympia/bandwagon/forms.py src/olympia/users/forms.py
 msgid "No links are allowed."
-msgstr ""
+msgstr "Ingen lenker er tillatne."
 
 #: src/olympia/bandwagon/forms.py
 msgid "This url is already in use by another collection"
@@ -2114,7 +2131,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/forms.py src/olympia/devhub/views.py
 msgid "Icons must be either PNG or JPG."
-msgstr ""
+msgstr "Ikon må anten vera PNG eller JPG."
 
 #: src/olympia/bandwagon/forms.py src/olympia/devhub/views.py src/olympia/users/forms.py
 #, python-format
@@ -2139,7 +2156,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/helpers.py src/olympia/bandwagon/templates/bandwagon/favorites_widget.html
 msgid "Add to favorites"
-msgstr ""
+msgstr "Legg til i favorittar"
 
 #: src/olympia/bandwagon/helpers.py
 msgid "Favorite"
@@ -2160,11 +2177,11 @@ msgstr "Nyleg oppdatert"
 
 #: src/olympia/bandwagon/views.py
 msgid "Recently Popular"
-msgstr ""
+msgstr "Populære i det siste"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html src/olympia/bandwagon/views.py
 msgid "Added"
-msgstr ""
+msgstr "Lagt til"
 
 #: src/olympia/bandwagon/views.py
 msgid "Popularity"
@@ -2172,7 +2189,7 @@ msgstr "Popularitet"
 
 #: src/olympia/bandwagon/views.py
 msgid "Collection created!"
-msgstr ""
+msgstr "Samling oppretta!"
 
 #: src/olympia/bandwagon/views.py
 #, python-format
@@ -2181,7 +2198,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/views.py
 msgid "Collection updated!"
-msgstr ""
+msgstr "Samling oppdatert!"
 
 #: src/olympia/bandwagon/views.py
 #, python-format
@@ -2190,15 +2207,15 @@ msgstr ""
 
 #: src/olympia/bandwagon/views.py
 msgid "Icon Deleted"
-msgstr ""
+msgstr "Ikon sletta"
 
 #: src/olympia/bandwagon/templates/bandwagon/add.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 msgid "Create a New Collection"
-msgstr ""
+msgstr "Lag ei ny samling"
 
 #: src/olympia/bandwagon/templates/bandwagon/add.html src/olympia/devhub/templates/devhub/personas/submit.html
 msgid "Create"
-msgstr ""
+msgstr "Opprett"
 
 #: src/olympia/bandwagon/templates/bandwagon/add.html src/olympia/bandwagon/templates/bandwagon/ajax_new.html
 #, python-format
@@ -2207,15 +2224,15 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/add.html src/olympia/bandwagon/templates/bandwagon/ajax_new.html
 msgid "Create Collection"
-msgstr ""
+msgstr "Opprett samling"
 
 #: src/olympia/bandwagon/templates/bandwagon/ajax_list.html
 msgid "View this collection"
-msgstr ""
+msgstr "Vis denne samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/ajax_list.html
 msgid "Start a new collection..."
-msgstr ""
+msgstr "Start ei ny samling..."
 
 #: src/olympia/bandwagon/templates/bandwagon/ajax_new.html
 msgid "Start a New Collection"
@@ -2227,25 +2244,25 @@ msgstr "Namn:"
 
 #: src/olympia/bandwagon/templates/bandwagon/ajax_new.html
 msgid "or <a id=\"collections-new-cancel\" href=\"#\">Cancel</a>"
-msgstr ""
+msgstr "eller <a id=\"collections-new-cancel\" href=\"#\">Avbryt</a>"
 
 #. Link to remove a collection vote
 #: src/olympia/bandwagon/templates/bandwagon/barometer.html
 msgid "To rate collections, you must have an add-ons account."
-msgstr ""
+msgstr "For å vurdera samlingar må du først ha ein utvidingskonto."
 
 #: src/olympia/bandwagon/templates/bandwagon/barometer.html src/olympia/templates/base.html src/olympia/templates/impala/base.html
 msgid "Create an Add-ons Account"
-msgstr ""
+msgstr "Opprett ein utvidingskonto"
 
 #: src/olympia/bandwagon/templates/bandwagon/barometer.html src/olympia/templates/base.html src/olympia/templates/impala/base.html
 #, python-format
 msgid "or <a href=\"%(login)s\">log in to your current account</a>"
-msgstr ""
+msgstr "eller <a href=\"%(login)s\">logg inn på ein eksisterande konto</a>"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "{0} :: Collections"
-msgstr ""
+msgstr "{0} :: Samlingar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "private"
@@ -2255,8 +2272,8 @@ msgstr "privat"
 #, python-format
 msgid "<span>%(num)s</span> follower"
 msgid_plural "<span>%(num)s</span> followers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<span>%(num)s</span> følgjar"
+msgstr[1] "<span>%(num)s</span> følgjarar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "About this Collection"
@@ -2264,15 +2281,15 @@ msgstr "Om denne samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Add-ons synced to my Mobile Firefox"
-msgstr ""
+msgstr "Utvidingar synkroniserte til min mobile Firefox"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Make this Collection Private"
-msgstr ""
+msgstr "Gjer denne samlinga privat"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Make this Collection Public"
-msgstr ""
+msgstr "Gjer denne samlinga offentleg"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Learn about collections"
@@ -2280,11 +2297,11 @@ msgstr "Les meir om samlingar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "More Options:"
-msgstr ""
+msgstr "Fleire innstillingar:"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Edit Collection"
-msgstr ""
+msgstr "Rediger samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html src/olympia/bandwagon/templates/bandwagon/includes/delete.html
 msgid "Delete Collection"
@@ -2294,15 +2311,15 @@ msgstr "Slett samlingar"
 #, python-format
 msgid "%(num)s Theme in this Collection"
 msgid_plural "%(num)s Themes in this Collection"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s tema i denne samlinga"
+msgstr[1] "%(num)s tema i denne samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 #, python-format
 msgid "%(num)s Add-on in this Collection"
 msgid_plural "%(num)s Add-ons in this Collection"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s utviding i denne samlinga"
+msgstr[1] "%(num)s utvidingar i denne samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html src/olympia/compat/templates/compat/reporter_detail.html src/olympia/files/templates/files/viewer.html
 #: src/olympia/templates/footer.html src/olympia/templates/includes/lang_switcher.html
@@ -2311,23 +2328,23 @@ msgstr "Gå"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "What are Collections?"
-msgstr ""
+msgstr "Kva er samlingar?"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Explore Collections"
-msgstr ""
+msgstr "Utforsk samlingar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "Common Tags"
-msgstr ""
+msgstr "Vanlege taggar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "More by this User"
-msgstr ""
+msgstr "Meir av denne brukaren"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid "See all collections by this user"
-msgstr ""
+msgstr "Sjå alle samlingane av denne brukaren"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_detail.html
 msgid ""
@@ -2356,7 +2373,7 @@ msgstr[1] ""
 #, python-format
 msgid "<span>%(followers)s</span> follower"
 msgid_plural "<span>%(followers)s</span> followers"
-msgstr[0] ""
+msgstr[0] "<span>%(followers)s</span> følgjar"
 msgstr[1] ""
 
 #. People "follow" collections to get notified of updates.                    Like
@@ -2367,8 +2384,8 @@ msgstr[1] ""
 #, python-format
 msgid "%(num)s weekly follower"
 msgid_plural "%(num)s weekly followers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s følgjar pr. veke"
+msgstr[1] "%(num)s følgjarar pr. veke"
 
 #. People "follow" collections to get notified of updates.                    Like
 #. Twitter followers.
@@ -2376,8 +2393,8 @@ msgstr[1] ""
 #, python-format
 msgid "%(num)s monthly follower"
 msgid_plural "%(num)s monthly followers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s følgjar pr. månad"
+msgstr[1] "%(num)s følgjarar pr. månad"
 
 #. People "follow" collections to get notified of updates.                    Like
 #. Twitter followers.
@@ -2387,8 +2404,8 @@ msgstr[1] ""
 #, python-format
 msgid "%(num)s follower"
 msgid_plural "%(num)s followers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(num)s følgjar"
+msgstr[1] "%(num)s følgjarar"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_listing_items.html src/olympia/bandwagon/templates/bandwagon/impala/collection_listing_items.html
 #: src/olympia/devhub/templates/devhub/personas/edit.html
@@ -2397,23 +2414,22 @@ msgstr "av {0}"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_widgets.html src/olympia/bandwagon/templates/bandwagon/impala/collection_listing_items.html
 msgid "Stop Following"
-msgstr ""
+msgstr "Slutt å følgja"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_widgets.html src/olympia/bandwagon/templates/bandwagon/impala/collection_listing_items.html
 msgid "Follow this Collection"
-msgstr ""
+msgstr "Følg denne samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/collection_widgets.html
 msgid "Edit this Collection"
-msgstr ""
+msgstr "Rediger denne samlinga"
 
 #. %s is the name of the collection.
 #: src/olympia/bandwagon/templates/bandwagon/delete.html
 msgid "Delete {0}"
 msgstr "Slett {0}"
 
-#: src/olympia/bandwagon/templates/bandwagon/delete.html src/olympia/devhub/templates/devhub/addons/listing/item_actions.html
-#: src/olympia/devhub/templates/devhub/addons/listing/item_actions_theme.html
+#: src/olympia/bandwagon/templates/bandwagon/delete.html src/olympia/devhub/templates/devhub/addons/listing/item_actions.html src/olympia/devhub/templates/devhub/addons/listing/item_actions_theme.html
 msgid "Delete"
 msgstr "Slett"
 
@@ -2440,7 +2456,7 @@ msgstr "Skildring"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit.html
 msgid "Contributors & More"
-msgstr ""
+msgstr "Bidragsytarar og meir"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit.html src/olympia/devhub/templates/devhub/addons/ajax_compat_update.html src/olympia/devhub/templates/devhub/addons/edit/admin.html
 #: src/olympia/devhub/templates/devhub/addons/edit/basic.html src/olympia/devhub/templates/devhub/addons/edit/details.html src/olympia/devhub/templates/devhub/addons/edit/support.html
@@ -2456,11 +2472,11 @@ msgstr "Eigar"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Make Owner"
-msgstr ""
+msgstr "Gjer til eigar"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Remove this user as a contributor"
-msgstr ""
+msgstr "Fjern denne brukaren som bidragsytar"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html
 #: src/olympia/devhub/templates/devhub/addons/ajax_compat_update.html
@@ -2469,7 +2485,7 @@ msgstr "Fjern"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Collection Contributors"
-msgstr ""
+msgstr "Bidragsytarar til samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid ""
@@ -2495,11 +2511,11 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Add Contributor"
-msgstr ""
+msgstr "Legg til bidragsytar"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Contributor"
-msgstr ""
+msgstr "Bidragsytar"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "Admin Settings"
@@ -2514,32 +2530,32 @@ msgstr ""
 #: src/olympia/editors/templates/editors/themes/themes.html src/olympia/users/templates/users/fxa_login_prompt_content.html src/olympia/users/templates/users/fxa_migration_prompt_content.html
 #: src/olympia/users/templates/users/login_form.html src/olympia/users/templates/users/mobile/login.html
 msgid "Continue"
-msgstr ""
+msgstr "Fortset"
 
 #: src/olympia/bandwagon/templates/bandwagon/edit_contributors.html
 msgid "or <a id=\"change-owner-cancel\" href=\"#\">Cancel</a>"
-msgstr ""
+msgstr "eller <a id=\"change-owner-cancel\" href=\"#\">Avbryt</a>"
 
 #. {0} is a username.
 #: src/olympia/bandwagon/templates/bandwagon/user_listing.html
 msgid "Collections by {0}"
-msgstr ""
+msgstr "Samlingar av {0}"
 
 #: src/olympia/bandwagon/templates/bandwagon/user_listing.html
 msgid "No collections found."
-msgstr ""
+msgstr "Fann ingen samlingar."
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_listing.html
 msgid "Most-Followed Collections"
-msgstr ""
+msgstr "Mest følgde samlingar"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_listing.html
 msgid "Newest Collections"
-msgstr ""
+msgstr "Nyaste samlingar"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_listing.html
 msgid "Collections by Name"
-msgstr ""
+msgstr "Samlingar etter namn"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_listing.html
 msgid "Recently Updated Collections"
@@ -2560,11 +2576,11 @@ msgstr "Abonner"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_listing_items.html
 msgid "Following"
-msgstr ""
+msgstr "Følgjer"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_sidebar.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 msgid "Create a Collection"
-msgstr ""
+msgstr "Lag ei samling"
 
 #: src/olympia/bandwagon/templates/bandwagon/impala/collection_sidebar.html src/olympia/bandwagon/templates/bandwagon/includes/collection_sidebar.html
 msgid "Collections make it easy to keep track of favorite add-ons and share your perfectly customized browser with others."
@@ -2572,11 +2588,11 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addedit.html
 msgid "Collection Icon"
-msgstr ""
+msgstr "Ikon for samling"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addedit.html
 msgid "Reset"
-msgstr ""
+msgstr "Tilbakestill"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addedit.html
 msgid "PNG and JPG supported.  Image will be resized to 32x32."
@@ -2596,7 +2612,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html src/olympia/constants/base.py src/olympia/devhub/templates/devhub/addons/activity.html src/olympia/editors/helpers.py
 msgid "Add-on"
-msgstr ""
+msgstr "Utviding"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html
 msgid "Enter the name of the add-on to include"
@@ -2604,7 +2620,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html
 msgid "Add to Collection"
-msgstr ""
+msgstr "Legg til i samlinga"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html src/olympia/editors/helpers.py
 msgid "Pending"
@@ -2612,7 +2628,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html
 msgid "Add a comment"
-msgstr ""
+msgstr "Legg til ein kommentar"
 
 #: src/olympia/bandwagon/templates/bandwagon/includes/addon_selector.html
 msgid "Remove this add-on from the collection"
@@ -2620,7 +2636,7 @@ msgstr ""
 
 #: src/olympia/bandwagon/templates/bandwagon/mobile/collection_listing.html
 msgid "COLLECTIONS"
-msgstr ""
+msgstr "SAMLINGAR"
 
 #: src/olympia/bandwagon/templates/bandwagon/mobile/collection_listing.html
 msgid "Groups of related add-ons that anyone can create."
@@ -2628,7 +2644,7 @@ msgstr ""
 
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html src/olympia/blocklist/templates/blocklist/blocked_list.html
 msgid "Blocked Add-ons"
-msgstr ""
+msgstr "Blokkerte utvidingar"
 
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html src/olympia/blocklist/templates/blocklist/blocked_list.html
 msgid "Blocklist"
@@ -2637,11 +2653,11 @@ msgstr "Blokkeringsliste"
 #. {0} is an add-on name.
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html
 msgid "<b>{0}</b> has been blocked for your protection."
-msgstr ""
+msgstr "<b>{0}</b> er blokkert for å beskytta deg."
 
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html
 msgid "Why was it blocked?"
-msgstr ""
+msgstr "Kvifor vart den blokkert?"
 
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html
 msgid "Who is affected?"
@@ -2669,12 +2685,12 @@ msgstr ""
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html
 #, python-format
 msgid "Blocked on %(date)s. <a href=\"%(link)s\">View block request</a>."
-msgstr ""
+msgstr "Blokkert den %(date)s. <a href=\"%(link)s\">Vis blokkeringsførespurnad</a>."
 
 #: src/olympia/blocklist/templates/blocklist/blocked_detail.html
 #, python-format
 msgid "Blocked on %(date)s."
-msgstr ""
+msgstr "Blokkert den %(date)s."
 
 #: src/olympia/blocklist/templates/blocklist/blocked_list.html
 msgid "The following software is known to cause serious security, stability, or performance issues with {app}."
@@ -2684,13 +2700,13 @@ msgstr ""
 #: src/olympia/browse/feeds.py
 #, python-format
 msgid "%s Add-ons"
-msgstr ""
+msgstr "%s utvidingar"
 
 #. L10n: %s is a category name.
 #: src/olympia/browse/feeds.py
 #, python-format
 msgid "%s Themes"
-msgstr ""
+msgstr "%s tema"
 
 #: src/olympia/browse/feeds.py
 #, python-format
@@ -2715,15 +2731,15 @@ msgstr "Søkjeverktøy og søkjerelaterte utvidingar"
 
 #: src/olympia/browse/feeds.py
 msgid "Search tools"
-msgstr ""
+msgstr "Søkjeverktøy"
 
 #: src/olympia/browse/views.py src/olympia/search/forms.py
 msgid "Most Users"
-msgstr ""
+msgstr "Flest brukarar"
 
 #: src/olympia/browse/templates/browse/personas/mobile/category_landing.html src/olympia/browse/views.py src/olympia/legacy_discovery/templates/legacy_discovery/pane.html src/olympia/search/forms.py
 msgid "Up & Coming"
-msgstr ""
+msgstr "Framgangsrike"
 
 #: src/olympia/browse/views.py
 msgid "Recently Added"
@@ -2731,15 +2747,15 @@ msgstr "Nyleg lagt til"
 
 #: src/olympia/browse/views.py src/olympia/devhub/views.py src/olympia/legacy_discovery/templates/legacy_discovery/addons/detail.html
 msgid "Created"
-msgstr ""
+msgstr "Oppretta"
 
 #. {0} is the category name. Ex: Sports
 #: src/olympia/browse/templates/browse/creatured.html
 msgid "{0}: Featured Add-ons"
 msgstr "{0}: Utvalde utvidingar"
 
-#: src/olympia/browse/templates/browse/creatured.html src/olympia/browse/templates/browse/featured.html src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#: src/olympia/devhub/templates/devhub/docs/policies.html src/olympia/legacy_discovery/modules.py src/olympia/legacy_discovery/templates/legacy_discovery/pane.html
+#: src/olympia/browse/templates/browse/creatured.html src/olympia/browse/templates/browse/featured.html src/olympia/legacy_discovery/modules.py
+#: src/olympia/legacy_discovery/templates/legacy_discovery/pane.html
 msgid "Featured Add-ons"
 msgstr "Utvalde utvidingar"
 
@@ -2819,7 +2835,7 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/search_tools.html
 msgid "Search Providers"
-msgstr ""
+msgstr "Søkjetilbydarar"
 
 #: src/olympia/browse/templates/browse/search_tools.html
 msgid "Find new providers for your search bar"
@@ -2827,7 +2843,7 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/search_tools.html
 msgid "Additional Resources"
-msgstr ""
+msgstr "Fleire ressursar"
 
 #. {0} is an app name, like Firefox.
 #: src/olympia/browse/templates/browse/search_tools.html
@@ -2844,11 +2860,11 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/themes.html src/olympia/constants/base.py
 msgid "Complete Themes"
-msgstr ""
+msgstr "Fullstendige tema"
 
 #: src/olympia/browse/templates/browse/impala/base_listing.html
 msgid "Most Popular Extensions"
-msgstr ""
+msgstr "Mest populære utvidingar"
 
 #: src/olympia/browse/templates/browse/impala/base_listing.html
 msgid "Top-Rated Extensions"
@@ -2856,11 +2872,11 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/impala/base_listing.html
 msgid "Newest Extensions"
-msgstr ""
+msgstr "Nyaste utvidingar"
 
 #: src/olympia/browse/templates/browse/impala/base_listing.html
 msgid "Extensions by Name"
-msgstr ""
+msgstr "Utvidingar etter namn"
 
 #: src/olympia/browse/templates/browse/impala/base_listing.html
 msgid "Extensions by Weekly Downloads"
@@ -2918,24 +2934,24 @@ msgstr[1] ""
 #: src/olympia/browse/templates/browse/mobile/extensions.html src/olympia/devhub/templates/devhub/addons/activity.html src/olympia/devhub/templates/devhub/devhub_search.html
 #: src/olympia/search/templates/search/mobile/results.html src/olympia/search/templates/search/no_results.html
 msgid "No results found."
-msgstr ""
+msgstr "Ingen resultat."
 
 #: src/olympia/browse/templates/browse/personas/base.html src/olympia/browse/templates/browse/personas/mobile/base.html
 msgid "{0} Themes"
-msgstr ""
+msgstr "{0} tema"
 
 #. {0} is a user's name.
 #: src/olympia/browse/templates/browse/personas/base.html src/olympia/browse/templates/browse/personas/grid.html
 msgid "{0}'s Themes"
-msgstr ""
+msgstr "{0} sine tema"
 
 #: src/olympia/browse/templates/browse/personas/base.html
 msgid "View Profile"
-msgstr ""
+msgstr "Vis profil"
 
 #: src/olympia/browse/templates/browse/personas/base.html
 msgid "Create Your Own Theme"
-msgstr ""
+msgstr "Lag ditt eige tema"
 
 #: src/olympia/browse/templates/browse/personas/base.html
 msgid "Your browser, your style! Dress it up with a design of your own!"
@@ -2947,7 +2963,7 @@ msgstr "Les meir"
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html src/olympia/browse/templates/browse/personas/mobile/category_landing.html
 msgid "View All Recently Added"
-msgstr ""
+msgstr "Vis alle som er nyleg lagt til"
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html src/olympia/browse/templates/browse/personas/mobile/category_landing.html
 msgid "View All Most Popular"
@@ -2955,7 +2971,7 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html src/olympia/browse/templates/browse/personas/mobile/category_landing.html
 msgid "View All Top Rated"
-msgstr ""
+msgstr "Vis alle topprangerte"
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html
 #, python-format
@@ -2975,15 +2991,15 @@ msgstr ""
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html
 msgid "Up & Coming Themes"
-msgstr ""
+msgstr "Framgangsrike tema"
 
 #: src/olympia/browse/templates/browse/personas/category_landing.html
 msgid "View All Up & Coming"
-msgstr ""
+msgstr "Vis alle framgangsrike"
 
 #: src/olympia/browse/templates/browse/personas/grid.html
 msgid "No themes found"
-msgstr ""
+msgstr "Fann ingen tema"
 
 #: src/olympia/browse/templates/browse/personas/mobile/category_landing.html
 msgid "Easy-to-use themes for Firefox"
@@ -2995,7 +3011,7 @@ msgstr "Populære"
 
 #: src/olympia/browse/templates/browse/personas/mobile/category_landing.html
 msgid "More Themes"
-msgstr ""
+msgstr "Fleire tema"
 
 #: src/olympia/browse/templates/browse/personas/mobile/macros.html
 msgid "&laquo; All Themes"
@@ -3003,19 +3019,19 @@ msgstr "&laquo; Alle tema"
 
 #: src/olympia/compat/forms.py
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: src/olympia/compat/forms.py src/olympia/editors/templates/editors/base.html src/olympia/search/views.py
 msgid "All Add-ons"
-msgstr ""
+msgstr "Alle utviding"
 
 #: src/olympia/compat/forms.py
 msgid "Binary"
-msgstr ""
+msgstr "Binær"
 
 #: src/olympia/compat/forms.py
 msgid "Non-binary"
-msgstr ""
+msgstr "Ikkje-binær"
 
 #: src/olympia/compat/templates/compat/reporter.html
 msgid "Add-on Compatibility Reports"
@@ -3047,39 +3063,48 @@ msgstr ""
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "{0} success report"
 msgid_plural "{0} success reports"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} godkjend rapport"
+msgstr[1] "{0} godkjende rapportar"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "{0} problem report"
 msgid_plural "{0} problem reports"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} problemrapport"
+msgstr[1] "{0} problemrapportart"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html src/olympia/users/templates/users/profile.html
 msgid "View all"
-msgstr ""
+msgstr "Vis alle"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "Filter by Application"
-msgstr ""
+msgstr "Filtrer etter program"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "Report Type"
-msgstr ""
+msgstr "Rapporttype"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/ajax_compat_update.html src/olympia/editors/forms.py
 #: src/olympia/zadmin/forms.py
 msgid "Application"
-msgstr ""
+msgstr "Program"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "Application Build"
-msgstr ""
+msgstr "Programbygg"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "Platform"
 msgstr "Plattform"
+
+#: src/olympia/compat/templates/compat/reporter_detail.html
+msgid "e10s Enabled"
+msgstr ""
+
+#: src/olympia/compat/templates/compat/reporter_detail.html
+#, fuzzy
+msgid "e10s Compatible"
+msgstr "Kompatibel"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html src/olympia/editors/templates/editors/themes/themes.html
 msgid "Submitted"
@@ -3091,11 +3116,11 @@ msgstr "Vellukka"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "Problem"
-msgstr ""
+msgstr "Problem"
 
 #: src/olympia/compat/templates/compat/reporter_detail.html
 msgid "No reports found."
-msgstr ""
+msgstr "Fann ingen rapportar."
 
 #: src/olympia/constants/applications.py src/olympia/constants/categories.py
 msgid "Firefox"
@@ -3131,108 +3156,108 @@ msgstr "Ukjend"
 
 #: src/olympia/constants/base.py
 msgid "Incomplete"
-msgstr ""
+msgstr "Ufullstendig"
 
 #: src/olympia/constants/base.py
 msgid "Awaiting Preliminary Review"
-msgstr ""
+msgstr "Ventar på foreløpig vurdering"
 
 #: src/olympia/constants/base.py
 msgid "Awaiting Full Review"
-msgstr ""
+msgstr "Ventar på full vurdring"
 
 #: src/olympia/constants/base.py
 msgid "Fully Reviewed"
-msgstr ""
+msgstr "Fullstendig vurdert"
 
 #: src/olympia/constants/base.py
 msgid "Disabled by Mozilla"
-msgstr ""
+msgstr "Deaktiveret av Mozilla"
 
 #: src/olympia/constants/base.py
 msgid "Preliminarily Reviewed"
-msgstr ""
+msgstr "Foreløpig gjennomgått"
 
 #: src/olympia/constants/base.py
 msgid "Preliminarily Reviewed and Awaiting Full Review"
-msgstr ""
+msgstr "Foreløpig gjennomgått og ventar på full gjennomgang"
 
 #: src/olympia/constants/base.py src/olympia/editors/forms.py src/olympia/editors/helpers.py src/olympia/editors/templates/editors/themes/history_table.html
 msgid "Deleted"
-msgstr ""
+msgstr "Sletta"
 
 #: src/olympia/constants/base.py
 msgid "Pending approval"
-msgstr ""
+msgstr "Ventar på godkjenning"
 
 #: src/olympia/constants/base.py
 msgid "Flagged for further review"
-msgstr ""
+msgstr "Flagga for vidare vurdering"
 
 #: src/olympia/constants/base.py
 msgid "Beta"
-msgstr ""
+msgstr "Beta"
 
 #: src/olympia/constants/base.py src/olympia/users/notifications.py
 msgid "Developer"
-msgstr ""
+msgstr "Utviklar"
 
 #: src/olympia/constants/base.py
 msgid "Viewer"
-msgstr ""
+msgstr "Vurderar"
 
 #: src/olympia/constants/base.py src/olympia/templates/mobile/header.html
 msgid "Support"
-msgstr ""
+msgstr "Hjelp"
 
 #: src/olympia/constants/base.py src/olympia/constants/platforms.py
 msgid "Any"
-msgstr ""
+msgstr "Alle"
 
 #: src/olympia/constants/base.py
 msgid "Extension"
-msgstr ""
+msgstr "Udviding"
 
 #: src/olympia/constants/base.py
 msgid "Complete Theme"
-msgstr ""
+msgstr "Fullstendig tema"
 
 #: src/olympia/constants/base.py
 msgid "Search Engine"
-msgstr ""
+msgstr "Søkjemotor"
 
 #: src/olympia/constants/base.py
 msgid "Language Pack (Application)"
-msgstr ""
+msgstr "Språkpakke (program)"
 
 #: src/olympia/constants/base.py
 msgid "Language Pack (Add-on)"
-msgstr ""
+msgstr "Språkpakke (utviding)"
 
 #: src/olympia/constants/base.py
 msgid "Plugin"
-msgstr ""
+msgstr "Programtillegg"
 
 #: src/olympia/constants/base.py src/olympia/editors/templates/editors/includes/search_results_themes.html src/olympia/editors/templates/editors/themes/deleted.html
 #: src/olympia/editors/templates/editors/themes/history_table.html src/olympia/editors/templates/editors/themes/logs.html
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #: src/olympia/constants/base.py
 msgid "Dictionaries"
-msgstr ""
+msgstr "Ordbøker"
 
 #: src/olympia/constants/base.py
 msgid "Language Packs (Application)"
-msgstr ""
+msgstr "Språkpakkar (program)"
 
 #: src/olympia/constants/base.py
 msgid "Language Packs (Add-on)"
-msgstr ""
+msgstr "Språkpakkar (utvidingar)"
 
 #: src/olympia/constants/base.py
 msgid "Plugins"
-msgstr ""
+msgstr "Programtillegg"
 
 #: src/olympia/constants/base.py
 msgid "Only ask on this add-on's page and developer profile"
@@ -3249,23 +3274,23 @@ msgstr ""
 #. Review points sources other than add-ons and themes.
 #: src/olympia/constants/base.py src/olympia/constants/categories.py src/olympia/devhub/forms.py src/olympia/editors/templates/editors/performance.html
 msgid "Other"
-msgstr ""
+msgstr "Anna"
 
 #: src/olympia/constants/base.py
 msgid "Exception"
-msgstr ""
+msgstr "Unntak"
 
 #: src/olympia/constants/base.py
 msgid "Release"
-msgstr ""
+msgstr "Utgåve"
 
 #: src/olympia/constants/base.py
 msgid "Change"
-msgstr ""
+msgstr "Endre"
 
 #: src/olympia/constants/base.py
 msgid "App"
-msgstr ""
+msgstr "App"
 
 #: src/olympia/constants/base.py
 msgid "Persona"
@@ -3321,7 +3346,7 @@ msgstr ""
 
 #: src/olympia/constants/base.py
 msgid "Theme Review"
-msgstr ""
+msgstr "Temavurdering"
 
 #: src/olympia/constants/base.py
 msgid "Full Search Provider Review"
@@ -3357,84 +3382,83 @@ msgstr ""
 
 #: src/olympia/constants/base.py
 msgid "Level 1"
-msgstr ""
+msgstr "Nivå 1"
 
 #: src/olympia/constants/base.py
 msgid "Level 2"
-msgstr ""
+msgstr "Nivå 2"
 
 #: src/olympia/constants/base.py
 msgid "Level 3"
-msgstr ""
+msgstr "Nivå 3"
 
 #: src/olympia/constants/base.py
 msgid "Level 4"
-msgstr ""
+msgstr "Nivå 4"
 
 #: src/olympia/constants/base.py
 msgid "Level 5"
-msgstr ""
+msgstr "Nivå 5"
 
 #: src/olympia/constants/base.py
 msgid "Level 6"
-msgstr ""
+msgstr "Nivå 6"
 
 #: src/olympia/constants/base.py
 msgid "Level 7"
-msgstr ""
+msgstr "Nivå 7"
 
 #: src/olympia/constants/base.py
 msgid "Level 8"
-msgstr ""
+msgstr "Nivå 8"
 
 #: src/olympia/constants/base.py
 msgid "Level 9"
-msgstr ""
+msgstr "Nivå 9"
 
 #: src/olympia/constants/base.py
 msgid "Not signed"
-msgstr ""
+msgstr "Ikkje signert"
 
 #: src/olympia/constants/base.py
 msgid "Signed for a full review"
-msgstr ""
+msgstr "Signert for full vurdering"
 
 #: src/olympia/constants/base.py
 msgid "Signed of a preliminary review"
-msgstr ""
+msgstr "Signert for ei foreløpig gransking"
 
 #: src/olympia/constants/base.py
 msgid "Compatible"
-msgstr ""
+msgstr "Kompatibel"
 
 #: src/olympia/constants/base.py
 msgid "Incompatible"
-msgstr ""
+msgstr "Inkompatibel"
 
 #: src/olympia/constants/categories.py
 msgid "Alerts & Updates"
-msgstr ""
+msgstr "Varslingarog oppdateringar"
 
 #: src/olympia/constants/categories.py
 msgid "Appearance"
-msgstr ""
+msgstr "Utsjånad"
 
 #: src/olympia/constants/categories.py
 msgid "Bookmarks"
-msgstr ""
+msgstr "Bokmerke"
 
 #: src/olympia/constants/categories.py
-#, fuzzy
 msgid "Download Management"
-msgstr "Last ned språkpakke"
+msgstr "Nerladdningshandsaming"
 
 #: src/olympia/constants/categories.py
 msgid "Feeds, News & Blogging"
-msgstr ""
+msgstr "RSS-kanalar, nyheiter og blogging"
 
 #: src/olympia/constants/categories.py
 msgid "Games & Entertainment"
-msgstr ""
+msgstr "Spel og underhaldning"
 
 #: src/olympia/constants/categories.py
 #, fuzzy
@@ -3443,24 +3467,23 @@ msgstr "Språk"
 
 #: src/olympia/constants/categories.py
 msgid "Photos, Music & Videos"
-msgstr ""
+msgstr "Foto, musikk og videoar"
 
 #: src/olympia/constants/categories.py
-#, fuzzy
 msgid "Privacy & Security"
-msgstr "Personvernpraksis"
+msgstr "Personvern og sikkerheit"
 
 #: src/olympia/constants/categories.py
 msgid "Shopping"
-msgstr ""
+msgstr "Shopping"
 
 #: src/olympia/constants/categories.py
 msgid "Social & Communication"
-msgstr ""
+msgstr "Sosialt og kommunikasjon"
 
 #: src/olympia/constants/categories.py
 msgid "Tabs"
-msgstr ""
+msgstr "Faner"
 
 #: src/olympia/constants/categories.py
 #, fuzzy
@@ -3469,23 +3492,23 @@ msgstr "Vis utviklingsversjon"
 
 #: src/olympia/constants/categories.py
 msgid "Animals"
-msgstr ""
+msgstr "Dyr"
 
 #: src/olympia/constants/categories.py
 msgid "Compact"
-msgstr ""
+msgstr "Kompakt"
 
 #: src/olympia/constants/categories.py
 msgid "Large"
-msgstr ""
+msgstr "Stor"
 
 #: src/olympia/constants/categories.py src/olympia/users/templates/users/edit.html
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Ymse"
 
 #: src/olympia/constants/categories.py
 msgid "Modern"
-msgstr ""
+msgstr "Moderne"
 
 #: src/olympia/constants/categories.py
 #, fuzzy
@@ -3494,24 +3517,23 @@ msgstr "Framheva"
 
 #: src/olympia/constants/categories.py
 msgid "OS Integration"
-msgstr ""
+msgstr "OS-integrasjon"
 
 #: src/olympia/constants/categories.py
 msgid "Retro"
-msgstr ""
+msgstr "Retro"
 
 #: src/olympia/constants/categories.py
-#, fuzzy
 msgid "Sports"
-msgstr "Brukarstøttenettstad"
+msgstr "Sport"
 
 #: src/olympia/constants/categories.py
 msgid "General"
-msgstr ""
+msgstr "Generelt"
 
 #: src/olympia/constants/categories.py
 msgid "Business"
-msgstr ""
+msgstr "Business"
 
 #: src/olympia/constants/categories.py
 msgid "Dictionaries & Encyclopedias"
@@ -3519,7 +3541,7 @@ msgstr ""
 
 #: src/olympia/constants/categories.py
 msgid "Kids"
-msgstr ""
+msgstr "Born"
 
 #: src/olympia/constants/categories.py
 msgid "Multiple Search"
@@ -3527,68 +3549,67 @@ msgstr ""
 
 #: src/olympia/constants/categories.py
 msgid "Music"
-msgstr ""
+msgstr "Musikk"
 
 #: src/olympia/constants/categories.py
 msgid "News & Blogs"
-msgstr ""
+msgstr "Nyheiter og bloggar"
 
 #: src/olympia/constants/categories.py
 msgid "Photos & Images"
-msgstr ""
+msgstr "Foto og bilde"
 
 #: src/olympia/constants/categories.py
 msgid "Shopping & E-Commerce"
-msgstr ""
+msgstr "Shopping og e-handel"
 
 #: src/olympia/constants/categories.py
 msgid "Social & People"
-msgstr ""
+msgstr "Sosialt og menneske"
 
 #: src/olympia/constants/categories.py
 msgid "Travel"
-msgstr ""
+msgstr "Reise"
 
 #: src/olympia/constants/categories.py
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: src/olympia/constants/categories.py
 msgid "Abstract"
-msgstr ""
+msgstr "Abstrakt"
 
 #: src/olympia/constants/categories.py
 msgid "Causes"
-msgstr ""
+msgstr "Føremål"
 
 #: src/olympia/constants/categories.py
 msgid "Fashion"
-msgstr ""
+msgstr "Mote"
 
 #: src/olympia/constants/categories.py
 msgid "Film and TV"
-msgstr ""
+msgstr "Film og TV"
 
 #: src/olympia/constants/categories.py
 msgid "Foxkeh"
-msgstr ""
+msgstr "Foxkeh"
 
 #: src/olympia/constants/categories.py
 msgid "Holiday"
-msgstr ""
+msgstr "Ferie"
 
 #: src/olympia/constants/categories.py
 msgid "Scenery"
-msgstr ""
+msgstr "Landskap"
 
 #: src/olympia/constants/categories.py
-#, fuzzy
 msgid "Seasonal"
-msgstr "Persona"
+msgstr "Sesong"
 
 #: src/olympia/constants/categories.py
 msgid "Solid"
-msgstr ""
+msgstr "Fast"
 
 #: src/olympia/constants/categories.py
 #, fuzzy
@@ -3607,7 +3628,7 @@ msgstr "Eksperimentell"
 
 #: src/olympia/constants/categories.py
 msgid "Feeds, News, & Blogging"
-msgstr ""
+msgstr "RSS-kanalar, nyheiter og bloggning"
 
 #: src/olympia/constants/categories.py src/olympia/editors/templates/editors/base.html src/olympia/editors/templates/editors/performance.html
 msgid "Performance"
@@ -3631,7 +3652,7 @@ msgstr ""
 
 #: src/olympia/constants/categories.py
 msgid "User Interface"
-msgstr ""
+msgstr "Brukargrensesnitt"
 
 #: src/olympia/constants/categories.py
 msgid "Appearance and Customization"
@@ -3643,7 +3664,7 @@ msgstr ""
 
 #: src/olympia/constants/categories.py
 msgid "Chat and IM"
-msgstr ""
+msgstr "Prat og IM"
 
 #: src/olympia/constants/categories.py
 #, fuzzy
@@ -3657,11 +3678,11 @@ msgstr "Innhald"
 
 #: src/olympia/constants/categories.py
 msgid "Folders and Filters"
-msgstr ""
+msgstr "Mapper og filter"
 
 #: src/olympia/constants/categories.py
 msgid "Import/Export"
-msgstr ""
+msgstr "Import/eksport"
 
 #: src/olympia/constants/categories.py
 msgid "Message and News Reading"
@@ -3705,19 +3726,19 @@ msgstr ""
 
 #: src/olympia/constants/editors.py src/olympia/editors/templates/editors/themes/queue.html src/olympia/editors/templates/editors/themes/themes.html
 msgid "Flag"
-msgstr ""
+msgstr "Flagg"
 
 #: src/olympia/constants/editors.py src/olympia/editors/templates/editors/themes/queue.html src/olympia/editors/templates/editors/themes/themes.html
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplisera"
 
 #: src/olympia/constants/editors.py src/olympia/editors/helpers.py src/olympia/editors/templates/editors/themes/queue.html src/olympia/editors/templates/editors/themes/themes.html
 msgid "Reject"
-msgstr ""
+msgstr "Avvis"
 
 #: src/olympia/constants/editors.py src/olympia/editors/templates/editors/themes/queue.html
 msgid "Approve"
-msgstr ""
+msgstr "Godkjenn"
 
 #: src/olympia/constants/editors.py
 msgid "Sexual or pornographic content"
@@ -3745,7 +3766,7 @@ msgstr ""
 
 #: src/olympia/constants/editors.py
 msgid "Spam content"
-msgstr ""
+msgstr "Inneheld spam (søppel)"
 
 #: src/olympia/constants/editors.py
 msgid "Low-quality, stretched, or blank image"
@@ -3757,7 +3778,7 @@ msgstr ""
 
 #: src/olympia/constants/licenses.py
 msgid "All Rights Reserved"
-msgstr ""
+msgstr "Alle rettar med atterhald"
 
 #: src/olympia/constants/licenses.py
 msgid "Creative Commons Attribution 3.0"
@@ -3785,40 +3806,40 @@ msgstr ""
 
 #: src/olympia/constants/platforms.py
 msgid "All Platforms"
-msgstr ""
+msgstr "Alle platformer"
 
 #: src/olympia/constants/platforms.py
 msgid "Linux"
-msgstr ""
+msgstr "Linux"
 
 #: src/olympia/constants/platforms.py
 msgid "Mac OS X"
-msgstr ""
+msgstr "Mac OS X"
 
 #: src/olympia/constants/platforms.py
 msgid "BSD"
-msgstr ""
+msgstr "BSD"
 
 #: src/olympia/constants/platforms.py
 msgid "Windows"
-msgstr ""
+msgstr "Windows"
 
 #: src/olympia/constants/platforms.py
 msgid "Solaris"
-msgstr ""
+msgstr "Solaris"
 
 #: src/olympia/constants/platforms.py
 msgid "Android"
-msgstr ""
+msgstr "Android"
 
 #: src/olympia/core/apps.py
 msgid "Core"
-msgstr ""
+msgstr "Kjerne"
 
 #: src/olympia/devhub/feeds.py
 #, python-format
 msgid "Recent Changes for %s"
-msgstr ""
+msgstr "Siste endringar for %s"
 
 #: src/olympia/devhub/feeds.py
 msgid "Recent Changes for My Add-ons"
@@ -3960,11 +3981,11 @@ msgstr ""
 msgid "Add-ons that are bundled with application installers will be code reviewed by Mozilla before they are signed and are held to a higher quality standard."
 msgstr ""
 
-#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html
+#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html
 msgid "Full Review"
 msgstr ""
 
-#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html
+#: src/olympia/devhub/forms.py src/olympia/devhub/templates/devhub/addons/submit/select-review.html
 msgid "Preliminary Review"
 msgstr ""
 
@@ -4091,7 +4112,7 @@ msgstr ""
 msgid "User Collections"
 msgstr ""
 
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html src/olympia/devhub/views.py src/olympia/pages/templates/pages/dev_faq.html
+#: src/olympia/devhub/views.py src/olympia/pages/templates/pages/dev_faq.html
 msgid "User Reviews"
 msgstr ""
 
@@ -4372,9 +4393,7 @@ msgstr ""
 msgid "Lightweight Themes"
 msgstr ""
 
-#: src/olympia/devhub/templates/devhub/docs/policies-agreement.html src/olympia/devhub/templates/devhub/docs/policies-contact.html src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
-#: src/olympia/devhub/templates/devhub/docs/policies.html src/olympia/devhub/templates/devhub/nav.html
+#: src/olympia/devhub/templates/devhub/nav.html
 msgid "Add-on Policies"
 msgstr ""
 
@@ -4615,6 +4634,23 @@ msgstr ""
 #: src/olympia/devhub/templates/devhub/addons/edit/basic.html
 msgid ""
 "A short explanation of your add-on's basic functionality that is displayed in search and browse listings, as well as at the top of your add-on's details page. It is only relevant for listed add-ons."
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+#, fuzzy
+msgid "Experimental?"
+msgstr "Eksperimentell"
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "If your add-on on is experimental or otherwise not ready for general use.  The add-on will be listed but will have reduced visibility. "
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "This add-on is experimental."
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/edit/basic.html
+msgid "This add-on is ready for general use."
 msgstr ""
 
 #: src/olympia/devhub/templates/devhub/addons/edit/basic.html
@@ -5066,6 +5102,14 @@ msgid "This summary will be shown in listings and searches."
 msgstr ""
 
 #: src/olympia/devhub/templates/devhub/addons/submit/describe.html
+msgid "This add-on is experimental"
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/submit/describe.html
+msgid "Check this option if your add-on is experimental or otherwise not ready for general use.  The add-on will be listed but will have reduced visibility.  You can change this setting later."
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/submit/describe.html
 msgid "Provide a more detailed description:"
 msgstr ""
 
@@ -5268,10 +5312,14 @@ msgid "Select a license"
 msgstr ""
 
 #: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
+msgid "n/a"
+msgstr ""
+
+#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
 msgid "Select a review process"
 msgstr ""
 
-#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
+#: src/olympia/devhub/templates/devhub/addons/submit/sidebar.html
 msgid "Submission Process"
 msgstr ""
 
@@ -5345,795 +5393,6 @@ msgstr ""
 
 #: src/olympia/devhub/templates/devhub/api/key.html
 msgid "Generate new credentials"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-agreement.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Developer Agreement"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Contacting Us"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Thanks for your interest in contacting the Mozilla Add-ons team. Please read this page carefully to ensure your request goes to the right place."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Support"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid ""
-"If you have a support question about a particular add-on, such as \"how do I use this add-on?\" or \"why doesn't this work properly?\", please contact that add-on's author through the support "
-"channels listed on the add-on's listing page."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Editorial Concerns"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "amo-editors at mozilla dot org"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-#, python-format
-msgid ""
-"If you have a question about an Editor's review of an add-on or want to report a policy violation, please email %(mail_editors)s. <strong>Almost all add-on reports fall under this category.</"
-"strong> Please be sure to include a link to the add-on in question and a detailed description of your question or comment."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Add-on Security Vulnerabilities"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "amo-admins at mozilla dot org"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-#, python-format
-msgid ""
-"If you have discovered a security vulnerability in an add-on, even if it is not hosted here, Mozilla is very interested in your discovery and will work with the add-on developer to correct the "
-"issue as soon as possible. Add-on security issues can be reported <a href=\"http://www.mozilla.org/projects/security/security-bugs-policy.html\">confidentially</a> in <a href=\"%(link_bugzilla)s"
-"\">Bugzilla</a> or by emailing %(mail_admins)s."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid "Website Functionality & Development"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-contact.html
-msgid ""
-"If you've found a problem with the site, we'd love to fix it. Please <a href=\"https://github.com/mozilla/addons/issues/new\">file a bug report</a> in GitHub, including the location of the problem "
-"and how you encountered it."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Maintaining Your Add-ons"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Submitting New Versions of Your Add-on"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Developers are encouraged to submit updates to their add-ons to fix bugs, add features, and otherwise improve their product. New versions of an add-on must have a <a href=\"https://developer."
-"mozilla.org/en/Toolkit_version_format\">higher version number</a> and can be submitted through the Developer Tools provided. There is no limit to the number of versions that can be submitted, but "
-"please remember that versions must be reviewed by an editor."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "New versions will be added to a pending review queue, and any additional versions submitted before the review is completed will move that version to the end of the queue."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "How do I submit a Beta add-on?"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Beta channels are only available to fully-reviewed add-ons."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"To create a beta channel, upload a file with a unique version string that contains any of the following strings: <code>a,b,alpha,beta,pre,rc</code>, with an optional number at the end. This text "
-"must come at the end of the version string. If you understand regex format, here's what we look for in the version number: <code>\"(a|alpha|b|beta|pre|rc)\\d*$\"</code>."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Once a file meeting this criteria is uploaded to AMO, it will automatically be marked as a beta version. Users of add-ons with these unique version numbers will automatically be served the newest "
-"beta updates."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"While we call these \"Beta versions\", you can use this channel for nightlies, or alphas, or prerelease versions as you wish. Please note that there is only one channel for this purpose and all of "
-"your users on this channel will receive the latest add-ons submitted. For instance, if you upload <code>1.0beta1</code> to the release channel and then upload <code>1.1alpha1</code>, all users of "
-"<code>1.0beta1</code> will be offered an upgrade to <code>1.1alpha1</code>. Updates are pushed by submission date and not version number, so users will always get the most recent channel update "
-"regardless of any kind of alphabetical sorting."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Required Updates"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Certain situations may arise in which Mozilla requests that an add-on developer update their add-on within a given time period to address a major security issue or policy violation. We work with "
-"developers to reasonably accommodate their own schedules, but if the issue is of a serious enough nature, add-ons that cannot issue an update with the requested fix may be demoted from fully-"
-"reviewed status, disabled, or permanently removed from the site."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Transfer of Ownership"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Add-ons can have multiple users with permission to update and manage the listing. Existing authors of an add-on can transfer ownership and add additional developers to an add-on's listing through "
-"the Developer Tools provided. No interaction with Mozilla representatives is necessary for a transfer of ownership."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#, python-format
-msgid "Mozilla can assist with granting additional permissions of an add-on's listing if <a href=\"%(link_contact)s\">contacted</a> by the add-on's current owner."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Mozilla encourages its users to offer feedback on their experiences when using an add-on. This allows other users to determine if the add-on is stable and useful. It also provides valuable feedback "
-"to developers, allowing them to continuously improve their add-on to meet user needs."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-#, python-format
-msgid ""
-"Reviews must follow the <a href=\"%(link_guidelines)s\">review guidelines</a>. Reviews that do not meet these guidelines may be flagged for moderation, but negative reviews will not be removed "
-"unless they provide false information."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Many developers provide a support mechanism, such as a forum, discussion group, or email address. It is recommended that support questions be posted via those mediums instead of in an add-on's "
-"review section."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "Code Disputes"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"Many add-ons allow their source code to be openly viewed. This does not mean that the source code is open source or available for use in another add-on. The original author of an add-on retains "
-"copyright of their work unless otherwise noted in the add-on's license."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid ""
-"In the event that we're notified of a copyright or license infringement, we will take steps to review the situation and determine if an actual infringement has occurred. If we determine that there "
-"is an infringement, we will remove the offending add-on and contact the author. New add-on submissions (including updates) containing infringing code will be denied approval for public status."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html
-msgid "If you are unsure of the current copyright status of an add-on's source code, you must contact the original author and receive explicit permission before using the source code."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-maintenance.html src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Last updated: January 13, 2011"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid ""
-"Featured add-ons are top-quality extensions and themes highlighted on <a href=\"%(link_gallery)s\">AMO</a>, Firefox's Add-ons Manager, and across other Mozilla websites. These add-ons showcase the "
-"power of Firefox customization and are useful to a wide audience."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Featured add-ons are chosen by the Featured Add-ons Advisory Board, a small group of add-on developers and fans from the Mozilla community who have volunteered to review and vote on nominations."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "<a href=\"%(link_featured)s\">Featured extensions</a> are chosen every month, and <a href=\"%(link_themes)s\">featured complete themes</a> are chosen every quarter."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Criteria for Featured Add-ons"
-msgstr "Kriterium for utvalde utvidingar"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Before nominating an add-on to be featured, please ensure it meets the following criteria:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have a complete and informative listing on AMO. This means:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a 64-pixel custom icon"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a clear and concise name (no lengthy keywords)"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a clear and concise summary of the add-on's functionality"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "detailed description and privacy policy, if applicable"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "updated screenshots of the add-on's functionality"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "must be fully approved by AMO editors (no preliminarily reviewed entries)"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have excellent user reviews and any problems or support requests must be promptly addressed by the developer."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must have a minimum of 2,000 users."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "The add-on must be compatible with the latest release of Firefox and must be compatible with beta versions 4 weeks before their final release."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"<strong>Most importantly</strong>, the add-on must have wide consumer appeal to Firefox's users and be outstanding in nearly every way: user experience, performance, security, and usefulness or "
-"entertainment value. Featured complete themes must also be visually appealing."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Nominating an Add-on"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "amo-featured at mozilla dot org"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "If you wish to nominate an add-on to be featured and it meets the criteria above, send an email to %(mail_featured)s with:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "the add-on name, URL, and whether you are its developer"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "a short explanation of why the add-on has wide appeal and should be featured"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "optionally, links to any external reviews or articles mentioning the add-on"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Add-on nominations are reviewed by the Advisory Board once a month (once every 3 months for complete theme nominations). Common reasons for rejection include lacking wide appeal to consumers, a "
-"suboptimal user experience, quality or security issues, incompatibility, and similarity to another featured add-on. Rejected add-ons cannot be re-nominated within 3 months."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Rotating Featured Add-ons"
-msgstr "Roterande utvalde utvidingar"
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Mozilla and the Featured Add-ons Advisory Board regularly evaluate and rotate out featured add-ons. Some of the most common reasons for add-ons being removed from the featured list are:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Lack of growth &mdash; Add-ons that are featured typically experience a substantial gain in both downloads and active users. If an add-on is not demonstrating growth in any substantial way, that's "
-"a good indicator the add-on may not be very useful to our users."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Negative reviews &mdash; Featured add-ons should have a great experience and very few bugs, so add-ons with many negative reviews may be reconsidered."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Incompatibility with upcoming Firefox versions &mdash; Featured add-ons are expected to be compatible with stable and beta versions of Firefox. Add-ons not yet compatible with a Beta version of "
-"Firefox four weeks before its expected release will lose their featured status."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Joining the Featured Add-ons Advisory Board"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Every six months a new Advisory Board is chosen based on applications from the add-ons community. Members must:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "be active members of the add-ons community, whether as a developer, evangelist, or fan"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "commit to trying all the nominations submitted, giving their feedback, and casting their votes every month"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "abstain from voting on add-ons that they have any business or personal affiliations with, as well as direct competitors of any such add-ons"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"Members of the Mozilla Add-ons team may veto any add-on's selection because of security, privacy, compatibility, or any other reason, but in general it is up to the Board to select add-ons to "
-"feature."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid ""
-"This featured policy only applies to the addons.mozilla.org global list of featured add-ons. Add-ons featured in other locations are often pulled from this list, but Mozilla may feature any add-on "
-"in other locations without the Board's consent. Additionally, locale-specific features override the global defaults, so if a locale has opted to select its own features, some or all of the global "
-"features may not appear in that locale."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-#, python-format
-msgid "Follow the <a href=\"%(link_blog)s\">Add-ons Blog</a> or <a href=\"%(link_twitter)s\">@mozamo</a> on Twitter to learn when the next application period opens."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-recommended.html
-msgid "Last updated: January 31, 2013"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Review Process"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"In order to ensure all add-ons hosted in our gallery are safe for users to install, Mozilla will begin requiring all hosted add-ons to undergo review. We offer two types of review and developers "
-"are free to choose the best fit for their add-on."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong><a href=\"#full\">Full Review</a></strong> &mdash; a thorough functional and code review of the add-on, appropriate for add-ons ready for distribution to the masses. All site features are "
-"available to these add-ons."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong><a href=\"#preliminary\">Preliminary Review</a></strong> &mdash; a faster review intended for experimental add-ons. Preliminary reviews do not check for functionality or full policy "
-"compliance, but the reviewed add-ons have install button cautions and some feature limitations."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Detailed descriptions of each option are below. After selecting a review process at submission, the add-on will be placed in the queue. Add-ons are reviewed by the <a href=\"https://wiki.mozilla."
-"org/AMO:Editors\">AMO Editors</a>, a group of talented developers that volunteer to help the Mozilla project by reviewing add-ons to ensure a stable and safe experience for users. Developers will "
-"receive an email with any updates throughout the review process."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"While waiting for review, add-ons will not appear anywhere in the gallery publicly, but direct links to the add-on's details page will work. This allows the author to blog or share the link with "
-"friends, inviting them to try it out, even when not yet reviewed."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Full reviews are appropriate for add-ons that are well-tested, stable, fast, and have wide appeal to our users. If you aren't confident that your add-on meets that criteria, please consider working "
-"out the kinks while in preliminary review and accumulating user feedback first."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "We aim to perform full reviews in under 10 days, though most add-ons are reviewed in much less time."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Testing Methods &amp; Common Issues"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "When performing a full review, editors will:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "install the add-on, making sure it functions as described and is free of major defects"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "perform a source code review, looking for performance and security best practices"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "ensure the add-on's privacy policy is in line with its functionality"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "look for compliance with all of Mozilla's policies, detailed in these documents"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Some of the most common issues we see when performing these reviews are:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<strong>JavaScript namespace pollution</strong> &mdash; the most common violation. Be sure to <a href=\"https://developer.mozilla.org/en/XUL_School/JavaScript_Object_Management\">wrap your loose "
-"variables</a>"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "proper preference naming - all preference names should begin with \"extensions.\", followed by the add-on name or some other unique identifier"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "remote JavaScript execution or injection"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "remote XUL"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "synchronous XMLHttpRequests"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "obfuscated code"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "binary components or executables"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "inclusion of third-party software"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "errors generated in the Error Console"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "memory leaks"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "possible conflicts with other add-ons"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "application start-up or page load performance degradation"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid ""
-"For information on how to avoid these problems, please see our <a href=\"%(link_howto)s\">How-to Library</a>. Some of these practices, such as binary or obfuscated code, are allowed under certain "
-"conditions outlined below."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid ""
-"Many of the above restrictions are tested automatically by an extension scanner that will flag suspicious add-ons for editor review. You can read more about this scanner in the <a href="
-"\"%(link_validation)s\">Validation Help</a> document."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If the add-on is site-specific, it is recommended that a test account is provided for use during the review process. Additionally, including detailed testing instructions will allow an editor to "
-"better understand how the add-on functions and expedite the testing process. This information can be placed in the Notes to Reviewer field when editing a version in the Developer Hub."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "After the Review"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Once an add-on is granted full review, it will immediately be available in the gallery, showing in browse and search results with a warning-free install button. All features, including voluntary "
-"contributions and beta channels will be available."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Subsequent versions of the add-on will automatically be placed in the full review queue. Until the review is completed, the new version will only be displayed on the Version History page of the add-"
-"on. Once reviewed, the version will be updated across the site and deployed through the automatic update service."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If a version does not meet the criteria for full review, it can either be granted preliminary review or disabled if there is a security concern. The author will receive an email explaining the "
-"action taken and how to fix it. In most cases, the developer can simply fix the problem and re-submit for full review."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Preliminary reviews are appropriate for experimental add-ons and provide a way to get user testing and feedback without going through the longer, more thorough review process. We aim to complete "
-"these reviews in under 3 days."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Testing Methods"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"When performing a preliminary review, editors will review the source code for security issues and major policy violations, but will not install the add-on to test functionality in most cases. "
-"Preliminary review will be granted unless a security vulnerability or major policy violation is discovered."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Once preliminary review is granted, the add-on will be immediately available in the gallery, showing in browse and search results but ranked lower than fully-reviewed add-ons. Install buttons will "
-"have caution stripes and a notice that the add-on is experimental and not fully reviewed by Mozilla, though no click-through is required. Additionally, these add-ons cannot use the voluntary "
-"contributions and beta channel features."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "After being granted preliminary review, Mozilla may later revoke the review if other serious problems are reported to us by users."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Subsequent versions of the add-on will automatically be placed in the preliminary review queue. Until the review is completed, the new version will only be displayed on the Version History page of "
-"the add-on. Once reviewed, the version will be updated across the site and deployed through the automatic update service."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Policies on Specific Add-on Practices"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Prohibited Add-ons"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "The following add-ons are not permitted in any form:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that embed known <a href=\"http://en.wikipedia.org/wiki/Spyware\">spyware</a> or <a href=\"http://en.wikipedia.org/wiki/Malware\">malware</a>"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Illegal and criminal add-ons, such as <a href=\"http://en.wikipedia.org/wiki/Click_fraud\">click fraud</a> generators, <a href=\"http://en.wikipedia.org/wiki/Warez\">warez</a> download and "
-"directory assistants, child pornography finders, etc."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons whose main purpose is to facilitate access to pornographic material, or include references to this material in their descriptions"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that, upon installation, auto-install or launch installers of non-Firefox software"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that provide their own update mechanism for code or search engines"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that make changes to web content in ways that are non-obvious or difficult to trace by their users"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Add-ons that snoop on or intercept the network traffic of other users"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Conduit-based toolbars without explicit pre-approval"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Changing of Defaults and Unexpected Features"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Surprises can be appropriate in many situations, but they are not welcome when user security, privacy, and control are at stake. It is extremely important to be as transparent as possible when "
-"submitting an add-on for hosting on this site. A Mozilla user should be able to easily discern what the functionality of an add-on is and not be presented with unexpected experiences post-install."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"<p> Whenever an add-on includes any unexpected* feature that </p> <ul> <li>compromises user privacy or security (like sending data to third parties),</li> <li>changes default settings like the "
-"homepage or search engine, or</li> <li>changes settings or features in other add-ons or deactivates them altogether</li> </ul> <p>the features must adhere to the following requirements:</p> <ul> "
-"<li>The add-on description must clearly state what changes the add-on makes.</li> <li>All changes must be opt-in, meaning the user must take non-default action to enact the change.</li> <li>The opt-"
-"in dialog must clearly state the name of the add-on requesting the change.</li> <li>Uninstalling the add-on restores the user's original settings if they were changed.</li> </ul> <p>*Unexpected "
-"features are those that are unrelated to the add-on's primary function.</p>"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "These features cannot be introduced into an update of a fully-reviewed add-on; the opt-in change process must be part of the initial review."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "These are minimum requirements and not a guarantee that the add-on will be approved. This section applies to all add-ons hosted on the site, including preliminarily reviewed add-ons."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Private Browsing Mode"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Add-ons that store or otherwise handle browsing data must support <a href=\"https://developer.mozilla.org/En/Supporting_private_browsing_mode\">Private Browsing Mode</a>. During a Private Browsing "
-"session, no browsing data can be written to disk, and all of this data must be cleared when Firefox quits or the Private Browsing session ends."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid "Binary Components & Obfuscated Code"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"Add-ons may contain binary, obfuscated and minified source code, but Mozilla must be allowed to review a copy of the human-readable source code of each version of an add-on submitted for review. "
-"These add-ons are ineligible for preliminary review and must choose the full review process."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-msgid ""
-"If an add-on contains binary or obfuscated source code, the author will receive a message when the add-on is reviewed indicating whom to contact at Mozilla to coordinate review of the source code. "
-"This code will be reviewed by an administrator and will not be shared or redistributed in any way. The code will only be used for the purpose of reviewing the add-on."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-reviews.html
-#, python-format
-msgid "If your add-on contains binary or obfuscated code that you don't own or can't get the source code for, you may <a href=\"%(link_contact)s\">contact us</a> for information on how to proceed."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Criteria for Submission"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"Add-ons hosted on Mozilla Add-ons should be of high quality and give users an improved web experience. We look for the following things when deciding whether an add-on is appropriate to be public "
-"and unrestricted:"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Are you responsive?</strong> We expect that an author who is promoting their add-on to our applications' many users is responsive to problem reports, maintains their contact information, "
-"and updates their add-on promptly to keep current with Firefox releases and changes in our policies. This doesn't mean that you have to reply to every question that someone posts in the "
-"discussions, or that you even need to fix every bug, but we do expect that you will respond to issues in a manner that's appropriate to the severity of the issue in question."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on clearly and accurately described?</strong> It's of the utmost importance to us that users get what they expect when they try a new add-on. Your add-on name should be clear and "
-"concise, and you should refrain from using special characters or numbers to get higher search rankings or for decorative purposes. Your description should provide details about what the add-on "
-"does, how a user should take advantage of it, and what the user should expect when they install it. Links to external documents for detailed instructions are fine, but the description itself should "
-"cover the basics and leave users confident that they know what they'll get. Also, it is important that you maintain version notes appropriately as you improve and change your add-on. Users should "
-"be able to see what's new in an add-on they may have tried previously, and should be made aware of changes that might affect their current use of the add-on when they update."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Are all privacy and security concerns clearly spelled out?</strong> This is an aspect of a clear and accurate description, but such an important one that we feel it deserves specific "
-"mention. Many very useful and well-written add-ons manipulate some form of user data, or can present security hazards if misused; they are welcome on the site, but they must make it very clear to "
-"users what risks they might encounter, and what they can do to protect themselves."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Has the add-on been well-tested, and is it free of obvious or serious defects?</strong> One important thing that we look for when considering an add-on is whether its user reviews indicate "
-"that it has received thorough testing, and that it doesn't have serious problems or negative impacts on the browser. If reviewers report problems such as major performance issues, crashes, frequent "
-"problems using the functions of the add-on, or spamming of messages to the error console, you should take those reports to heart, and re-submit your add-on after you've addressed them as best you "
-"can. We don't expect you to perfectly optimize or have zero bugs &mdash; Firefox itself undergoes constant improvement in these areas &mdash; but we do want you to take reasonable efforts to "
-"minimize downsides, and to clearly call out cases where users may be surprised by those that remain."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Do the add-on and add-on author both treat the user respectfully?</strong> Your software should not intrude on the user unnecessarily, try to trick the user, or conceal any of its "
-"activities from the user. Users (or even non-users) are sometimes rude in their comments, and while we will do our best to filter out inaccurate reviews as they're reported to us, we do expect that "
-"authors will avoid retaliating with rudeness of their own."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on useful to an appropriately wide portion of Firefox's users?</strong> Your add-on doesn't need to be the next Greasemonkey or Firebug, but if it is only useful to people at "
-"your company or who are part of a small web community, we may feel that it's not yet appropriate to put it in front of all of our users."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"We are constantly looking at ways to improve the organization of the site to better accommodate add-ons that are exemplary in other ways, but are aimed at only a small community of potential users. "
-"Correctly categorizing and maintaining the metadata of your add-on will help us figure out how we can surface more of those sorts of add-ons to people who are most likely to benefit from them."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"If your add-on just provides bookmarks or other simple access points to your site, it's probably not appropriate for the gallery. Like the rest of the Mozilla project, we love web applications and "
-"new web services, but Firefox add-ons should provide an improved browsing experience for the user and not just be a way to promote a new site or service through a Mozilla Add-ons listing."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"<strong>Is the add-on free of unlicensed trademarks and copyrights?</strong> Though you may mean no harm to the holder of a trademark, or the owner of a copyrighted work, we can't host add-ons that "
-"infringe on trademarks or copyrights. If you don't have permission to use a trademarked name or image, please do not submit your add-on to us. If your add-on includes code that is copyrighted by "
-"someone else, and is not licensed to you to use in your add-on, please do not submit your add-on to us."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"In terms of reuse of source code from other add-ons, if the author has not clearly stated that you are permitted to use his or her code in your own work &mdash; such as by placing it under an open "
-"source license &mdash; then you should assume that you do not have the right to do so. You can contact the author to seek such permission, but we can't provide you with any special rights to it "
-"just because it's listed on the site, or because the author isn't responding to your request."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"This applies to the Mozilla Foundation's trademarks as well, including \"Mozilla\", \"Firefox\", and \"Thunderbird\". The Mozilla policy on trademark use is designed to protect against confusion, "
-"and prevent the trademarks from being overturned due to lack of protection; please respect the need for such protection, and help us preserve some of the most valuable assets of the Mozilla "
-"Foundation."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid "Licensing"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"Selecting an appropriate license for your add-on is a very important step in the submission process. A license specifies the rights you grant on your source code and is important in protecting your "
-"intellectual property."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies-submission.html
-msgid ""
-"During the add-on submission process, you will be presented with a list of popular licenses to choose from, as well as the ability to specify your own license. It is best to consult with a legal "
-"professional about which license option is best for you. Choosing the right license for your source code will help to prevent confusion and code conflicts in the future."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Add-on Submission"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Maintaining Your Add-on"
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Mozilla is committed to ensuring a great add-ons experience for our users and developers. Please review the policies below before submitting your add-on."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Find out what is expected of add-ons we host and our policies on specific add-on practices."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "What happens after your add-on is submitted? Learn about how our Editors review submissions."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Add-on updates, transferring ownership, user reviews, and what to expect once your add-on is approved."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "How up-and-coming add-ons become featured and what&#039;s involved in the process."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "Terms of Service for submitting your work to our site. Developers are required to accept this agreement before submission."
-msgstr ""
-
-#: src/olympia/devhub/templates/devhub/docs/policies.html
-msgid "How to get in touch with us regarding these policies or your add-on."
 msgstr ""
 
 #: src/olympia/devhub/templates/devhub/includes/addon_details.html
@@ -7200,10 +6459,6 @@ msgstr ""
 msgid "Moderated Reviews"
 msgstr ""
 
-#: src/olympia/editors/helpers.py src/olympia/editors/templates/editors/base.html
-msgid "Fast Track"
-msgstr ""
-
 #: src/olympia/editors/helpers.py
 msgid "Pending Themes"
 msgstr ""
@@ -7231,12 +6486,6 @@ msgstr ""
 #: src/olympia/editors/helpers.py
 msgid "All Unlisted Add-ons"
 msgstr ""
-
-#: src/olympia/editors/helpers.py
-msgid "Fast Track ({0})"
-msgid_plural "Fast Track ({0})"
-msgstr[0] ""
-msgstr[1] ""
 
 #: src/olympia/editors/helpers.py
 msgid "Full Review ({0})"
@@ -7443,10 +6692,6 @@ msgstr ""
 
 #: src/olympia/editors/models.py
 msgid "Jetpack Add-on"
-msgstr ""
-
-#: src/olympia/editors/models.py
-msgid "Restartless Add-on"
 msgstr ""
 
 #: src/olympia/editors/models.py
@@ -11959,8 +11204,13 @@ msgstr ""
 msgid "Login with Firefox Accounts"
 msgstr "Du kan no logga inn på utvidingar med Firefox-kontoen din."
 
-#: src/olympia/users/templates/users/login.html src/olympia/users/templates/users/mobile/login.html
-msgid "Enter your email"
+#: src/olympia/users/templates/users/login.html
+#, fuzzy
+msgid "Log in or register with your email address"
+msgstr "Skriv inn ei ny adresse til utviklaren"
+
+#: src/olympia/users/templates/users/login.html
+msgid "We are migrating existing Add-ons users to Firefox Accounts. We will detect if your account needs migrating automatically."
 msgstr ""
 
 #: src/olympia/users/templates/users/login_form.html src/olympia/users/templates/users/mobile/login.html
@@ -12182,6 +11432,10 @@ msgstr[1] ""
 msgid "Average rating of developer's add-ons"
 msgstr ""
 
+#: src/olympia/users/templates/users/mobile/login.html
+msgid "Enter your email"
+msgstr ""
+
 #: src/olympia/versions/feeds.py
 #, python-format
 msgid "%s Version History"
@@ -12273,4 +11527,25 @@ msgstr ""
 
 #: src/olympia/zadmin/forms.py
 msgid "Deleted versions can`t be changed."
+msgstr ""
+
+#: src/olympia/zadmin/views.py
+msgid "Message ID"
+msgstr ""
+
+#: src/olympia/zadmin/views.py
+msgid "Message"
+msgstr ""
+
+#: src/olympia/zadmin/views.py
+#, fuzzy
+msgid "Compat Type"
+msgstr "Kompatibel"
+
+#: src/olympia/zadmin/views.py
+msgid "Addons Affected"
+msgstr ""
+
+#: src/olympia/zadmin/views.py
+msgid "Addon"
 msgstr ""

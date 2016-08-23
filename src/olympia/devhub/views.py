@@ -605,7 +605,7 @@ def check_addon_compatibility(request):
 
 def handle_upload(filedata, user, app_id=None, version_id=None, addon=None,
                   is_standalone=False, is_listed=True, automated=False,
-                  submit=False):
+                  submit=False, disallow_preliminary_review=False):
     if addon:
         # TODO: Handle betas.
         automated = addon.automated_signing
@@ -624,7 +624,9 @@ def handle_upload(filedata, user, app_id=None, version_id=None, addon=None,
         ver = get_object_or_404(AppVersion, pk=version_id)
         tasks.compatibility_check.delay(upload.pk, app.guid, ver.version)
     elif submit:
-        tasks.validate_and_submit(addon, upload, listed=is_listed)
+        tasks.validate_and_submit(
+            addon, upload, listed=is_listed,
+            disallow_preliminary_review=disallow_preliminary_review)
     else:
         tasks.validate(upload, listed=is_listed)
 
@@ -638,10 +640,12 @@ def upload(request, addon=None, is_standalone=False, is_listed=True,
     filedata = request.FILES['upload']
     app_id = request.POST.get('app_id')
     version_id = request.POST.get('version_id')
+    no_prelim = waffle.flag_is_active(request, 'no-prelim-review')
     upload = handle_upload(
         filedata=filedata, user=request.user, app_id=app_id,
         version_id=version_id, addon=addon, is_standalone=is_standalone,
-        is_listed=is_listed, automated=automated)
+        is_listed=is_listed, automated=automated,
+        disallow_preliminary_review=no_prelim)
     if addon:
         return redirect('devhub.upload_detail_for_addon',
                         addon.slug, upload.uuid.hex)
@@ -1321,7 +1325,10 @@ def version_add(request, addon_id, addon):
     log.info('Version created: %s for: %s' %
              (version.pk, form.cleaned_data['upload']))
     check_validation_override(request, form, addon, version)
-    if (addon.status == amo.STATUS_NULL and
+    if waffle.flag_is_active(request, 'no-prelim-review'):
+        if addon.status == amo.STATUS_NULL:
+            addon.update(status=amo.STATUS_NOMINATED)
+    elif (addon.status == amo.STATUS_NULL and
             form.cleaned_data['nomination_type']):
         addon.update(status=form.cleaned_data['nomination_type'])
     url = reverse('devhub.versions.edit',
@@ -1473,7 +1480,8 @@ def submit_addon(request, step):
             check_validation_override(request, form, addon,
                                       addon.current_version)
             if not addon.is_listed:  # Not listed? Automatically choose queue.
-                if data.get('is_sideload'):  # Full review needed.
+                no_prelim = waffle.flag_is_active(request, 'no-prelim-review')
+                if data.get('is_sideload') or no_prelim:  # Full review needed.
                     addon.update(status=amo.STATUS_NOMINATED)
                 else:  # Otherwise, simply do a prelim review.
                     addon.update(status=amo.STATUS_UNREVIEWED)
@@ -1553,8 +1561,14 @@ def submit_license(request, addon_id, addon, step):
         if license_form in fs:
             license_form.save(log=False)
         policy_form.save()
-        SubmitStep.objects.filter(addon=addon).update(step=6)
-        return redirect('devhub.submit.6', addon.slug)
+        if waffle.flag_is_active(request, 'no-prelim-review'):
+            addon.update(status=amo.STATUS_NOMINATED)
+            SubmitStep.objects.filter(addon=addon).delete()
+            signals.submission_done.send(sender=addon)
+            return redirect('devhub.submit.7', addon.slug)
+        else:
+            SubmitStep.objects.filter(addon=addon).update(step=6)
+            return redirect('devhub.submit.6', addon.slug)
     ctx.update(addon=addon, policy_form=policy_form, step=step)
 
     return render(request, 'devhub/addons/submit/license.html', ctx)
@@ -1699,7 +1713,8 @@ REQUEST_REVIEW = (amo.STATUS_PUBLIC, amo.STATUS_LITE)
 @post_required
 def request_review(request, addon_id, addon, status):
     status_req = int(status)
-    if status_req not in addon.can_request_review():
+    no_prelim = waffle.flag_is_active(request, 'no-prelim-review')
+    if status_req not in addon.can_request_review(no_prelim):
         return http.HttpResponseBadRequest()
     elif status_req == amo.STATUS_PUBLIC:
         if addon.status == amo.STATUS_LITE:
@@ -1745,36 +1760,17 @@ def docs(request, doc_name=None):
         'how-to/theme-development': '#Themes',
         'themes': '/Themes/Background',
         'themes/faq': '/Themes/Background/FAQ',
+        'policies': '/AMO/Policy',
+        'policies/submission': '/AMO/Policy/Submission',
+        'policies/reviews': '/AMO/Policy/Reviews',
+        'policies/maintenance': '/AMO/Policy/Maintenance',
+        'policies/contact': '/AMO/Policy/Contact',
+        'policies/agreement': '/AMO/Policy/Agreement',
     }
-    if waffle.switch_is_active('mdn-policy-docs'):
-        mdn_docs.update({
-            'policies': '/AMO/Policy',
-            'policies/submission': '/AMO/Policy/Submission',
-            'policies/reviews': '/AMO/Policy/Reviews',
-            'policies/maintenance': '/AMO/Policy/Maintenance',
-            'policies/contact': '/AMO/Policy/Contact',
-        })
-    if waffle.switch_is_active('mdn-agreement-docs'):
-        # This will most likely depend on MDN being able to protect
-        # pages.
-        mdn_docs.update({
-            'policies/agreement': '/AMO/Policy/Agreement',
-        })
-
-    all_docs = ('policies',
-                'policies/submission',
-                'policies/reviews',
-                'policies/maintenance',
-                'policies/agreement',
-                'policies/contact')
 
     if doc_name in mdn_docs:
         return redirect(MDN_BASE + mdn_docs[doc_name],
                         permanent=True)
-
-    if doc_name in all_docs:
-        filename = '%s.html' % doc_name.replace('/', '-')
-        return render(request, 'devhub/docs/%s' % filename)
 
     raise http.Http404()
 
