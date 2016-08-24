@@ -1,5 +1,5 @@
 worker: &worker
-  image: addons/addons-server
+  image: addons/addons-server:feature_2176-django-1.8
   command: supervisord -n -c /code/docker/supervisor-celery.conf
   entrypoint: ./scripts/start-docker.sh
   volumes:
